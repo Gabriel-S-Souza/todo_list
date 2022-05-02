@@ -30,14 +30,12 @@ class _ListScreenState extends State<ListScreen> {
                     const Text(
                       'Tarefas',
                       style: TextStyle(
-                          color: Colors.white,
                           fontWeight: FontWeight.w900,
                           fontSize: 32
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.exit_to_app),
-                      color: Colors.white,
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (_) => const LoginScreen())
@@ -52,11 +50,22 @@ class _ListScreenState extends State<ListScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  elevation: 16,
+                  elevation: 8,
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 8),
+                          child: Text(
+                            'A fazer',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 22
+                            ),
+                          ),
+                        ),
                         CustomTextField(
                           hint: 'Tarefa',
                           onChanged: (todo) {
