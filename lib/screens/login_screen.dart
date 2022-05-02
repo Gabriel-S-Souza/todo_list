@@ -16,19 +16,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Card(
-            margin: const EdgeInsets.all(32),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 16,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Center(
+                  child: Text(
                     'Entrar',
                     style: TextStyle(
                       fontSize: 26,
@@ -36,46 +31,54 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    hint: 'E-mail',
-                    prefix: const Icon(Icons.account_circle),
-                    textInputType: TextInputType.emailAddress,
-                    onChanged: (email) {},
-                    enabled: true,
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    hint: 'Senha',
-                    prefix: const Icon(Icons.lock),
-                    obscure: true,
-                    onChanged: (pass) {},
-                    enabled: true,
-                    suffix: CustomIconButton(
-                      radius: 32,
-                      iconData: Icons.visibility,
-                      onTap: () {},
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.05,
+                ),
+                const SizedBox(height: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    CustomTextField(
+                      hint: 'E-mail',
+                      prefix: const Icon(Icons.account_circle),
+                      textInputType: TextInputType.emailAddress,
+                      onChanged: (email) {},
+                      enabled: true,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
+                    const SizedBox(height: 16),
+                    CustomTextField(
+                      hint: 'Senha',
+                      prefix: const Icon(Icons.lock),
+                      obscure: true,
+                      onChanged: (pass) {},
+                      enabled: true,
+                      suffix: CustomIconButton(
+                        radius: 32,
+                        iconData: Icons.visibility,
+                        onTap: () {},
                       ),
-                      primary: Theme.of(context).primaryColor,
-                      textStyle: const TextStyle(color: Colors.white),
-                      padding: const EdgeInsets.all(12),
                     ),
-                    child: const Text('Login'),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const ListScreen()),
-                      );
-                    },
-                  )
-                ],
-              ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        primary: Theme.of(context).primaryColor,
+                        textStyle: const TextStyle(color: Colors.white),
+                        padding: const EdgeInsets.all(12),
+                      ),
+                      child: const Text('Login'),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => const ListScreen()),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ],
             ),
           ),
         ),

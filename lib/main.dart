@@ -13,9 +13,8 @@ class MyApp extends StatelessWidget {
       title: 'MobX Tutorial',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.cyan,
-        scaffoldBackgroundColor: Colors.cyan,
-        colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.cyan),
+        primaryColor: Colors.blue,
+        colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.blue),
       ),
       home: const LoginScreen(),
     );
