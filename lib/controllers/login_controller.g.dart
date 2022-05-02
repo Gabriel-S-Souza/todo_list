@@ -9,6 +9,28 @@ part of 'login_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$LoginController on LoginControllerBase, Store {
+  Computed<bool>? _$isEmailValidComputed;
+
+  @override
+  bool get isEmailValid =>
+      (_$isEmailValidComputed ??= Computed<bool>(() => super.isEmailValid,
+              name: 'LoginControllerBase.isEmailValid'))
+          .value;
+  Computed<bool>? _$isPasswordValidComputed;
+
+  @override
+  bool get isPasswordValid =>
+      (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
+              name: 'LoginControllerBase.isPasswordValid'))
+          .value;
+  Computed<bool>? _$isFormValidComputed;
+
+  @override
+  bool get isFormValid =>
+      (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
+              name: 'LoginControllerBase.isFormValid'))
+          .value;
+
   late final _$emailAtom =
       Atom(name: 'LoginControllerBase.email', context: context);
 
@@ -57,6 +79,30 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
+  late final _$loadingAtom =
+      Atom(name: 'LoginControllerBase.loading', context: context);
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  late final _$loginAsyncAction =
+      AsyncAction('LoginControllerBase.login', context: context);
+
+  @override
+  Future<void> login() {
+    return _$loginAsyncAction.run(() => super.login());
+  }
+
   late final _$LoginControllerBaseActionController =
       ActionController(name: 'LoginControllerBase', context: context);
 
@@ -98,7 +144,11 @@ mixin _$LoginController on LoginControllerBase, Store {
     return '''
 email: ${email},
 password: ${password},
-passwordVisible: ${passwordVisible}
+passwordVisible: ${passwordVisible},
+loading: ${loading},
+isEmailValid: ${isEmailValid},
+isPasswordValid: ${isPasswordValid},
+isFormValid: ${isFormValid}
     ''';
   }
 }
