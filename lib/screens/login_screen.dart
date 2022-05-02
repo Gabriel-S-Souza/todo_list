@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:todo_list/widgets/custom_icon_button.dart';
 import 'package:todo_list/widgets/custom_text_field.dart';
 
+import '../controllers/login_controller.dart';
 import 'list_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final LoginController loginController = LoginController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,43 +43,65 @@ class _LoginScreenState extends State<LoginScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    CustomTextField(
-                      hint: 'E-mail',
-                      prefix: const Icon(Icons.account_circle),
-                      textInputType: TextInputType.emailAddress,
-                      onChanged: (email) {},
-                      enabled: true,
-                    ),
+                    Observer(builder: (_) {
+                      return CustomTextField(
+                        hint: 'E-mail',
+                        prefix: const Icon(Icons.account_circle),
+                        textInputType: TextInputType.emailAddress,
+                        onChanged: loginController.setEmail,
+                        enabled: !loginController.loading,
+                      );
+                    }),
                     const SizedBox(height: 16),
-                    CustomTextField(
-                      hint: 'Senha',
-                      prefix: const Icon(Icons.lock),
-                      obscure: true,
-                      onChanged: (pass) {},
-                      enabled: true,
-                      suffix: CustomIconButton(
-                        radius: 32,
-                        iconData: Icons.visibility,
-                        onTap: () {},
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32),
-                        ),
-                        primary: Theme.of(context).primaryColor,
-                        textStyle: const TextStyle(color: Colors.white),
-                        padding: const EdgeInsets.all(12),
-                      ),
-                      child: const Text('Login'),
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => const ListScreen()),
+                      Observer(builder: (_) {
+                        return CustomTextField(
+                          hint: 'Senha',
+                          prefix: const Icon(Icons.lock),
+                          obscure: !loginController.passwordVisible,
+                          onChanged: loginController.setPassword,
+                          enabled: !loginController.loading,
+                          suffix: CustomIconButton(
+                            radius: 32,
+                            iconData: loginController.passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            onTap: loginController.togglePasswordVisible,
+                          ),
                         );
-                      },
-                    )
+                      }
+                    ),
+                    const SizedBox(height: 16),
+                    Observer(builder: ((context) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          primary: Theme.of(context).primaryColor,
+                          onSurface: Theme.of(context).primaryColor,
+                          textStyle: const TextStyle(color: Colors.white),
+                          padding: const EdgeInsets.all(12),
+                        ),
+                        child: loginController.loading
+                            ? SizedBox(
+                              height: 17,
+                              width: 17,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                                strokeWidth: 3,
+                              ),
+                            )
+                            : const Text('Login'),
+                        onPressed: loginController.isFormValid
+                            ? () async {
+                              await loginController.login();
+                              // Navigator.of(context).pushReplacement(
+                              //   MaterialPageRoute(builder: (_) => const ListScreen()),
+                              // );
+                            }
+                            : null,
+                      );
+                    }))
                   ],
                 ),
               ],
