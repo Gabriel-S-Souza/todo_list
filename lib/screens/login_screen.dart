@@ -95,9 +95,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: loginController.isFormValid
                             ? () async {
                               await loginController.login();
-                              // Navigator.of(context).pushReplacement(
-                              //   MaterialPageRoute(builder: (_) => const ListScreen()),
-                              // );
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (_) => const ListScreen()),
+                              );
                             }
                             : null,
                       );
