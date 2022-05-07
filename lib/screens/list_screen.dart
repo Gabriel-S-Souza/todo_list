@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:todo_list/widgets/custom_icon_button.dart';
 import 'package:todo_list/widgets/custom_text_field.dart';
 
+import '../controllers/list_controller.dart';
 import 'login_screen.dart';
 
 class ListScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class ListScreen extends StatefulWidget {
 }
 
 class _ListScreenState extends State<ListScreen> {
+  final listController = ListController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +69,22 @@ class _ListScreenState extends State<ListScreen> {
                             ),
                           ),
                         ),
-                        CustomTextField(
-                          hint: 'Tarefa',
-                          onChanged: (todo) {
+                        Observer(
+                          builder: (context) {
+                            return CustomTextField(
+                              hint: 'Tarefa',
+                              onChanged: listController.setNewTask,
+                              suffix: CustomIconButton(
+                                radius: 32,
+                                iconData: Icons.add,
+                                onTap: listController.isNewTaskValid
+                                    ? (){
 
-                          },
-                          suffix: CustomIconButton(
-                            radius: 32,
-                            iconData: Icons.add,
-                            onTap: (){
-
-                            },
-                          ),
+                                    }
+                                    : null,
+                              ),
+                            );
+                          }
                         ),
                         const SizedBox(height: 8,),
                         Expanded(

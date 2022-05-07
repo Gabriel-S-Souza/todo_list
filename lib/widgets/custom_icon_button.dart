@@ -10,7 +10,7 @@ class CustomIconButton extends StatelessWidget {
 
   final double radius;
   final IconData iconData;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,10 @@ class CustomIconButton extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          child: Icon(iconData),
+          child: Icon(
+            iconData,
+            color: onTap == null ? Colors.grey : Theme.of(context).primaryColor,
+          ),
           onTap: onTap,
         ),
       ),
