@@ -6,13 +6,6 @@ part 'login_controller.g.dart';
 class LoginController = LoginControllerBase with _$LoginController;
 
 abstract class LoginControllerBase with Store {
-  LoginControllerBase() {
-    //A função autorun é executada no início e sempre que o valor de algum obervable ou computed mudar. O autorun não precisa
-    //necessariamente estar dentro de uma classe como esta para funcionar, podemos adicionar ele em widgets também
-    autorun((_) {
-      print(isFormValid);
-    });
-  }
   
   @observable
   String email = '';
