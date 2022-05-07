@@ -16,6 +16,13 @@ mixin _$ListController on ListControllerBase, Store {
       (_$isNewTaskValidComputed ??= Computed<bool>(() => super.isNewTaskValid,
               name: 'ListControllerBase.isNewTaskValid'))
           .value;
+  Computed<VoidCallback?>? _$addTaskTapedComputed;
+
+  @override
+  VoidCallback? get addTaskTaped => (_$addTaskTapedComputed ??=
+          Computed<VoidCallback?>(() => super.addTaskTaped,
+              name: 'ListControllerBase.addTaskTaped'))
+      .value;
 
   late final _$newTaskAtom =
       Atom(name: 'ListControllerBase.newTask', context: context);
@@ -48,10 +55,22 @@ mixin _$ListController on ListControllerBase, Store {
   }
 
   @override
+  void addTask() {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.addTask');
+    try {
+      return super.addTask();
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 newTask: ${newTask},
-isNewTaskValid: ${isNewTaskValid}
+isNewTaskValid: ${isNewTaskValid},
+addTaskTaped: ${addTaskTaped}
     ''';
   }
 }

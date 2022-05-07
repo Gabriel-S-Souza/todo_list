@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 
 part 'list_controller.g.dart';
@@ -15,4 +16,11 @@ abstract class ListControllerBase with Store {
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;
 
+  @computed
+  VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
+
+  @action
+  void addTask() {
+    print('$newTask');
+  }
 }

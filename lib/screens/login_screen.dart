@@ -106,7 +106,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: loginController.isFormValid
                             ? () async {
                               await loginController.login();
-                              
                             }
                             : null,
                       );

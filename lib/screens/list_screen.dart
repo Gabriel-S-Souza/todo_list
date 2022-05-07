@@ -77,11 +77,7 @@ class _ListScreenState extends State<ListScreen> {
                               suffix: CustomIconButton(
                                 radius: 32,
                                 iconData: Icons.add,
-                                onTap: listController.isNewTaskValid
-                                    ? (){
-
-                                    }
-                                    : null,
+                                onTap: listController.addTaskTaped,
                               ),
                             );
                           }
