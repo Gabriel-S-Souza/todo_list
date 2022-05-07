@@ -7,6 +7,8 @@ class ListController = ListControllerBase with _$ListController;
 
 abstract class ListControllerBase with Store {
 
+  final TextEditingController textEditingController = TextEditingController();
+
   @observable
   String newTask = '';
 
@@ -19,8 +21,13 @@ abstract class ListControllerBase with Store {
   @computed
   VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
 
+  //Lista observável do Mobx, portanto não é necessário adicionar o @observable
+  ObservableList<String> tasks = ObservableList<String>();
+
   @action
   void addTask() {
-    print('$newTask');
+    tasks.insert(0, newTask);
+    textEditingController.clear();
+    newTask = '';
   }
 }

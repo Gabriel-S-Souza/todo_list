@@ -73,6 +73,7 @@ class _ListScreenState extends State<ListScreen> {
                           builder: (context) {
                             return CustomTextField(
                               hint: 'Tarefa',
+                              controller: listController.textEditingController,
                               onChanged: listController.setNewTask,
                               suffix: CustomIconButton(
                                 radius: 32,
@@ -84,21 +85,25 @@ class _ListScreenState extends State<ListScreen> {
                         ),
                         const SizedBox(height: 8,),
                         Expanded(
-                          child: ListView.separated(
-                            itemCount: 10,
-                            itemBuilder: (_, index){
-                              return ListTile(
-                                title: Text(
-                                  'Item $index',
-                                ),
-                                onTap: (){
+                          child: Observer(
+                            builder: (context) {
+                              return ListView.separated(
+                                itemCount: listController.tasks.length,
+                                itemBuilder: (_, index){
+                                  return ListTile(
+                                    title: Text(
+                                      listController.tasks[index],
+                                    ),
+                                    onTap: (){
 
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (_, __){
+                                  return const Divider();
                                 },
                               );
-                            },
-                            separatorBuilder: (_, __){
-                              return const Divider();
-                            },
+                            }
                           ),
                         ),
                       ],
