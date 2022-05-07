@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/screens/list_screen.dart';
 
 import 'screens/login_screen.dart';
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.blue),
       ),
-      home: const LoginScreen(),
+      //TODO: adicionar a LoginScreen como primeira tela
+      home: const ListScreen(),
     );
   }
 }
