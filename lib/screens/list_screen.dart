@@ -90,13 +90,12 @@ class _ListScreenState extends State<ListScreen> {
                               return ListView.separated(
                                 itemCount: listController.tasks.length,
                                 itemBuilder: (_, index){
+                                  final task = listController.tasks[index];
+
                                   return ListTile(
                                     title: Text(
-                                      listController.tasks[index],
+                                      task.title,
                                     ),
-                                    onTap: (){
-
-                                    },
                                   );
                                 },
                                 separatorBuilder: (_, __){
