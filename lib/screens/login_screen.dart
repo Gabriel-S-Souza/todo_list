@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import 'package:todo_list/widgets/custom_icon_button.dart';
 import 'package:todo_list/widgets/custom_text_field.dart';
 
@@ -15,6 +16,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final LoginController loginController = LoginController();
+
+  @override
+  void initState() {
+    super.initState();
+    when((_) => loginController.logged, () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const ListScreen()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,9 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: loginController.isFormValid
                             ? () async {
                               await loginController.login();
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (_) => const ListScreen()),
-                              );
+                              
                             }
                             : null,
                       );
