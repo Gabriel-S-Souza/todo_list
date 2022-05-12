@@ -4,15 +4,15 @@ import '../../controllers/list_controller.dart';
 import 'custom_icon_button.dart';
 import 'custom_text_field.dart';
 
-class CustomList extends StatefulWidget {
+class CustomTaskBoard extends StatefulWidget {
   final String title;
-  const CustomList({ Key? key, required this.title }) : super(key: key);
+  const CustomTaskBoard({ Key? key, required this.title }) : super(key: key);
 
   @override
-  State<CustomList> createState() => _CustomListState();
+  State<CustomTaskBoard> createState() => _CustomTaskBoardState();
 }
 
-class _CustomListState extends State<CustomList> {
+class _CustomTaskBoardState extends State<CustomTaskBoard> {
   ListController listController = ListController();
   TextEditingController textEditingController = TextEditingController();
 

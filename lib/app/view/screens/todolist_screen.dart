@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../controllers/list_card_controller.dart';
+import '../../controllers/list_board_controller.dart';
 import '../../controllers/list_controller.dart';
-import '../widgets/custom_list_card.dart';
+import '../widgets/custom_task_board_list.dart';
 import 'login_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   final listController = ListController();
-  final ListCardController listCardController = ListCardController();
+  final ListBoardController listCardController = ListBoardController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   children: [
                     const Flexible(
                       fit: FlexFit.loose,
-                      child: CustomListCard(),
+                      child: CustomTaskBoardList(),
                     ),
                     IconButton(onPressed: () {
                       listCardController.addCard('Nova lista');

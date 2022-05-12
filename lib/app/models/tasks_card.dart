@@ -1,4 +1,4 @@
-class TasksCard {
+class TasksBoard {
   final String title;
-  TasksCard(this.title);
+  TasksBoard(this.title);
 }
