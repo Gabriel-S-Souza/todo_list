@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import '../../controllers/list_card_controller.dart';
 import 'custom_list.dart';
@@ -12,7 +13,7 @@ class CustomListCard extends StatefulWidget {
 }
 
 class _CustomListCardState extends State<CustomListCard> {
-  final ListCardController listCardController = ListCardController();
+  final ListCardController listCardController = GetIt.I.get<ListCardController>();
 
   //TODO: mock data
   final defaultCardsNames = [
@@ -38,7 +39,6 @@ class _CustomListCardState extends State<CustomListCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(listCardController.cardsName);
 
     return  Observer(
       builder: (context) {

@@ -14,7 +14,7 @@ abstract class ListCardControllerBase with Store {
   }
 
   @action
-  void removeCard(String value) {
-    cardsName.remove(value);
+  void removeCard(int index) {
+    cardsName.removeAt(index);
   }
 }

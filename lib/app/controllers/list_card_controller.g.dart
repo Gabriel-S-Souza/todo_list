@@ -24,11 +24,11 @@ mixin _$ListCardController on ListCardControllerBase, Store {
   }
 
   @override
-  void removeCard(String value) {
+  void removeCard(int index) {
     final _$actionInfo = _$ListCardControllerBaseActionController.startAction(
         name: 'ListCardControllerBase.removeCard');
     try {
-      return super.removeCard(value);
+      return super.removeCard(index);
     } finally {
       _$ListCardControllerBaseActionController.endAction(_$actionInfo);
     }
