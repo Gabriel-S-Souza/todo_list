@@ -16,17 +16,14 @@ class CustomTaskBoardList extends StatefulWidget {
 class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
   final ListBoardController listCardController = GetIt.I.get<ListBoardController>();
   late Box<String> box;
+  final List<String> boards = [];
   @override
   void initState() {
     super.initState();
-    box = Hive.box<String>('task_boards');
-    box.values.map((value) {
-      listCardController.addCard(value);
-    }).toList();
-
-    reaction((_) => listCardController.cardsName, (value) {
-      setState(() {});
-    });
+    // box = Hive.box<String>('task_boards');
+    // box.values.map((value) {
+    //   listCardController.addCard(value);
+    // }).toList();
   }
 
   @override

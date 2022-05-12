@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
 import '../../controllers/list_board_controller.dart';
 import '../../controllers/list_controller.dart';
 import '../widgets/custom_task_board_list.dart';
@@ -56,9 +57,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       fit: FlexFit.loose,
                       child: CustomTaskBoardList(),
                     ),
-                    IconButton(onPressed: () {
-                      listCardController.addCard('Nova lista');
-                    }, 
+                    IconButton(onPressed: openInputDialog, 
                     icon: const Icon(Icons.add),
                   ),
                   ],
@@ -68,6 +67,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void openInputDialog() async {
+    await showDialog(
+      context: context,
+      builder: (_) => const CustomInputDialog(),
     );
   }
 }

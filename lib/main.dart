@@ -9,13 +9,14 @@ import 'app/view/my_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  GetIt getIt = GetIt.I;
-  getIt.registerSingleton<ListBoardController>(ListBoardController());
-  
   Box<String> box = await Hive.openBox<String>('task_boards');
   if (box.isEmpty) {
     box.addAll(DefalutBoards.defaultBoards);
     
   }
+  
+  GetIt getIt = GetIt.I;
+  getIt.registerSingleton<ListBoardController>(ListBoardController());
+  
   runApp(const MyApp());
 }

@@ -14,7 +14,6 @@ class CustomTaskBoard extends StatefulWidget {
 
 class _CustomTaskBoardState extends State<CustomTaskBoard> {
   ListController listController = ListController();
-  TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +55,13 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                       ),
                       CustomTextField(
                         hint: 'Tarefa',
-                        controller: textEditingController,
+                        controller: listController.textEditingController,
                         onChanged: listController.setNewTask,
                         suffix: CustomIconButton(
                           radius: 32,
                           iconData: Icons.add,
                           onTap: () {
                             listController.addTaskTaped;
-                            textEditingController.clear();
                           },
                         ),
                       ),
