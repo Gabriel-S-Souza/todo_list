@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/widgets/custom_list_card.dart';
-
-import '../controllers/list_controller.dart';
+import '../../controllers/list_card_controller.dart';
+import '../../controllers/list_controller.dart';
+import '../widgets/custom_list_card.dart';
 import 'login_screen.dart';
 
-class ListScreen extends StatefulWidget {
-  const ListScreen({Key? key}) : super(key: key);
+class TodoListScreen extends StatefulWidget {
+  const TodoListScreen({Key? key}) : super(key: key);
 
   @override
-  _ListScreenState createState() => _ListScreenState();
+  _TodoListScreenState createState() => _TodoListScreenState();
 }
 
-class _ListScreenState extends State<ListScreen> {
+class _TodoListScreenState extends State<TodoListScreen> {
   final listController = ListController();
+  final ListCardController listCardController = ListCardController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +56,11 @@ class _ListScreenState extends State<ListScreen> {
                       fit: FlexFit.loose,
                       child: CustomListCard(),
                     ),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.add),),
+                    IconButton(onPressed: () {
+                      listCardController.addCard('Nova lista');
+                    }, 
+                    icon: const Icon(Icons.add),
+                  ),
                   ],
                 ),
               ),

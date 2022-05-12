@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
-import 'package:todo_list/widgets/custom_icon_button.dart';
-import 'package:todo_list/widgets/custom_text_field.dart';
-
-import '../controllers/login_controller.dart';
-import 'list_screen.dart';
+import '../../controllers/login_controller.dart';
+import '../widgets/custom_icon_button.dart';
+import '../widgets/custom_text_field.dart';
+import 'todolist_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     when((_) => loginController.logged, () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ListScreen()),
+        MaterialPageRoute(builder: (context) => const TodoListScreen()),
       );
     });
   }

@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:todo_list/models/task.dart';
+
+import '../models/task.dart';
 
 part 'list_controller.g.dart';
 
 class ListController = ListControllerBase with _$ListController;
 
 abstract class ListControllerBase with Store {
-      
-
-  final TextEditingController textEditingController = TextEditingController();
-
   @observable
   String newTask = '';
 
@@ -29,7 +26,6 @@ abstract class ListControllerBase with Store {
   @action
   void addTask() {
     tasks.insert(0, Task(newTask));
-    textEditingController.clear();
     newTask = '';
   }
 }
