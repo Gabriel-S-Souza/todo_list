@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:todo_list/app/controllers/list_board_controller.dart';
 
 class CustomInputDialog extends StatefulWidget {
   const CustomInputDialog({ Key? key }) : super(key: key);
@@ -10,11 +11,12 @@ class CustomInputDialog extends StatefulWidget {
 
 class _CustomInputDialogState extends State<CustomInputDialog> {
   final TextEditingController textEditingController = TextEditingController();
-  late final Box box;
+  final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
+
   @override
-  void initState() {
-    super.initState();
-    box = Hive.box<String>('task_boards');
+  void dispose() {
+    super.dispose();
+    textEditingController.dispose();
   }
 
   @override
@@ -31,9 +33,9 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
           onPressed: () {
             if (textEditingController.text.isNotEmpty) {
               String text = textEditingController.text;
-              box.add(text);
+              listBoardController.addCard(text);
             }
-            Navigator.pop(context, textEditingController.text);
+            Navigator.pop(context);
           },
            child: const Text('ADICIONAR')
           ),

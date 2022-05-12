@@ -24,6 +24,17 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
   }
 
   @override
+  void _initializeBoards(String value) {
+    final _$actionInfo = _$ListBoardControllerBaseActionController.startAction(
+        name: 'ListBoardControllerBase._initializeBoards');
+    try {
+      return super._initializeBoards(value);
+    } finally {
+      _$ListBoardControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removeCard(int index) {
     final _$actionInfo = _$ListBoardControllerBaseActionController.startAction(
         name: 'ListBoardControllerBase.removeCard');
