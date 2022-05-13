@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import '../../controllers/list_board_controller.dart';
 import '../../controllers/list_controller.dart';
 import 'custom_icon_button.dart';
 import 'custom_text_field.dart';
 
 class CustomTaskBoard extends StatefulWidget {
   final String title;
-  const CustomTaskBoard({ Key? key, required this.title }) : super(key: key);
+  final int index;
+  const CustomTaskBoard({ Key? key, required this.title, required this.index }) : super(key: key);
 
   @override
   State<CustomTaskBoard> createState() => _CustomTaskBoardState();
@@ -14,6 +17,7 @@ class CustomTaskBoard extends StatefulWidget {
 
 class _CustomTaskBoardState extends State<CustomTaskBoard> {
   ListController listController = ListController();
+  final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +49,24 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8),
-                        child: Text(
-                          widget.title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 22
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 22
+                              ),
+                            ),
+                            CustomIconButton(
+                              radius: 28,
+                              iconData: Icons.delete, 
+                              onTap: () {
+                                deleteBoard(widget.index);
+                              },
+                            )
+                          ],
                         ),
                       ),
                       CustomTextField(
@@ -93,5 +109,9 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
         ),
       ),
     );
+  }
+
+  void deleteBoard(int index) {
+    listBoardController.removeBoard(index);
   }
 }

@@ -29,11 +29,12 @@ class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
         return ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          itemCount: listBoardController.cardsName.length,
+          itemCount: listBoardController.boardsName.length,
           itemBuilder: (context, index) {
-            final String listName = listBoardController.cardsName[index].title;
+            final String listName = listBoardController.boardsName[index].title;
             return CustomTaskBoard(
               title: listName,
+              index: index,
             );
           },
         );

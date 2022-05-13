@@ -33,7 +33,7 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
           onPressed: () {
             if (textEditingController.text.isNotEmpty) {
               String text = textEditingController.text;
-              listBoardController.addCard(text);
+              listBoardController.addBoard(text);
             }
             Navigator.pop(context);
           },

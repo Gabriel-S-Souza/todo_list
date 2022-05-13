@@ -28,8 +28,8 @@ class LocalDataDAO extends ContractDataCRUD {
   }
 
   @override
-  Future<void> delete(int index) {
-    return box.delete(index);
+  Future<void> delete(int index) async {
+    return await box.deleteAt(index);
   }
 
   void deleteAll() async {
