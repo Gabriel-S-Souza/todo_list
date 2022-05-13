@@ -5,7 +5,7 @@ import '../models/task_board_hive_adapter.dart';
 import '../models/task_board_model.dart';
 import 'contracts/contract_data_crud.dart';
 
-class LocalDataDAO extends ContractDataCRUD {
+class LocalDataDAO extends ContractCRUD {
 
   late final Box<TasksBoardModel> box;
 
