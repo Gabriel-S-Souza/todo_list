@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import '../../controllers/list_board_controller.dart';
 import '../../controllers/list_controller.dart';
+import 'custom_action_dialog.dart';
 import 'custom_icon_button.dart';
 import 'custom_text_field.dart';
 
@@ -62,9 +63,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                             CustomIconButton(
                               radius: 28,
                               iconData: Icons.delete, 
-                              onTap: () {
-                                deleteBoard(widget.index);
-                              },
+                              onTap: openInputDialog,
                             )
                           ],
                         ),
@@ -88,7 +87,6 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                           itemCount: listController.tasks.length,
                           itemBuilder: (_, index){
                             final task = listController.tasks[index];
-        
                             return ListTile(
                               title: Text(
                                 task.title,
@@ -107,6 +105,24 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
             );
           }
         ),
+      ),
+    );
+  }
+
+  void openInputDialog() {
+    showDialog(
+      context: context,
+      builder: (_) => CustomActionDialog(
+        title: 'Excluir quadro?',
+        buttonAcceptText: 'OK',
+        buttonCancelText: 'CANCELAR',
+        onAccept: () {
+          deleteBoard(widget.index);
+          Navigator.of(context).pop();
+        },
+        onCancel: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
