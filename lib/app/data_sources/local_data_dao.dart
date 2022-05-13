@@ -22,7 +22,7 @@ class LocalDataDAO extends ContractCRUD {
   }
 
   @override
-  void update(String id, Map<String, dynamic> data) {
+  void update(int index, dynamic data) {
     // TODO: implement update
     throw UnimplementedError();
   }
