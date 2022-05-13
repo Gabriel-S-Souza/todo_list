@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../models/default_boards.dart';
 import '../models/task_board_hive_adapter.dart';
 import '../models/task_board_model.dart';
-import 'contracts/contract_data_crud.dart';
+import 'contracts/contract_crud.dart';
 
 class LocalDataDAO extends ContractCRUD {
 

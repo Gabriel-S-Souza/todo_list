@@ -1,6 +1,4 @@
-import '../../models/task_board_model.dart';
-
-abstract class ContractDataCRUD {
+abstract class ContractCRUD {
   void create(String data);
   dynamic read();
   void update(String id, Map<String, dynamic> data);
