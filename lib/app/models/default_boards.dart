@@ -1,4 +1,4 @@
-class DefalutBoards {
+class DefaultBoards {
   static const defaultBoards = [
     'A fazer',
     'Fazendo',
