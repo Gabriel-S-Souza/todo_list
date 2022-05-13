@@ -30,8 +30,8 @@ abstract class ListBoardControllerBase with Store {
   }
 
   @action
-  void _initializeBoards() {
-    List<TasksBoardModel> boardsList = localDataDAO.read();
+  Future<void> _initializeBoards() async {
+    List<TasksBoardModel> boardsList = await localDataDAO.read();
 
     boardsList.map((e) {
       boardsName.add(e);

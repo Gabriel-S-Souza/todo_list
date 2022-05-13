@@ -17,14 +17,13 @@ class LocalDataDAO extends ContractCRUD {
   }
 
   @override
-  List<TasksBoardModel> read() {
-    return box.values.toList();
+  Future<List<TasksBoardModel>> read() async {
+    return await Future.value(box.values.toList());
   }
 
   @override
-  void update(int index, dynamic data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<void> update(int index, dynamic data) async {
+    return await box.putAt(index, data);
   }
 
   @override
@@ -32,8 +31,8 @@ class LocalDataDAO extends ContractCRUD {
     return await box.deleteAt(index);
   }
 
-  void deleteAll() async {
-    box.deleteAll(box.keys.map((e) => e).toList());
+  Future<void> deleteAll() async {
+    return await box.deleteAll(box.keys.map((e) => e).toList());
   }
 
   Future<void> openDataBase() async {

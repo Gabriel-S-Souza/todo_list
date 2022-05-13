@@ -25,18 +25,13 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
     return _$removeBoardAsyncAction.run(() => super.removeBoard(index));
   }
 
-  late final _$ListBoardControllerBaseActionController =
-      ActionController(name: 'ListBoardControllerBase', context: context);
+  late final _$_initializeBoardsAsyncAction = AsyncAction(
+      'ListBoardControllerBase._initializeBoards',
+      context: context);
 
   @override
-  void _initializeBoards() {
-    final _$actionInfo = _$ListBoardControllerBaseActionController.startAction(
-        name: 'ListBoardControllerBase._initializeBoards');
-    try {
-      return super._initializeBoards();
-    } finally {
-      _$ListBoardControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future<void> _initializeBoards() {
+    return _$_initializeBoardsAsyncAction.run(() => super._initializeBoards());
   }
 
   @override
