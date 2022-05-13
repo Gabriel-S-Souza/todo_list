@@ -14,7 +14,7 @@ class CustomTaskBoardList extends StatefulWidget {
 }
 
 class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
-  final ListBoardController listCardController = GetIt.I.get<ListBoardController>();
+  final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
   final List<String> boards = [];
   @override
   void initState() {
@@ -29,9 +29,9 @@ class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
         return ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
-          itemCount: listCardController.cardsName.length,
+          itemCount: listBoardController.cardsName.length,
           itemBuilder: (context, index) {
-            final String listName = listCardController.cardsName[index].title;
+            final String listName = listBoardController.cardsName[index].title;
             return CustomTaskBoard(
               title: listName,
             );

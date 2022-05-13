@@ -10,34 +10,33 @@ class LocalDataDAO extends ContractDataCRUD {
   late final Box<TasksBoardModel> box;
 
   @override
-  Future<void> create(Map<String, dynamic> data) {
-    // TODO: implement create
-    throw UnimplementedError();
-  } 
-
-  @override
-  Future read(String id) {
-    // TODO: implement read
-    throw UnimplementedError();
+  Future<int> create(String data) {
+    return box.add(TasksBoardModel()
+        ..title = data
+      );
   }
 
   @override
-  Future<void> update(String id, Map<String, dynamic> data) {
+  List<TasksBoardModel> read() {
+    return box.values.toList();
+  }
+
+  @override
+  void update(String id, Map<String, dynamic> data) {
     // TODO: implement update
     throw UnimplementedError();
   }
 
   @override
-  Future<void> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(int index) {
+    return box.delete(index);
   }
 
-  Future<void> deleteAll() async {
+  void deleteAll() async {
     box.deleteAll(box.keys.map((e) => e).toList());
   }
 
-  Future<Box<TasksBoardModel>> openDataBase() async {
+  Future<void> openDataBase() async {
     await Hive.initFlutter();
     Hive.registerAdapter(TaskBoardAdapter());
     box = await Hive.openBox<TasksBoardModel>('boards_teste');
@@ -48,6 +47,5 @@ class LocalDataDAO extends ContractDataCRUD {
       }).toList();
       
     }
-    return box;
   }
 }

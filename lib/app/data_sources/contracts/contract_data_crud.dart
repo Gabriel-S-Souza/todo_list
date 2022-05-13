@@ -1,6 +1,8 @@
+import '../../models/task_board_model.dart';
+
 abstract class ContractDataCRUD {
-  Future<void> create(Map<String, dynamic> data);
-  Future<dynamic> read(String id);
-  Future<void> update(String id, Map<String, dynamic> data);
-  Future<void> delete(String id);
+  void create(String data);
+  dynamic read();
+  void update(String id, Map<String, dynamic> data);
+  void delete(int index);
 }
