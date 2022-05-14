@@ -5,7 +5,7 @@ import '../../models/task_board_hive_adapter.dart';
 import '../../models/task_board_model.dart';
 import '../contracts/contract_crud.dart';
 
-class LocalDataDAO extends ContractCRUD {
+class BoardDAO extends ContractCRUD {
 
   late final Box<TasksBoardModel> box;
 
@@ -17,8 +17,8 @@ class LocalDataDAO extends ContractCRUD {
   }
 
   @override
-  Future<TasksBoardModel> read(index) async {
-    return await Future.value(box.getAt(index));
+  Future<TasksBoardModel?> read(index) async {
+    return await Future.value(box.get(index));
   }
 
   @override

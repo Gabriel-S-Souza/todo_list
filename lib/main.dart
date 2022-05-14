@@ -7,12 +7,12 @@ import 'app/view/my_app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  LocalDataDAO localDataDAO = LocalDataDAO();
-  await localDataDAO.openDataBase();
+  BoardDAO boardDAO = BoardDAO();
+  await boardDAO.openDataBase();
 
   GetIt getIt = GetIt.I;
 
-  getIt.registerSingleton<LocalDataDAO>(localDataDAO);
+  getIt.registerSingleton<BoardDAO>(boardDAO);
   getIt.registerSingleton<ListBoardController>(ListBoardController());
   
   runApp(const MyApp());

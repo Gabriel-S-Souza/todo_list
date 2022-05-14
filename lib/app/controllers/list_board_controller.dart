@@ -12,26 +12,26 @@ abstract class ListBoardControllerBase with Store {
       _initializeBoards();
   }
 
-  final LocalDataDAO localDataDAO = GetIt.I.get<LocalDataDAO>();
+  final BoardDAO boardDAO = GetIt.I.get<BoardDAO>();
 
   ObservableList<TasksBoardModel> boardsName = ObservableList<TasksBoardModel>();
 
   @action
   Future<void> addBoard(String value) async {
-    await localDataDAO.create(value);
+    await boardDAO.create(value);
     boardsName.add(TasksBoardModel()
       ..title = value);
   }
 
   @action
   Future<void> removeBoard(int index) async {
-    await localDataDAO.delete(index);
+    await boardDAO.delete(index);
     boardsName.removeAt(index);
   }
 
   @action
   Future<void> _initializeBoards() async {
-    List<TasksBoardModel> boardsList = await localDataDAO.readAll();
+    List<TasksBoardModel> boardsList = await boardDAO.readAll();
 
     boardsList.map((e) {
       boardsName.add(e);
