@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
-import 'package:mobx/mobx.dart';
 import '../../controllers/list_board_controller.dart';
 import 'custom_task_board.dart';
 

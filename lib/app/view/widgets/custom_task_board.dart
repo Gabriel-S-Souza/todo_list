@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
-import '../../controllers/list_board_controller.dart';
 import '../../controllers/list_controller.dart';
 import 'custom_action_dialog.dart';
 import 'custom_icon_button.dart';
