@@ -17,7 +17,12 @@ class LocalDataDAO extends ContractCRUD {
   }
 
   @override
-  Future<List<TasksBoardModel>> read() async {
+  Future<TasksBoardModel> read(index) async {
+    return await Future.value(box.getAt(index));
+  }
+
+  @override
+  Future<List<TasksBoardModel>> readAll() async {
     return await Future.value(box.values.toList());
   }
 
