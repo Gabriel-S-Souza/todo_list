@@ -10,7 +10,8 @@ import 'custom_text_field.dart';
 class CustomTaskBoard extends StatefulWidget {
   final String title;
   final int index;
-  const CustomTaskBoard({ Key? key, required this.title, required this.index }) : super(key: key);
+  final void Function(int index) onDelete;
+  const CustomTaskBoard({ Key? key, required this.title, required this.index, required this.onDelete }) : super(key: key);
 
   @override
   State<CustomTaskBoard> createState() => _CustomTaskBoardState();
@@ -18,7 +19,6 @@ class CustomTaskBoard extends StatefulWidget {
 
 class _CustomTaskBoardState extends State<CustomTaskBoard> {
   ListController listController = ListController();
-  final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +117,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
         buttonAcceptText: 'OK',
         buttonCancelText: 'CANCELAR',
         onAccept: () {
-          deleteBoard(widget.index);
+          widget.onDelete(widget.index);
           Navigator.of(context).pop();
         },
         onCancel: () {
@@ -125,9 +125,5 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
         },
       ),
     );
-  }
-
-  void deleteBoard(int index) {
-    listBoardController.removeBoard(index);
   }
 }

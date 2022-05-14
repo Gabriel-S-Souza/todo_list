@@ -35,6 +35,9 @@ class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
             return CustomTaskBoard(
               title: listName,
               index: index,
+              onDelete: (index) {
+                listBoardController.removeBoard(index);
+              },
             );
           },
         );
