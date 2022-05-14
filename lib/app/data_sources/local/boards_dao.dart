@@ -1,9 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../models/default_boards.dart';
-import '../models/task_board_hive_adapter.dart';
-import '../models/task_board_model.dart';
-import 'contracts/contract_crud.dart';
+import '../../models/default_boards.dart';
+import '../../models/task_board_hive_adapter.dart';
+import '../../models/task_board_model.dart';
+import '../contracts/contract_crud.dart';
 
 class LocalDataDAO extends ContractCRUD {
 
@@ -21,7 +21,6 @@ class LocalDataDAO extends ContractCRUD {
     return await Future.value(box.getAt(index));
   }
 
-  @override
   Future<List<TasksBoardModel>> readAll() async {
     return await Future.value(box.values.toList());
   }

@@ -40,6 +40,14 @@ mixin _$ListController on ListControllerBase, Store {
     });
   }
 
+  late final _$_initializeTasksAsyncAction =
+      AsyncAction('ListControllerBase._initializeTasks', context: context);
+
+  @override
+  Future<void> _initializeTasks() {
+    return _$_initializeTasksAsyncAction.run(() => super._initializeTasks());
+  }
+
   late final _$ListControllerBaseActionController =
       ActionController(name: 'ListControllerBase', context: context);
 

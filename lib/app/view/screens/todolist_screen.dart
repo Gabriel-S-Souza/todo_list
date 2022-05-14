@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
 import '../../controllers/list_board_controller.dart';
-import '../../controllers/list_controller.dart';
 import '../widgets/custom_task_board_list.dart';
 import 'login_screen.dart';
 
@@ -13,7 +12,6 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
-  final listController = ListController();
   final ListBoardController listCardController = ListBoardController();
 
   @override

@@ -16,7 +16,13 @@ class CustomTaskBoard extends StatefulWidget {
 }
 
 class _CustomTaskBoardState extends State<CustomTaskBoard> {
-  ListController listController = ListController();
+  late final ListController listController;
+
+  @override
+  void initState() {
+    super.initState();
+    listController = ListController(widget.index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +79,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                         suffix: CustomIconButton(
                           radius: 32,
                           iconData: Icons.add,
-                          onTap: () {
-                            listController.addTaskTaped;
-                          },
+                          onTap: listController.addTaskTaped,
                         ),
                       ),
                       const SizedBox(height: 8,),

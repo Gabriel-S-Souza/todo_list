@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:todo_list/app/data_sources/local_data_dao.dart';
+import 'package:todo_list/app/data_sources/local/boards_dao.dart';
 import 'package:todo_list/app/models/task_board_model.dart';
 
 part 'list_board_controller.g.dart';
@@ -31,7 +31,7 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> _initializeBoards() async {
-    List<TasksBoardModel> boardsList = await localDataDAO.read();
+    List<TasksBoardModel> boardsList = await localDataDAO.readAll();
 
     boardsList.map((e) {
       boardsName.add(e);
