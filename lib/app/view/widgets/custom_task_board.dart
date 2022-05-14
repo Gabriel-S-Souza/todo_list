@@ -93,6 +93,11 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                               title: Text(
                                 task.title,
                               ),
+                              trailing: CustomIconButton(
+                                radius: 28,
+                                iconData: Icons.more_vert,
+                                onTap: () {} ,
+                              ),
                             );
                           },
                           separatorBuilder: (_, __){
