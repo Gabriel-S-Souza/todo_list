@@ -40,6 +40,14 @@ mixin _$ListController on ListControllerBase, Store {
     });
   }
 
+  late final _$addTaskAsyncAction =
+      AsyncAction('ListControllerBase.addTask', context: context);
+
+  @override
+  Future<void> addTask() {
+    return _$addTaskAsyncAction.run(() => super.addTask());
+  }
+
   late final _$_initializeTasksAsyncAction =
       AsyncAction('ListControllerBase._initializeTasks', context: context);
 
@@ -57,17 +65,6 @@ mixin _$ListController on ListControllerBase, Store {
         name: 'ListControllerBase.setNewTask');
     try {
       return super.setNewTask(value);
-    } finally {
-      _$ListControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addTask() {
-    final _$actionInfo = _$ListControllerBaseActionController.startAction(
-        name: 'ListControllerBase.addTask');
-    try {
-      return super.addTask();
     } finally {
       _$ListControllerBaseActionController.endAction(_$actionInfo);
     }

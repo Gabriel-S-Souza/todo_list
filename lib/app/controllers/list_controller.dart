@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/data_sources/local/tasks_dao.dart';
 import '../models/task.dart';
-import '../models/task_board_model.dart';
 
 part 'list_controller.g.dart';
 
@@ -14,7 +13,6 @@ abstract class ListControllerBase with Store {
     _initializeTasks();
   }
   
-  // final BoardDAO boardDAO = GetIt.I.get<BoardDAO>();
   late final TasksDAO tasksDAO;
   final TextEditingController textEditingController = TextEditingController();
 
@@ -33,8 +31,9 @@ abstract class ListControllerBase with Store {
   ObservableList<Task> tasks = ObservableList<Task>();
 
   @action
-  void addTask() {
-    tasks.insert(0, Task(newTask));
+  Future<void> addTask() async {
+    await tasksDAO.create(newTask);
+    tasks.add(Task(newTask));
     newTask = '';
     textEditingController.clear();
   }

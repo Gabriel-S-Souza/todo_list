@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/data_sources/local/boards_dao.dart';
 import 'package:todo_list/app/models/task_board_model.dart';
@@ -12,7 +11,7 @@ abstract class ListBoardControllerBase with Store {
       _initializeBoards();
   }
 
-  final BoardDAO boardDAO = GetIt.I.get<BoardDAO>();
+  final BoardDAO boardDAO = BoardDAO();
 
   ObservableList<TasksBoardModel> boardsName = ObservableList<TasksBoardModel>();
 

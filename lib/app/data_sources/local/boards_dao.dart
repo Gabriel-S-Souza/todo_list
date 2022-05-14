@@ -1,16 +1,14 @@
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../../models/default_boards.dart';
-import '../../models/task_board_hive_adapter.dart';
 import '../../models/task_board_model.dart';
 import '../contracts/contract_crud.dart';
 
 class BoardDAO extends ContractCRUD {
 
-  late final Box<TasksBoardModel> box;
+  final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
   @override
-  Future<int> create(String data) {
+  Future<void> create(String data) {
     return box.add(TasksBoardModel()
         ..title = data
       );
@@ -18,7 +16,7 @@ class BoardDAO extends ContractCRUD {
 
   @override
   Future<TasksBoardModel?> read(index) async {
-    return await Future.value(box.get(index));
+    return await Future.value(box.getAt(index));
   }
 
   @override
@@ -39,18 +37,5 @@ class BoardDAO extends ContractCRUD {
   @override
   Future<void> deleteAll() async {
     return await box.deleteAll(box.keys.map((e) => e).toList());
-  }
-
-  Future<void> openDataBase() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(TaskBoardAdapter());
-    box = await Hive.openBox<TasksBoardModel>('boards_teste');
-
-    if (box.isEmpty) {
-      DefaultBoards.defaultBoards.map((e) {
-        box.add(TasksBoardModel() ..title = e);
-      }).toList();
-      
-    }
   }
 }
