@@ -11,11 +11,17 @@ class TasksDAO extends ContractCRUD {
     assignBoard();
   }
   
+  final BoardDAO boardDAO = GetIt.I.get<BoardDAO>();
   TasksBoardModel? _board;
 
+  //TODO: não está funcionando
   @override
   void create(String data) {
-    // TODO: implement create
+    if (_board != null) {
+      boardDAO.box.put(index, TasksBoardModel()
+    ..title = _board!.title
+    ..tasks.add(data));
+    }
   }
 
   @override
@@ -50,7 +56,6 @@ class TasksDAO extends ContractCRUD {
   }
 
   void assignBoard() async {
-    final BoardDAO boardDAO = GetIt.I.get<BoardDAO>();
     TasksBoardModel? boardResponse = await boardDAO.read(index);
     if (boardResponse != null) {
       _board = boardResponse;
