@@ -25,6 +25,11 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
@@ -106,8 +111,13 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                                   offset: const Offset(-36, 12),
                                   onSelected: (value) {
                                     if (value == DropdownMenuActions.delete) {
-                                      
-                                      
+                                      openActionDialog(
+                                        title: 'Excluir tarefa?', 
+                                        onAccept: () {
+                                          Navigator.of(context).pop();
+                                          listController.removeTask(index);
+                                        } 
+                                      );
                                     }
                                   },
                                   itemBuilder: (_) => [

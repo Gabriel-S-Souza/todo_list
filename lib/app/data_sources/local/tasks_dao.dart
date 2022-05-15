@@ -5,7 +5,7 @@ import 'package:todo_list/app/models/task_board_model.dart';
 
 import '../../models/task.dart';
 
-class TasksDAO extends ContractCRUD {
+class TasksDAO {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
@@ -14,7 +14,7 @@ class TasksDAO extends ContractCRUD {
     // assignBoard();
   }
 
-  @override
+  
   Future<void> create(String data) async {
     TasksBoardModel? board = box.getAt(index);
     if (board != null) {
@@ -27,23 +27,32 @@ class TasksDAO extends ContractCRUD {
     }
   }
 
-  @override
-  void delete(int index) {
-    // TODO: implement delete
+  
+  
+  Future<void> delete(int index, int i) async {
+    TasksBoardModel? board = box.getAt(index);
+    if (board != null) {
+      String title = board.title;
+      List<String> tasks = board.tasks;
+      tasks.removeAt(i);
+      return box.putAt(index, TasksBoardModel()
+        ..title = title
+        ..tasks = tasks);
+    }
   }
 
-  @override
+  
   void deleteAll() {
     // TODO: implement deleteAll
   }
 
-  @override
+  
   read(int index) {
     // TODO: implement read
     throw UnimplementedError();
   }
 
-  @override
+  
   Future<List<Task>> readAll() {
     TasksBoardModel? board = box.getAt(index);
     List<Task> taskList = [];
@@ -57,7 +66,7 @@ class TasksDAO extends ContractCRUD {
     return Future.value(taskList);
   }
 
-  @override
+  
   void update(int index, data) {
     // TODO: implement update
   }

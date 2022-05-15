@@ -19,6 +19,8 @@ void main() async {
     DefaultBoards.defaultBoards.map((e) {
       box.add(TasksBoardModel() ..title = e);
     }).toList();
+  } else {
+    
   }
 
   GetIt getIt = GetIt.I;

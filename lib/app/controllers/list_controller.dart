@@ -39,6 +39,12 @@ abstract class ListControllerBase with Store {
   }
 
   @action
+  void removeTask(int i) async {
+    await tasksDAO.delete(index, i);
+    tasks.removeAt(i);
+  }
+
+  @action
   Future<void> _initializeTasks() async {
     tasksDAO = TasksDAO(index);
     List<Task> responseTask = await tasksDAO.readAll();
