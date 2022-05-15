@@ -40,7 +40,7 @@ abstract class ListControllerBase with Store {
 
   @action
   void removeTask(int i) async {
-    await tasksDAO.delete(index, i);
+    await tasksDAO.delete(i);
     tasks.removeAt(i);
   }
 

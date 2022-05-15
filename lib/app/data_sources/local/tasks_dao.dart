@@ -29,7 +29,7 @@ class TasksDAO {
 
   
   
-  Future<void> delete(int index, int i) async {
+  Future<void> delete(int i) async {
     TasksBoardModel? board = box.getAt(index);
     if (board != null) {
       String title = board.title;
@@ -67,7 +67,7 @@ class TasksDAO {
   }
 
   
-  void update(int index, data) {
-    // TODO: implement update
+  void update(int index, int i , String task) {
+    
   }
 }
