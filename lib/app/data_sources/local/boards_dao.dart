@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../models/task_board_model.dart';
 import '../contracts/contract_crud.dart';
 
-class BoardDAO extends ContractCRUD {
+class BoardDAO implements ContractCRUD {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
