@@ -71,14 +71,13 @@ class TasksDAO implements ContractCRUD {
     return Future.value(taskList);
   }
 
-  //TODO: testar
   @override
-  Future<void> update(int i , String task) async {
+  Future<void> update(int i , String newTask) async {
     TasksBoardModel? board = box.getAt(index);
     if (board != null) {
       String title = board.title;
       List<String> tasks = board.tasks;
-      tasks.replaceRange(i, i + 1, [task]);
+      tasks.replaceRange(i, i + 1, [newTask]);
       return box.putAt(index, TasksBoardModel()
         ..title = title
         ..tasks = tasks);

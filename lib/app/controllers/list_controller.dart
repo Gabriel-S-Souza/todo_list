@@ -39,9 +39,15 @@ abstract class ListControllerBase with Store {
   }
 
   @action
-  void removeTask(int i) async {
+  Future<void> removeTask(int i) async {
     await tasksDAO.delete(i);
     tasks.removeAt(i);
+  }
+
+  @action
+  Future<void> updateTask(int i, String newTask) async {
+    await tasksDAO.update(i, newTask);
+    tasks.replaceRange(i, i + 1, [Task(newTask)]);
   }
 
   @action

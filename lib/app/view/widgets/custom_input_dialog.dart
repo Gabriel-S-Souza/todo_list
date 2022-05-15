@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:todo_list/app/controllers/list_board_controller.dart';
 
 class CustomInputDialog extends StatefulWidget {
-  const CustomInputDialog({ Key? key }) : super(key: key);
+  final String title;
+  final String hint;
+  final String buttonText;
+  final String initialTextValue;
+  final void Function(String) onSubmit;
+  const CustomInputDialog({ 
+    Key? key, 
+    required this.title, 
+    required this.hint, 
+    this.initialTextValue = '', 
+    required this.onSubmit, 
+    required this.buttonText 
+  }) : super(key: key);
 
   @override
   State<CustomInputDialog> createState() => _CustomInputDialogState();
@@ -11,33 +21,38 @@ class CustomInputDialog extends StatefulWidget {
 
 class _CustomInputDialogState extends State<CustomInputDialog> {
   final TextEditingController textEditingController = TextEditingController();
-  final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController.text = widget.initialTextValue;
+    textEditingController.selection = TextSelection.fromPosition(TextPosition(offset: textEditingController.text.length));
+  }
 
   @override
   void dispose() {
-    super.dispose();
     textEditingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Adicionar Novo Quadro'),
+      title: Text(widget.title),
       content: TextField(
-        controller: textEditingController,
         autofocus: true,
-        decoration: const InputDecoration(hintText: 'Nome do Quadro'),
+        controller: textEditingController,
+        decoration: InputDecoration(hintText: widget.hint),
       ),
       actions: [
         TextButton(
           onPressed: () {
             if (textEditingController.text.isNotEmpty) {
-              String text = textEditingController.text;
-              listBoardController.addBoard(text);
+              widget.onSubmit(textEditingController.text);
             }
             Navigator.pop(context);
           },
-           child: const Text('ADICIONAR')
+           child: Text(widget.buttonText)
           ),
       ],
     );

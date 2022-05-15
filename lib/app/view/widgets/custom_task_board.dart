@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../controllers/list_controller.dart';
 import 'custom_action_dialog.dart';
 import 'custom_icon_button.dart';
+import 'custom_input_dialog.dart';
 import 'custom_text_field.dart';
 
 class CustomTaskBoard extends StatefulWidget {
@@ -118,6 +119,8 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                                           listController.removeTask(index);
                                         } 
                                       );
+                                    } else if (value == DropdownMenuActions.edit) {
+                                      openInputDialog(task.title, index);
                                     }
                                   },
                                   itemBuilder: (_) => [
@@ -200,6 +203,21 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
         buttonCancelText: 'CANCELAR',
         onAccept: onAccept,
         onCancel: onCancel ?? () => Navigator.of(context).pop(),
+      ),
+    );
+  }
+
+  void openInputDialog(String initialTextValue, int index) async {
+    await showDialog(
+      context: context,
+      builder: (_) => CustomInputDialog(
+        title: 'Editar tarefa',
+        hint: 'Tarefa',
+        initialTextValue: initialTextValue,
+        buttonText: 'OK',
+        onSubmit: (text) {
+          listController.updateTask(index, text);
+        },
       ),
     );
   }
