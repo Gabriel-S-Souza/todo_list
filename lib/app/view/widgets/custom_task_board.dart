@@ -67,7 +67,15 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                             CustomIconButton(
                               radius: 28,
                               iconData: Icons.delete, 
-                              onTap: openInputDialog,
+                              onTap: () {
+                                openActionDialog(
+                                title: 'Excluir quadro?',
+                                onCancel: () => print('Cancel'),
+                                onAccept: () {
+                                  widget.onDelete(widget.index);
+                                  Navigator.of(context).pop();
+                                });
+                              }
                             )
                           ],
                         ),
@@ -93,10 +101,64 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                               title: Text(
                                 task.title,
                               ),
-                              trailing: CustomIconButton(
-                                radius: 28,
-                                iconData: Icons.more_vert,
-                                onTap: () {} ,
+                              trailing: Transform.translate(
+                                offset: const Offset(16, 0),
+                                child: PopupMenuButton(
+                                  offset: const Offset(-36, 12),
+                                  onSelected: (value) {
+                                    if (value == DropdownMenuActions.delete) {
+                                      
+                                      
+                                    }
+                                  },
+                                  itemBuilder: (_) => [
+                                    PopupMenuItem(
+                                      padding: EdgeInsets.zero,
+                                      value: DropdownMenuActions.delete,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 12),
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.delete, size: 18),
+                                            SizedBox(width: 8,),
+                                            Text('Excluir', style: TextStyle(fontSize: 16),),
+                                            SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      padding: EdgeInsets.zero,
+                                      value: DropdownMenuActions.edit,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 12),
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.edit, size: 18),
+                                            SizedBox(width: 8,),
+                                            Text('Editar', style: TextStyle(fontSize: 16),),
+                                            SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      padding: EdgeInsets.zero,
+                                      value: DropdownMenuActions.cancel,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 12),
+                                        child: Row(
+                                          children: const [
+                                            Icon(Icons.backspace_outlined, size: 18),
+                                            SizedBox(width: 8,),
+                                            Text('Cancelar', style: TextStyle(fontSize: 16),),
+                                            SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -116,21 +178,26 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
     );
   }
 
-  void openInputDialog() {
+  void openActionDialog({
+    required String title, 
+    required void Function() onAccept, 
+    void Function()? onCancel
+    }) {
     showDialog(
       context: context,
       builder: (_) => CustomActionDialog(
-        title: 'Excluir quadro?',
+        title: title,
         buttonAcceptText: 'OK',
         buttonCancelText: 'CANCELAR',
-        onAccept: () {
-          widget.onDelete(widget.index);
-          Navigator.of(context).pop();
-        },
-        onCancel: () {
-          Navigator.of(context).pop();
-        },
+        onAccept: onAccept,
+        onCancel: onCancel ?? () => Navigator.of(context).pop(),
       ),
     );
   }
+}
+
+enum DropdownMenuActions {
+  delete,
+  edit,
+  cancel,
 }

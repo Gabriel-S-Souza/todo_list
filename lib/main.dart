@@ -19,15 +19,6 @@ void main() async {
     DefaultBoards.defaultBoards.map((e) {
       box.add(TasksBoardModel() ..title = e);
     }).toList();
-  } else {
-    // int index = 1;
-    // print(box.getAt(index)?.title);
-    // print(box.getAt(index)?.tasks);
-
-    box.keys.toList().map((e) {
-      print(box.get(e)?.title);
-      print(box.get(e)?.tasks);
-    }).toList();
   }
 
   GetIt getIt = GetIt.I;
