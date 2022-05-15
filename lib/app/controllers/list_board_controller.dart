@@ -30,7 +30,7 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> _initializeBoards() async {
-    List<TasksBoardModel> boardsList = await boardDAO.readAll();
+    List<TasksBoardModel> boardsList = await boardDAO.read();
 
     boardsList.map((e) {
       boardsName.add(e);

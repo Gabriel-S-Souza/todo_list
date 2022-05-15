@@ -1,18 +1,16 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list/app/data_sources/contracts/contract_crud.dart';
+import 'package:todo_list/app/data_sources/contracts/tasks_data_manager.dart';
 import 'package:todo_list/app/models/task_board_model.dart';
 
 import '../../models/task.dart';
 
-class TasksDAO implements ContractCRUD {
+class TasksDAO implements ITasksDataManager {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
   final int index;
-  TasksDAO(this.index) {
-    // assignBoard();
-  }
+  TasksDAO(this.index);
 
   
   @override
@@ -51,14 +49,7 @@ class TasksDAO implements ContractCRUD {
 
   
   @override
-  read(int index) {
-    // TODO: implement read
-    throw UnimplementedError();
-  }
-
-  
-  @override
-  Future<List<Task>> readAll() {
+  Future<List<Task>> read() {
     TasksBoardModel? board = box.getAt(index);
     List<Task> taskList = [];
 

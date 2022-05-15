@@ -53,7 +53,7 @@ abstract class ListControllerBase with Store {
   @action
   Future<void> _initializeTasks() async {
     tasksDAO = TasksDAO(index);
-    List<Task> responseTask = await tasksDAO.readAll();
+    List<Task> responseTask = await tasksDAO.read();
     responseTask.map((e) {
       tasks.add(e);
     }).toList();

@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../models/task_board_model.dart';
-import '../contracts/contract_crud.dart';
+import '../contracts/boards_data_manager.dart';
 
-class BoardDAO implements ContractCRUD {
+class BoardDAO implements IBoardsDataManager {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
@@ -15,12 +15,7 @@ class BoardDAO implements ContractCRUD {
   }
 
   @override
-  Future<TasksBoardModel?> read(index) async {
-    return await Future.value(box.getAt(index));
-  }
-
-  @override
-  Future<List<TasksBoardModel>> readAll() async {
+  Future<List<TasksBoardModel>> read() async {
     return await Future.value(box.values.toList());
   }
 
@@ -34,7 +29,6 @@ class BoardDAO implements ContractCRUD {
     return await box.deleteAt(index);
   }
 
-  @override
   Future<void> deleteAll() async {
     return await box.deleteAll(box.keys.map((e) => e).toList());
   }
