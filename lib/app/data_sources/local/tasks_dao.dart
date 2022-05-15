@@ -67,7 +67,15 @@ class TasksDAO {
   }
 
   
-  void update(int index, int i , String task) {
-    
+  Future<void> update(int i , String task) async {
+    TasksBoardModel? board = box.getAt(index);
+    if (board != null) {
+      String title = board.title;
+      List<String> tasks = board.tasks;
+      tasks.replaceRange(i, i + 1, [task]);
+      return box.putAt(index, TasksBoardModel()
+        ..title = title
+        ..tasks = tasks);
+    }
   }
 }
