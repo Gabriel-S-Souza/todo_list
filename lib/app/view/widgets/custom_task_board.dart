@@ -70,7 +70,6 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                               onTap: () {
                                 openActionDialog(
                                 title: 'Excluir quadro?',
-                                onCancel: () => print('Cancel'),
                                 onAccept: () {
                                   widget.onDelete(widget.index);
                                   Navigator.of(context).pop();
