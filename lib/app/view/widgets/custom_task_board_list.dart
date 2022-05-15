@@ -13,7 +13,6 @@ class CustomTaskBoardList extends StatefulWidget {
 
 class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
   final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
-  final List<String> boards = [];
   @override
   void initState() {
     super.initState();

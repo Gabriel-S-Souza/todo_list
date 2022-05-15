@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
+import 'package:todo_list/app/view/widgets/custom_todolists.dart';
 import '../../controllers/list_board_controller.dart';
 import '../widgets/custom_task_board_list.dart';
 import 'login_screen.dart';
@@ -46,22 +47,23 @@ class _TodoListScreenState extends State<TodoListScreen> {
               ),
             ),
             Flexible(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Flexible(
-                      fit: FlexFit.loose,
-                      child: CustomTaskBoardList(),
-                    ),
-                    IconButton(onPressed: openInputDialog, 
-                    icon: const Icon(Icons.add),
-                  ),
-                  ],
-                ),
-              ),
+              // child: SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.min,
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       const Flexible(
+              //         fit: FlexFit.loose,
+              //         child: CustomTaskBoardList(),
+              //       ),
+              //       IconButton(onPressed: openInputDialog, 
+              //       icon: const Icon(Icons.add),
+              //     ),
+              //     ],
+              //   ),
+              // ),
+              child: CustomTodoLists(),
             ),
           ],
         ),
