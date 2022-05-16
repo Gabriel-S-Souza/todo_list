@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 
+import 'custom_icon_button.dart';
 import 'custom_text_field.dart';
 
 class CustomHeaderBoard extends StatelessWidget {
   final String title;
-  const CustomHeaderBoard({ Key? key, required this.title }) : super(key: key);
+  final String hint;
+  final TextEditingController controller;
+  final void Function()? onTap;
+  final void Function(String value) onChanged;
+  const CustomHeaderBoard({
+    Key? key, 
+    required this.title, 
+    required this.onChanged, 
+    required this.hint, 
+    required this.controller, 
+    required this.onTap }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Container(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(10),
                 child: Text(
                   title,
                   style: const TextStyle(
@@ -21,13 +34,21 @@ class CustomHeaderBoard extends StatelessWidget {
                       fontSize: 22
                   ),
                 ),
-                // padding: EdgeInsets.all(10),
               ),
+            ],
+          ),
+          CustomTextField(
+            controller: controller,
+            hint: hint,
+            onChanged: onChanged,
+            suffix: CustomIconButton(
+              radius: 32,
+              iconData: Icons.add,
+              onTap: onTap,
             ),
-          ],
-        ),
-        CustomTextField(onChanged: (value) {})
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

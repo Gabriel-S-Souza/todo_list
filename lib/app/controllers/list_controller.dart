@@ -56,6 +56,7 @@ abstract class ListControllerBase with Store {
     List<Task> responseTask = await tasksDAO.read();
     responseTask.map((e) {
       tasks.add(e);
+      print('controller ${e.title}');
     }).toList();
   }
 }

@@ -20,7 +20,9 @@ void main() async {
       box.add(TasksBoardModel() ..title = e);
     }).toList();
   } else {
-    
+    // box.values.forEach((e) {
+    //   print(e.tasks);
+    // });
   }
 
   GetIt getIt = GetIt.I;

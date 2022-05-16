@@ -100,7 +100,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                         child: ListView.separated(
                           shrinkWrap: true,
                           itemCount: listController.tasks.length,
-                          itemBuilder: (_, index){
+                          itemBuilder: (_, index) {
                             final task = listController.tasks[index];
                             return ListTile(
                               title: Text(
