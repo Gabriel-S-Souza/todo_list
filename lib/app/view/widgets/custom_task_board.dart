@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
-import 'package:todo_list/app/models/task.dart';
 import '../../controllers/list_controller.dart';
 import 'custom_action_dialog.dart';
 import 'custom_icon_button.dart';
@@ -19,12 +17,13 @@ class CustomTaskBoard extends StatefulWidget {
 }
 
 class _CustomTaskBoardState extends State<CustomTaskBoard> {
-  final ListController listController = GetIt.I.get<ListController>();
+  late final ListController listController;
 
   @override
   void initState() {
     super.initState();
-    listController.read(widget.index);
+    listController = ListController(widget.index);
+    listController.getTasks();
   }
 
   @override
@@ -47,10 +46,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
           builder: (context) {
             return Container(
               width: width * 0.8,
-              height: listController.isLoading 
-              ? 140 + 56 
-              : 140 + (listController.tasks[widget.index]!.length * 56),
-               
+              height: 140 + (listController.tasks.length * 56),
               margin: const EdgeInsets.only(left: 16),
               child: Card(
                 clipBehavior: Clip.none,
@@ -97,31 +93,17 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                         suffix: CustomIconButton(
                           radius: 32,
                           iconData: Icons.add,
-                          onTap: listController.isNewTaskValid 
-                              ? () {
-                                listController.addTask(widget.index);
-                              }
-                              : null,
+                          onTap: listController.addTaskTaped,
                         ),
                       ),
                       const SizedBox(height: 8,),
                       Expanded(
                         child: ListView.separated(
                           shrinkWrap: true,
-                          itemCount: listController.isLoading
-                            ? 1
-                            : listController.tasks[widget.index]!.length,
-
-                          itemBuilder: (_, index) {
-                            
-                            
-                            if (listController.isLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else {
-                              final Task task = listController.tasks[widget.index]![index];
-                              return ListTile(
+                          itemCount: listController.tasks.length,
+                          itemBuilder: (_, index){
+                            final task = listController.tasks[index];
+                            return ListTile(
                               title: Text(
                                 task.title,
                               ),
@@ -135,7 +117,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                                         title: 'Excluir tarefa?', 
                                         onAccept: () {
                                           Navigator.of(context).pop();
-                                          listController.removeTask(index, widget.index);
+                                          listController.removeTask(index);
                                         } 
                                       );
                                     } else if (value == DropdownMenuActions.edit) {
@@ -192,8 +174,6 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
                                 ),
                               ),
                             );
-
-                            }
                           },
                           separatorBuilder: (_, __){
                             return const Divider(height: 0,);
@@ -237,7 +217,7 @@ class _CustomTaskBoardState extends State<CustomTaskBoard> {
         initialTextValue: initialTextValue,
         buttonText: 'OK',
         onSubmit: (text) {
-          listController.updateTask(index, widget.index, text);
+          listController.updateTask(index, text);
         },
       ),
     );

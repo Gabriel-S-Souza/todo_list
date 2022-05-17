@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:todo_list/app/data_sources/contracts/tasks_data_manager.dart';
+import 'package:todo_list/app/data_sources/local/tasks_dao.dart';
 import '../models/task.dart';
 
 part 'list_controller.g.dart';
@@ -8,10 +8,13 @@ part 'list_controller.g.dart';
 class ListController = ListControllerBase with _$ListController;
 
 abstract class ListControllerBase with Store {
-  
-  final ITasksDataManager tasksDataManager;
-  ListControllerBase({required this.tasksDataManager});
+  final int index;
+  ListControllerBase(
+    this.index,
+  );
 
+  late final TasksDAO tasksDAO;
+  
   final TextEditingController textEditingController = TextEditingController();
 
   @observable
@@ -23,48 +26,52 @@ abstract class ListControllerBase with Store {
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;
 
-  ObservableMap<int, List<Task>> tasks = ObservableMap<int, List<Task>>();
+  @computed
+  VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
+
+  ObservableList<Task> tasks = ObservableList<Task>();
 
   @observable
   bool isLoading = false;
 
+  @observable
+  bool isTasksObtained = false;
+
   @action
-  Future<void> addTask(int outerIndex) async {
-    await tasksDataManager.create(newTask, outerIndex);
-    List<Task> tasksCopy = tasks[outerIndex] ?? [];
-    tasksCopy.add(Task(newTask));
-    tasks[outerIndex] = tasksCopy;
+  Future<void> addTask() async {
+    await tasksDAO.create(newTask);
+    tasks.add(Task(newTask));
     newTask = '';
     textEditingController.clear();
   }
 
   @action
-  Future<void> removeTask(int innerIndex, int outerIndex) async {
-    await tasksDataManager.delete(innerIndex, outerIndex);
-    List<Task> tasksCopy = tasks[outerIndex] ?? [];
-    tasksCopy.removeAt(innerIndex);
-    tasks[outerIndex] = tasksCopy;
+  Future<void> removeTask(int i) async {
+    await tasksDAO.delete(i);
+    tasks.removeAt(i);
   }
 
   @action
-  Future<void> updateTask(int innerIndex, int outerIndex, String newTask) async {
-    await tasksDataManager.update(innerIndex, outerIndex, newTask);
-    List<Task> tasksCopy = tasks[outerIndex] ?? [];
-    tasksCopy.replaceRange(innerIndex, innerIndex + 1, [Task(newTask)]);
-    tasks[outerIndex] = tasksCopy;
+  Future<void> updateTask(int i, String newTask) async {
+    await tasksDAO.update(i, newTask);
+    tasks.replaceRange(i, i + 1, [Task(newTask)]);
   }
 
   @action
-  Future<void> read(int outerIndex) async {
+  Future<void> getTasks() async {
     isLoading = true;
+    tasksDAO = TasksDAO(index);
     List<Task> responseTask = [];
-    
-    await Future.delayed(const Duration(seconds: 3), () async {
-      responseTask = await tasksDataManager.read(outerIndex);
-    });
 
-    tasks[outerIndex] = responseTask;
+    await Future.delayed(const Duration(seconds: 3), () async {
+      responseTask = await tasksDAO.read();
+    });
     
+    responseTask.map((e) {
+      tasks.add(e);
+    }).toList();
     isLoading = false;
+    isTasksObtained = true;
+    print('tasks: $tasks');
   }
 }

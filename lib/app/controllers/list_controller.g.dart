@@ -16,6 +16,13 @@ mixin _$ListController on ListControllerBase, Store {
       (_$isNewTaskValidComputed ??= Computed<bool>(() => super.isNewTaskValid,
               name: 'ListControllerBase.isNewTaskValid'))
           .value;
+  Computed<VoidCallback?>? _$addTaskTapedComputed;
+
+  @override
+  VoidCallback? get addTaskTaped => (_$addTaskTapedComputed ??=
+          Computed<VoidCallback?>(() => super.addTaskTaped,
+              name: 'ListControllerBase.addTaskTaped'))
+      .value;
 
   late final _$newTaskAtom =
       Atom(name: 'ListControllerBase.newTask', context: context);
@@ -49,38 +56,52 @@ mixin _$ListController on ListControllerBase, Store {
     });
   }
 
+  late final _$isTasksObtainedAtom =
+      Atom(name: 'ListControllerBase.isTasksObtained', context: context);
+
+  @override
+  bool get isTasksObtained {
+    _$isTasksObtainedAtom.reportRead();
+    return super.isTasksObtained;
+  }
+
+  @override
+  set isTasksObtained(bool value) {
+    _$isTasksObtainedAtom.reportWrite(value, super.isTasksObtained, () {
+      super.isTasksObtained = value;
+    });
+  }
+
   late final _$addTaskAsyncAction =
       AsyncAction('ListControllerBase.addTask', context: context);
 
   @override
-  Future<void> addTask(int outerIndex) {
-    return _$addTaskAsyncAction.run(() => super.addTask(outerIndex));
+  Future<void> addTask() {
+    return _$addTaskAsyncAction.run(() => super.addTask());
   }
 
   late final _$removeTaskAsyncAction =
       AsyncAction('ListControllerBase.removeTask', context: context);
 
   @override
-  Future<void> removeTask(int innerIndex, int outerIndex) {
-    return _$removeTaskAsyncAction
-        .run(() => super.removeTask(innerIndex, outerIndex));
+  Future<void> removeTask(int i) {
+    return _$removeTaskAsyncAction.run(() => super.removeTask(i));
   }
 
   late final _$updateTaskAsyncAction =
       AsyncAction('ListControllerBase.updateTask', context: context);
 
   @override
-  Future<void> updateTask(int innerIndex, int outerIndex, String newTask) {
-    return _$updateTaskAsyncAction
-        .run(() => super.updateTask(innerIndex, outerIndex, newTask));
+  Future<void> updateTask(int i, String newTask) {
+    return _$updateTaskAsyncAction.run(() => super.updateTask(i, newTask));
   }
 
-  late final _$readAsyncAction =
-      AsyncAction('ListControllerBase.read', context: context);
+  late final _$getTasksAsyncAction =
+      AsyncAction('ListControllerBase.getTasks', context: context);
 
   @override
-  Future<void> read(int outerIndex) {
-    return _$readAsyncAction.run(() => super.read(outerIndex));
+  Future<void> getTasks() {
+    return _$getTasksAsyncAction.run(() => super.getTasks());
   }
 
   late final _$ListControllerBaseActionController =
@@ -102,7 +123,9 @@ mixin _$ListController on ListControllerBase, Store {
     return '''
 newTask: ${newTask},
 isLoading: ${isLoading},
-isNewTaskValid: ${isNewTaskValid}
+isTasksObtained: ${isTasksObtained},
+isNewTaskValid: ${isNewTaskValid},
+addTaskTaped: ${addTaskTaped}
     ''';
   }
 }

@@ -4,63 +4,59 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
-import 'package:todo_list/app/view/widgets/custom_header_board.dart';
+import 'package:todo_list/app/models/task.dart';
+import 'package:todo_list/app/view/widgets/custom_pop_menu_buttom.dart';
 
 import '../../controllers/list_board_controller.dart';
+import 'custom_action_dialog.dart';
+import 'custom_header_board.dart';
+import 'custom_input_dialog.dart';
 
 class CustomTodoLists extends StatefulWidget {
-  const CustomTodoLists({Key? key}) : super(key: key);
+  const CustomTodoLists({ Key? key }) : super(key: key);
 
   @override
-  State<CustomTodoLists> createState() => _CustomTodoLists();
+  State<CustomTodoLists> createState() => _CustomTodoListsState();
 }
 
-class InnerList {
-  final String name;
-  List<String>? children;
-  InnerList({required this.name, this.children});
-}
+// class InnerList {
+//   final String name;
+//   final ListController listController;
+//   List<String>? children;
+//   InnerList({required this.name, required this.listController, this.children});
+// }
 
-class _CustomTodoLists extends State<CustomTodoLists> {
+class _CustomTodoListsState extends State<CustomTodoLists> {
   final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
-  final ListController listController = GetIt.I.get<ListController>();
-  List<InnerList> _lists = [];
+  Map<int, ListController> listControllers = {};
+  // List<InnerList> _lists = [];
 
   @override
   void initState() {
     super.initState();
-    
     reaction((_) => !listBoardController.isLoading, (value) {
-      print('rection listBoardController');
-      assignList();
-      // Future.delayed(Duration(seconds: 4), () {
-      //   // assignItens();
+      for (var i = 0; i < listBoardController.boardsName.length; i++) {
+        listControllers[i] = ListController(i);
+        listControllers[i]!.getTasks();
+      }
+      // _lists = List.generate(listBoardController.boardsName.length, (outerIndex) {
+      //   ListController listController = ListController(outerIndex);
+      //   listController.getTasks();
+      //   return InnerList(
+      //     name: listBoardController.boardsName[outerIndex].title,
+      //     listController: listController,
+      //     children: listController.isLoading
+      //       ? []
+      //       : listController.tasks.map((task) => task.title).toList(),
+      //   );
       // });
     });
-
-    reaction((_) => !listController.isLoading, (value) {
-      print('rection listController');
-      assignItens();
-    });
-  }
-
-  void assignList() {
-    _lists = List.generate(listBoardController.boardsName.length, (outerIndex) {
-      return InnerList(
-        name: listBoardController.boardsName[outerIndex].title,
-      );
-    }
-    );
-  }
-
-  void assignItens() {
-    int i = 0;
-    _lists.map((e) {
-      e.children = List.generate(listController.tasks[i]!.length, (index) =>
-           listController.tasks[i]![index].title);
-           print(e.children);
-      i++;
-    }).toList();
+    //  when(
+    //     (_) => listControllers[i]!.isTasksObtained,
+    //     () => setState(() {
+          
+    //     })
+    //   );
   }
 
   @override
@@ -73,7 +69,6 @@ class _CustomTodoLists extends State<CustomTodoLists> {
           return const Center(child: CircularProgressIndicator());
         }
         else {
-          // print(_lists[0].children);
           return DragAndDropLists(
             onItemReorder: _onItemReorder,
             onListReorder: _onListReorder,
@@ -94,56 +89,104 @@ class _CustomTodoLists extends State<CustomTodoLists> {
                 ),
               ],
             ),
-            children: List.generate(_lists.length, (index) => _buildList(index)),
+            children: List.generate(listBoardController.boardsName.length, (outerIndex) {
+              // final ListController listController = _lists[outerIndex].listController;
+              // final InnerList innerList = _lists[outerIndex];
+              return DragAndDropList(
+                contentsWhenEmpty: const Text('Lista vazia'),
+                header: CustomHeaderBoard(
+                  title: listBoardController.boardsName[outerIndex].title,
+                  controller: listControllers[outerIndex]!.textEditingController,
+                  hint: 'Tarefa',
+                  onChanged: (value) {
+                    listControllers[outerIndex]!.setNewTask(value);
+                  },
+                  onTap: listControllers[outerIndex]!.isNewTaskValid 
+                      ? () {
+                          listControllers[outerIndex]!.addTask();
+                        }
+                      : null,
+                ),
+                children: !listControllers[outerIndex]!.isTasksObtained
+                ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
+                : List.generate(listControllers[outerIndex]!.tasks.length, (innerIndex) {
+                  return DragAndDropItem(
+                    child: Observer(
+                      builder: (context) {
+                        final String task = listControllers[outerIndex]!.tasks[innerIndex].title;
+                        return ListTile(
+                          title: Text(task),
+                          trailing: CustomPopupMenuButtom(
+                            onDelete: () {
+                              openActionDialog(
+                                title: 'Excluir tarefa?', 
+                                onAccept: () {
+                                  Navigator.of(context).pop();
+                                  listControllers[outerIndex]!.removeTask(innerIndex);
+                                } 
+                              );
+                            },
+                            onEdit: () {
+                              openInputDialog(task, innerIndex, outerIndex);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+              ),
+            );
+            })
           );
         }
       }
     );
   }
 
-  _buildList(int outerIndex) {
-    final InnerList innerList = _lists[outerIndex];
-    listController.read(outerIndex);
-    return DragAndDropList(
-      contentsWhenEmpty: const Text('Lista vazia'),
-      header: CustomHeaderBoard(
-          title: innerList.name,
-          controller: listController.textEditingController,
-          hint: 'Tarefa',
-          onChanged: (value) {
-            listController.setNewTask(value);
-          },
-          onTap: listController.isNewTaskValid 
-              ? () {
-                  listController.addTask(outerIndex);
-                }
-              : null,
-        ),
-      children: !listController.isLoading 
-      ? List.generate(innerList.children!.length, (index) => _buildItem(innerList.children![index]))
-      : List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
-    );
-  }
-
-  _buildItem(String item) {
-    return DragAndDropItem(
-      child: ListTile(
-        title: Text(item),
-      ),
-    );
-  }
-
-  _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
+   _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
     setState(() {
-      final String movedItem = _lists[oldListIndex].children!.removeAt(oldItemIndex);
-      _lists[newListIndex].children!.insert(newItemIndex, movedItem);
+      // final String movedItem = _lists[oldListIndex].children!.removeAt(oldItemIndex);
+      // _lists[newListIndex].children!.insert(newItemIndex, movedItem);
     });
   }
 
   _onListReorder(int oldListIndex, int newListIndex) {
     setState(() {
-      final InnerList movedList = _lists.removeAt(oldListIndex);
-      _lists.insert(newListIndex, movedList);
+      // final InnerList movedList = _lists.removeAt(oldListIndex);
+      // _lists.insert(newListIndex, movedList);
     });
+  }
+
+  void openActionDialog({
+    required String title, 
+    required void Function() onAccept, 
+    void Function()? onCancel
+    }) {
+    showDialog(
+      context: context,
+      builder: (_) => CustomActionDialog(
+        title: title,
+        buttonAcceptText: 'OK',
+        buttonCancelText: 'CANCELAR',
+        onAccept: onAccept,
+        onCancel: onCancel ?? () => Navigator.of(context).pop(),
+      ),
+    );
+  }
+
+  void openInputDialog(String initialTextValue, int innerIndex, int outerIndex) async {
+    await showDialog(
+      context: context,
+      builder: (_) => CustomInputDialog(
+        title: 'Editar tarefa',
+        hint: 'Tarefa',
+        initialTextValue: initialTextValue,
+        buttonText: 'OK',
+        onSubmit: (text) {
+          listControllers[outerIndex]!.updateTask(innerIndex, text);
+        },
+      ),
+    );
   }
 }

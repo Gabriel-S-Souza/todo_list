@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
-import 'package:todo_list/app/view/widgets/custom_todolists.dart';
 import '../../controllers/list_board_controller.dart';
 import '../widgets/custom_task_board_list.dart';
+import '../widgets/custom_todolists.dart';
 import 'login_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
@@ -46,7 +46,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ],
               ),
             ),
-            Flexible(
+            const Flexible(
+              child: CustomTodoLists(),
               // child: SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,
               //   child: Row(
@@ -63,7 +64,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
               //     ],
               //   ),
               // ),
-              child: CustomTodoLists(),
             ),
           ],
         ),

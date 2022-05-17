@@ -31,7 +31,6 @@ void main() async {
   GetIt getIt = GetIt.I;
   getIt.registerSingleton<Box<TasksBoardModel>>(box);
   getIt.registerSingleton<ListBoardController>(ListBoardController(boardsDataManager: BoardDAO()));
-  getIt.registerFactory<ListController>(() => ListController(tasksDataManager: TasksDAO()));
   
   runApp(const MyApp());
 }
