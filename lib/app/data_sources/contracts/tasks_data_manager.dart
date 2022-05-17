@@ -1,6 +1,6 @@
 abstract class ITasksDataManager {
-  void create(String data);
-  dynamic read();
-  void update(int index, String data);
-  void delete(int index);
+   Future<void> create(String data, int outerIndex);
+  Future<dynamic> read(int outerIndex);
+   Future<void> update(int innerIndex, int outerIndex, String data);
+   Future<void> delete(int innerIndex, int outerIndex);
 }

@@ -23,6 +23,14 @@ class _CustomTaskBoardListState extends State<CustomTaskBoardList> {
 
     return  Observer(
       builder: (context) {
+        if (listBoardController.isLoading) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator()
+          );
+        }
         return ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,

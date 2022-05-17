@@ -1,6 +1,6 @@
 abstract class IBoardsDataManager {
-  void create(String data);
-  dynamic read();
-  void update(int index, String data);
-  void delete(int index);
+  Future<void> create(String data);
+  Future<dynamic> read();
+  Future<void> update(int index, String data);
+  Future<void> delete(int index);
 }
