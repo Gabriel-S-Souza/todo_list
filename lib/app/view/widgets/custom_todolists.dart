@@ -2,6 +2,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive/hive.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
 import 'package:todo_list/app/models/task.dart';
@@ -111,10 +112,28 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
                 : List.generate(listControllers[outerIndex]!.tasks.length, (innerIndex) {
                   return DragAndDropItem(
+                    feedbackWidget: Container(
+                      child: ListTile(
+                        title: Text(listControllers[outerIndex]!.tasks[innerIndex].title),
+                        trailing: CustomPopupMenuButtom(onDelete: () {}, onEdit: () {},),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black45.withOpacity(0.12),
+                            spreadRadius: 3.0,
+                            blurRadius: 6.0,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      ),
+                    ),
                     child: Observer(
                       builder: (context) {
                         final String task = listControllers[outerIndex]!.tasks[innerIndex].title;
                         return ListTile(
+                          tileColor: Theme.of(context).scaffoldBackgroundColor,
                           title: Text(task),
                           trailing: CustomPopupMenuButtom(
                             onDelete: () {
