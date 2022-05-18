@@ -136,6 +136,17 @@ mixin _$ListController on ListControllerBase, Store {
   }
 
   @override
+  void removeKey(int outerIndex) {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.removeKey');
+    try {
+      return super.removeKey(outerIndex);
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 newTask: ${newTask},

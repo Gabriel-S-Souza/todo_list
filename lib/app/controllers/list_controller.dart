@@ -88,6 +88,13 @@ abstract class ListControllerBase with Store {
   }
 
   @action
+  void removeKey(int outerIndex) {
+    List<List<String>> newTasksList = tasksMap.values.toList();
+    newTasksList.removeAt(outerIndex);
+    tasksMap = ObservableMap<int, List<String>>.of(newTasksList.asMap());
+  }
+
+  @action
   Future<void> getTasks() async {
     isLoading = true;
     isTasksObtained = false;

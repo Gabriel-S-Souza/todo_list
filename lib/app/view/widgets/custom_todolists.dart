@@ -82,9 +82,11 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                   onDelete: () {
                     openActionDialog(
                     title: 'Excluir quadro?',
-                    onAccept: () {
-                        listBoardController.removeBoard(outerIndex);
-                      Navigator.of(context).pop();
+                    onAccept: () async {
+                        await listBoardController.removeBoard(outerIndex);
+                        listController.removeKey(outerIndex);
+                        setState(() {});
+                        Navigator.of(context).pop();
                     });
                   },
                   onChanged: (value) {
