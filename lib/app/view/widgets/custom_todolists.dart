@@ -2,10 +2,8 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
-import 'package:todo_list/app/models/task.dart';
 import 'package:todo_list/app/view/widgets/custom_pop_menu_buttom.dart';
 
 import '../../controllers/list_board_controller.dart';
@@ -74,7 +72,9 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
             onItemReorder: _onItemReorder,
             onListReorder: _onListReorder,
             axis: Axis.horizontal,
+            overDragCoefficient: 1.8,
             listWidth: width * 0.8,
+            listSizeAnimationDurationMilliseconds: 20,
             listDraggingWidth: width * 0.8,
             listPadding: const EdgeInsets.all(8.0),
             contentsWhenEmpty: const Center(child: Text('Não há quadros')),
