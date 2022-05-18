@@ -33,6 +33,22 @@ mixin _$ListController on ListControllerBase, Store {
     });
   }
 
+  late final _$selectedImputBoardAtom =
+      Atom(name: 'ListControllerBase.selectedImputBoard', context: context);
+
+  @override
+  int? get selectedImputBoard {
+    _$selectedImputBoardAtom.reportRead();
+    return super.selectedImputBoard;
+  }
+
+  @override
+  set selectedImputBoard(int? value) {
+    _$selectedImputBoardAtom.reportWrite(value, super.selectedImputBoard, () {
+      super.selectedImputBoard = value;
+    });
+  }
+
   late final _$isLoadingAtom =
       Atom(name: 'ListControllerBase.isLoading', context: context);
 
@@ -103,6 +119,17 @@ mixin _$ListController on ListControllerBase, Store {
       ActionController(name: 'ListControllerBase', context: context);
 
   @override
+  void setSelectedImputBoard(int? index) {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.setSelectedImputBoard');
+    try {
+      return super.setSelectedImputBoard(index);
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setNewTask(String value) {
     final _$actionInfo = _$ListControllerBaseActionController.startAction(
         name: 'ListControllerBase.setNewTask');
@@ -150,6 +177,7 @@ mixin _$ListController on ListControllerBase, Store {
   String toString() {
     return '''
 newTask: ${newTask},
+selectedImputBoard: ${selectedImputBoard},
 isLoading: ${isLoading},
 isTasksObtained: ${isTasksObtained},
 isNewTaskValid: ${isNewTaskValid}

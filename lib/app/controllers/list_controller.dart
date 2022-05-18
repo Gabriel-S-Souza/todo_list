@@ -15,8 +15,16 @@ abstract class ListControllerBase with Store {
   @observable
   String newTask = '';
 
+  @observable
+  int? selectedImputBoard;
+
   @action
-  void setNewTask(String value) => newTask = value;
+  void setSelectedImputBoard(int? index) => selectedImputBoard = index;
+
+  @action
+  void setNewTask(String value) {
+    newTask = value;
+  }
 
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;

@@ -2,7 +2,6 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
 
 import '../../controllers/list_board_controller.dart';
@@ -67,7 +66,11 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 contentsWhenEmpty: const Text('Lista vazia'),
                 header: CustomHeaderBoard(
                   title: listBoardController.boardsName[outerIndex].title,
-                  controller: listController.textEditingController,
+                  
+                  controller: listController.selectedImputBoard == outerIndex
+                      ? listController.textEditingController
+                      : TextEditingController(),
+
                   hint: 'Tarefa',
                   onDelete: () {
                     openActionDialog(
@@ -81,8 +84,9 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                   },
                   onChanged: (value) {
                     listController.setNewTask(value);
+                    listController.setSelectedImputBoard(outerIndex);
                   },
-                  onTap: listController.isNewTaskValid 
+                  onTap: listController.isNewTaskValid && listController.selectedImputBoard == outerIndex
                       ? () {
                           listController.addTask(outerIndex);
                         }
