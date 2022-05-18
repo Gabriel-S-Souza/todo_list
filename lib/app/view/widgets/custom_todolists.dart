@@ -18,17 +18,9 @@ class CustomTodoLists extends StatefulWidget {
   State<CustomTodoLists> createState() => _CustomTodoListsState();
 }
 
-// class InnerList {
-//   final String name;
-//   final ListController listController;
-//   List<String>? children;
-//   InnerList({required this.name, required this.listController, this.children});
-// }
-
 class _CustomTodoListsState extends State<CustomTodoLists> {
   final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
   final ListController listController = GetIt.I.get<ListController>();
-  // List<InnerList> _lists = [];
 
   @override
   void initState() {
@@ -71,8 +63,6 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
               ],
             ),
             children: List.generate(listBoardController.boardsName.length, (outerIndex) {
-              // final ListController listController = _lists[outerIndex].listController;
-              // final InnerList innerList = _lists[outerIndex];
               return DragAndDropList(
                 contentsWhenEmpty: const Text('Lista vazia'),
                 header: CustomHeaderBoard(
@@ -197,16 +187,3 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
     );
   }
 }
-
-
-// _lists = List.generate(listBoardController.boardsName.length, (outerIndex) {
-      //   ListController listController = ListController(outerIndex);
-      //   listController.getTasks();
-      //   return InnerList(
-      //     name: listBoardController.boardsName[outerIndex].title,
-      //     listController: listController,
-      //     children: listController.isLoading
-      //       ? []
-      //       : listController.tasks.map((task) => task.title).toList(),
-      //   );
-      // });

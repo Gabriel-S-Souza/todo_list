@@ -49,22 +49,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             const Flexible(
               child: CustomTodoLists(),
-              // child: SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     mainAxisSize: MainAxisSize.min,
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       const Flexible(
-              //         fit: FlexFit.loose,
-              //         child: CustomTaskBoardList(),
-              //       ),
-              //       IconButton(onPressed: openInputDialog, 
-              //       icon: const Icon(Icons.add),
-              //     ),
-              //     ],
-              //   ),
-              // ),
             ),
           ],
         ),

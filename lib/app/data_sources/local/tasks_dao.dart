@@ -34,13 +34,6 @@ class TasksDAO implements ITasksDataManager {
         ..tasks = tasks);
     }
   }
-
-  
-  @override
-  void deleteAll() {
-    // TODO: implement deleteAll
-  }
-
   
   @override
   Future<List<List<String>>> read() {

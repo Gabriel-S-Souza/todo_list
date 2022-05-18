@@ -21,9 +21,6 @@ abstract class ListControllerBase with Store {
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;
 
-  // @computed
-  // VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
-
   ObservableMap<int, List<String>> tasksMap = ObservableMap<int, List<String>>();
 
   @observable

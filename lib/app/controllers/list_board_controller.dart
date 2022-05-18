@@ -36,7 +36,7 @@ abstract class ListBoardControllerBase with Store {
   Future<void> _initializeBoards() async {
     isLoading = true;
     List<TasksBoardModel> boardsList = [];
-    await Future.delayed(Duration(seconds: 3), () async {
+    await Future.delayed(const Duration(seconds: 3), () async {
      boardsList = await boardsDataManager.read();
     });
     boardsList.map((e) {

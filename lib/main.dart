@@ -22,10 +22,6 @@ void main() async {
     DefaultBoards.defaultBoards.map((e) {
       box.add(TasksBoardModel() ..title = e);
     }).toList();
-  } else {
-    // box.values.forEach((e) {
-    //   print(e.tasks);
-    // });
   }
 
   GetIt getIt = GetIt.I;
