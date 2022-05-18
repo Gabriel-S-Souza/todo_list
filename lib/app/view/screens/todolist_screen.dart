@@ -67,6 +67,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: openInputDialog,
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

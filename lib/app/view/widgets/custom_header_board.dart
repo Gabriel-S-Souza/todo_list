@@ -8,6 +8,7 @@ class CustomHeaderBoard extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   final void Function()? onTap;
+  final void Function()? onDelete;
   final void Function(String value) onChanged;
   const CustomHeaderBoard({
     Key? key, 
@@ -15,7 +16,8 @@ class CustomHeaderBoard extends StatelessWidget {
     required this.onChanged, 
     required this.hint, 
     required this.controller, 
-    required this.onTap }) : super(key: key);
+    required this.onTap, 
+    required this.onDelete }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +25,25 @@ class CustomHeaderBoard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Row(
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: Text(
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
                   title,
                   style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 22
                   ),
                 ),
-              ),
-            ],
+                CustomIconButton(
+                  radius: 28,
+                  iconData: Icons.delete, 
+                  onTap: onDelete, 
+                )
+              ],
+            ),
           ),
           CustomTextField(
             controller: controller,

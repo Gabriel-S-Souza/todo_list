@@ -33,29 +33,15 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
   @override
   void initState() {
     super.initState();
+    
     reaction((_) => !listBoardController.isLoading, (value) {
       for (var i = 0; i < listBoardController.boardsName.length; i++) {
         listControllers[i] = ListController(i);
         listControllers[i]!.getTasks();
       }
-      // _lists = List.generate(listBoardController.boardsName.length, (outerIndex) {
-      //   ListController listController = ListController(outerIndex);
-      //   listController.getTasks();
-      //   return InnerList(
-      //     name: listBoardController.boardsName[outerIndex].title,
-      //     listController: listController,
-      //     children: listController.isLoading
-      //       ? []
-      //       : listController.tasks.map((task) => task.title).toList(),
-      //   );
-      // });
+      
     });
-    //  when(
-    //     (_) => listControllers[i]!.isTasksObtained,
-    //     () => setState(() {
-          
-    //     })
-    //   );
+
   }
 
   @override
@@ -72,15 +58,16 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
             onItemReorder: _onItemReorder,
             onListReorder: _onListReorder,
             axis: Axis.horizontal,
-            overDragCoefficient: 1.8,
+            overDragCoefficient: 1.7,
             listWidth: width * 0.8,
             listSizeAnimationDurationMilliseconds: 20,
             listDraggingWidth: width * 0.8,
             listPadding: const EdgeInsets.all(8.0),
             contentsWhenEmpty: const Center(child: Text('Não há quadros')),
+            itemDivider: const Divider(height: 0),
             listDecoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.all(Radius.circular(7.0)),
+              borderRadius: BorderRadius.circular(16),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: Colors.black45.withOpacity(0.12),
@@ -99,6 +86,14 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                   title: listBoardController.boardsName[outerIndex].title,
                   controller: listControllers[outerIndex]!.textEditingController,
                   hint: 'Tarefa',
+                  onDelete: () {
+                    openActionDialog(
+                    title: 'Excluir quadro?',
+                    onAccept: () {
+                      listBoardController.removeBoard(outerIndex);
+                      Navigator.of(context).pop();
+                    });
+                  },
                   onChanged: (value) {
                     listControllers[outerIndex]!.setNewTask(value);
                   },
@@ -209,3 +204,16 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
     );
   }
 }
+
+
+// _lists = List.generate(listBoardController.boardsName.length, (outerIndex) {
+      //   ListController listController = ListController(outerIndex);
+      //   listController.getTasks();
+      //   return InnerList(
+      //     name: listBoardController.boardsName[outerIndex].title,
+      //     listController: listController,
+      //     children: listController.isLoading
+      //       ? []
+      //       : listController.tasks.map((task) => task.title).toList(),
+      //   );
+      // });

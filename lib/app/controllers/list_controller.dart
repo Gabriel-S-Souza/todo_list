@@ -72,6 +72,5 @@ abstract class ListControllerBase with Store {
     }).toList();
     isLoading = false;
     isTasksObtained = true;
-    print('tasks: $tasks');
   }
 }
