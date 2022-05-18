@@ -114,6 +114,28 @@ mixin _$ListController on ListControllerBase, Store {
   }
 
   @override
+  void toggleIsTasksObtained() {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.toggleIsTasksObtained');
+    try {
+      return super.toggleIsTasksObtained();
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addNewKey() {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.addNewKey');
+    try {
+      return super.addNewKey();
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 newTask: ${newTask},

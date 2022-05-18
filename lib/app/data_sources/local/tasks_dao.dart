@@ -3,8 +3,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/app/data_sources/contracts/tasks_data_manager.dart';
 import 'package:todo_list/app/models/task_board_model.dart';
 
-import '../../models/task.dart';
-
 class TasksDAO implements ITasksDataManager {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();

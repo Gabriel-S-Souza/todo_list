@@ -2,6 +2,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
 
 import '../../controllers/list_board_controller.dart';
@@ -33,6 +34,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
   void initState() {
     super.initState();
     listController.getTasks();
+    
   }
 
   @override
@@ -94,7 +96,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                         }
                       : null,
                 ),
-                children: !listController.isTasksObtained && listController.isLoading
+                children: !listController.isTasksObtained
                 ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
                 : List.generate(listController.tasksMap[outerIndex]!.length, (innerIndex) {
                   final String task = listController.tasksMap[outerIndex]?[innerIndex] ?? 'Erro ao encontrar tarefa';

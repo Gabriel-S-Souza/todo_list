@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo_list/app/controllers/list_controller.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
 import '../../controllers/list_board_controller.dart';
-import '../widgets/custom_task_board_list.dart';
 import '../widgets/custom_todolists.dart';
 import 'login_screen.dart';
 
@@ -15,6 +15,7 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   final ListBoardController listCardController =  GetIt.I.get<ListBoardController>();
+  final ListController listController = GetIt.I.get<ListController>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
       builder: (_) => CustomInputDialog(
         title: 'Novo quadro',
         hint: 'Nome do quadro',
-        onSubmit: listCardController.addBoard,
+        onSubmit: (value) async {
+            await listCardController.addBoard(value);
+            listController.addNewKey();
+        },
         buttonText: 'ADICIONAR',
       ),
     );

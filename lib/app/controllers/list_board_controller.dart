@@ -19,9 +19,11 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> addBoard(String value) async {
+    isLoading = true;
     await boardsDataManager.create(value);
     boardsName.add(TasksBoardModel()
       ..title = value);
+    isLoading = false;
   }
 
   @action

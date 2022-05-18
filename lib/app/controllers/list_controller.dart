@@ -78,6 +78,15 @@ abstract class ListControllerBase with Store {
     }
   }
 
+  @action 
+  void toggleIsTasksObtained() => isTasksObtained = !isTasksObtained;
+
+  @action
+  void addNewKey() {
+    int outerIndex = tasksMap.keys.length;
+    tasksMap.putIfAbsent(outerIndex, () => []);
+  }
+
   @action
   Future<void> getTasks() async {
     isLoading = true;
