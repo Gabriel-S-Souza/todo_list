@@ -2,14 +2,13 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/controllers/list_controller.dart';
-import 'package:todo_list/app/view/widgets/custom_pop_menu_buttom.dart';
 
 import '../../controllers/list_board_controller.dart';
 import 'custom_action_dialog.dart';
 import 'custom_header_board.dart';
 import 'custom_input_dialog.dart';
+import 'custom_pop_menu_buttom.dart';
 
 class CustomTodoLists extends StatefulWidget {
   const CustomTodoLists({ Key? key }) : super(key: key);
@@ -27,21 +26,13 @@ class CustomTodoLists extends StatefulWidget {
 
 class _CustomTodoListsState extends State<CustomTodoLists> {
   final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
-  Map<int, ListController> listControllers = {};
+  final ListController listController = GetIt.I.get<ListController>();
   // List<InnerList> _lists = [];
 
   @override
   void initState() {
     super.initState();
-    
-    reaction((_) => !listBoardController.isLoading, (value) {
-      for (var i = 0; i < listBoardController.boardsName.length; i++) {
-        listControllers[i] = ListController(i);
-        listControllers[i]!.getTasks();
-      }
-      
-    });
-
+    listController.getTasks();
   }
 
   @override
@@ -84,32 +75,33 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 contentsWhenEmpty: const Text('Lista vazia'),
                 header: CustomHeaderBoard(
                   title: listBoardController.boardsName[outerIndex].title,
-                  controller: listControllers[outerIndex]!.textEditingController,
+                  controller: listController.textEditingController,
                   hint: 'Tarefa',
                   onDelete: () {
                     openActionDialog(
                     title: 'Excluir quadro?',
                     onAccept: () {
-                      listBoardController.removeBoard(outerIndex);
+                        listBoardController.removeBoard(outerIndex);
                       Navigator.of(context).pop();
                     });
                   },
                   onChanged: (value) {
-                    listControllers[outerIndex]!.setNewTask(value);
+                    listController.setNewTask(value);
                   },
-                  onTap: listControllers[outerIndex]!.isNewTaskValid 
+                  onTap: listController.isNewTaskValid 
                       ? () {
-                          listControllers[outerIndex]!.addTask();
+                          listController.addTask(outerIndex);
                         }
                       : null,
                 ),
-                children: !listControllers[outerIndex]!.isTasksObtained
+                children: !listController.isTasksObtained && listController.isLoading
                 ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
-                : List.generate(listControllers[outerIndex]!.tasks.length, (innerIndex) {
+                : List.generate(listController.tasksMap[outerIndex]!.length, (innerIndex) {
+                  final String task = listController.tasksMap[outerIndex]?[innerIndex] ?? 'Erro ao encontrar tarefa';
                   return DragAndDropItem(
                     feedbackWidget: Container(
                       child: ListTile(
-                        title: Text(listControllers[outerIndex]!.tasks[innerIndex].title),
+                        title: Text(task),
                         trailing: CustomPopupMenuButtom(onDelete: () {}, onEdit: () {},),
                       ),
                       decoration: BoxDecoration(
@@ -124,28 +116,24 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                         ]
                       ),
                     ),
-                    child: Observer(
-                      builder: (context) {
-                        final String task = listControllers[outerIndex]!.tasks[innerIndex].title;
-                        return ListTile(
-                          tileColor: Theme.of(context).scaffoldBackgroundColor,
-                          title: Text(task),
-                          trailing: CustomPopupMenuButtom(
-                            onDelete: () {
-                              openActionDialog(
-                                title: 'Excluir tarefa?', 
-                                onAccept: () {
-                                  Navigator.of(context).pop();
-                                  listControllers[outerIndex]!.removeTask(innerIndex);
-                                } 
-                              );
-                            },
-                            onEdit: () {
-                              openInputDialog(task, innerIndex, outerIndex);
-                            },
-                          ),
-                        );
-                      },
+                    child: ListTile(
+                      tileColor: Theme.of(context).scaffoldBackgroundColor,
+                      title: Text(task),
+                      trailing: CustomPopupMenuButtom(
+                        onDelete: () {
+                          openActionDialog(
+                            title: 'Excluir tarefa?', 
+                            onAccept: () async {
+                              Navigator.of(context).pop();
+                              await listController.removeTask(innerIndex, outerIndex);
+                              setState(() {});
+                            } 
+                          );
+                        },
+                        onEdit: () {
+                          openInputDialog(task, innerIndex, outerIndex);
+                        },
+                      ),
                     ),
                   );
                 }
@@ -198,8 +186,9 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
         initialTextValue: initialTextValue,
         buttonText: 'OK',
         onSubmit: (text) {
-          listControllers[outerIndex]!.updateTask(innerIndex, text);
+          listController.updateTask(text, innerIndex, outerIndex);
         },
+
       ),
     );
   }

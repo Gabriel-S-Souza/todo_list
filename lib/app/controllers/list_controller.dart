@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:todo_list/app/data_sources/local/tasks_dao.dart';
-import '../models/task.dart';
+import 'package:todo_list/app/data_sources/contracts/tasks_data_manager.dart';
 
 part 'list_controller.g.dart';
 
 class ListController = ListControllerBase with _$ListController;
 
 abstract class ListControllerBase with Store {
-  final int index;
-  ListControllerBase(
-    this.index,
-  );
-
-  late final TasksDAO tasksDAO;
+  final ITasksDataManager tasksDataManager;
+  ListControllerBase({required this.tasksDataManager});
   
   final TextEditingController textEditingController = TextEditingController();
 
@@ -26,10 +21,10 @@ abstract class ListControllerBase with Store {
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;
 
-  @computed
-  VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
+  // @computed
+  // VoidCallback? get addTaskTaped => isNewTaskValid ? addTask : null;
 
-  ObservableList<Task> tasks = ObservableList<Task>();
+  ObservableMap<int, List<String>> tasksMap = ObservableMap<int, List<String>>();
 
   @observable
   bool isLoading = false;
@@ -38,38 +33,63 @@ abstract class ListControllerBase with Store {
   bool isTasksObtained = false;
 
   @action
-  Future<void> addTask() async {
-    await tasksDAO.create(newTask);
-    tasks.add(Task(newTask));
-    newTask = '';
-    textEditingController.clear();
+  Future<void> addTask(int outerIndex) async {
+    if (tasksMap.containsKey(outerIndex)) {
+
+      await tasksDataManager.create(newTask, outerIndex);
+
+      tasksMap[outerIndex]!.add(newTask);
+
+      newTask = '';
+      textEditingController.clear();
+
+    } else {
+      throw Exception('Outer index not found');
+    }
   }
 
   @action
-  Future<void> removeTask(int i) async {
-    await tasksDAO.delete(i);
-    tasks.removeAt(i);
+  Future<void> removeTask(int innerIndex, int outerIndex) async {
+    if (tasksMap.containsKey(outerIndex) && tasksMap[outerIndex]!.length > innerIndex) {
+      await tasksDataManager.delete(innerIndex, outerIndex);
+      Map<int, List<String>> newTasksMap = tasksMap;
+
+      newTasksMap[outerIndex]?.removeAt(innerIndex);
+
+      tasksMap =  ObservableMap<int, List<String>>.of(newTasksMap);
+    } else {
+      throw Exception('Task not found');
+    }
   }
 
   @action
-  Future<void> updateTask(int i, String newTask) async {
-    await tasksDAO.update(i, newTask);
-    tasks.replaceRange(i, i + 1, [Task(newTask)]);
+  Future<void> updateTask(String newTask, int innerIndex, int outerIndex) async {
+    
+    if (tasksMap.containsKey(outerIndex) && tasksMap[outerIndex]!.length > innerIndex) {
+
+      await tasksDataManager.update(newTask, innerIndex, outerIndex);
+      Map<int, List<String>> newTasksMap = tasksMap;
+
+      newTasksMap[outerIndex]?.replaceRange(innerIndex, innerIndex + 1, [newTask]);
+      tasksMap =  ObservableMap<int, List<String>>.of(newTasksMap);
+      
+    } else {
+      throw Exception('Task not found');
+    }
   }
 
   @action
   Future<void> getTasks() async {
     isLoading = true;
-    tasksDAO = TasksDAO(index);
-    List<Task> responseTask = [];
+    isTasksObtained = false;
+    List<List<String>> responseTask = [];
 
     await Future.delayed(const Duration(seconds: 3), () async {
-      responseTask = await tasksDAO.read();
+      responseTask = await tasksDataManager.read();
     });
-    
-    responseTask.map((e) {
-      tasks.add(e);
-    }).toList();
+
+    tasksMap = ObservableMap<int, List<String>>.of(responseTask.asMap());
+
     isLoading = false;
     isTasksObtained = true;
   }

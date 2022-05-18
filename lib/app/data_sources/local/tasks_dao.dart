@@ -8,19 +8,15 @@ import '../../models/task.dart';
 class TasksDAO implements ITasksDataManager {
 
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
-
-  final int index;
-  TasksDAO(this.index);
-
   
   @override
-  Future<void> create(String data) async {
-    TasksBoardModel? board = box.getAt(index);
+  Future<void> create(String data, int outerIndex) async {
+    TasksBoardModel? board = box.getAt(outerIndex);
     if (board != null) {
       String title = board.title;
       List<String> tasks = board.tasks;
       tasks.add(data);
-      return box.putAt(index, TasksBoardModel()
+      return box.putAt(outerIndex, TasksBoardModel()
         ..title = title
         ..tasks = tasks);
     }
@@ -29,13 +25,13 @@ class TasksDAO implements ITasksDataManager {
   
   
   @override
-  Future<void> delete(int i) async {
-    TasksBoardModel? board = box.getAt(index);
+  Future<void> delete(int innerIndex, outerIndex) async {
+    TasksBoardModel? board = box.getAt(outerIndex);
     if (board != null) {
       String title = board.title;
       List<String> tasks = board.tasks;
-      tasks.removeAt(i);
-      return box.putAt(index, TasksBoardModel()
+      tasks.removeAt(innerIndex);
+      return box.putAt(outerIndex, TasksBoardModel()
         ..title = title
         ..tasks = tasks);
     }
@@ -49,27 +45,37 @@ class TasksDAO implements ITasksDataManager {
 
   
   @override
-  Future<List<Task>> read() {
-    TasksBoardModel? board = box.getAt(index);
-    List<Task> taskList = [];
+  Future<List<List<String>>> read() {
+    List<TasksBoardModel> board = box.values.toList();
+    
+    Future.value();
+
+    List<List<String>> taskListList = [];
 
     if (board != null) {
-      board.tasks.map((e) {
-        taskList.add(Task(e));
+      board.map((e) {
+        List<String> taskList = [];
+
+        e.tasks.map((e) {
+          taskList.add(e);
+        }).toList();
+
+        taskListList.add(taskList);
+
       }).toList();
     }
 
-    return Future.value(taskList);
+    return Future.value(taskListList);
   }
 
   @override
-  Future<void> update(int i , String newTask) async {
-    TasksBoardModel? board = box.getAt(index);
+  Future<void> update(String newTask, int innerIndex, int outerIndex) async {
+    TasksBoardModel? board = box.getAt(outerIndex);
     if (board != null) {
       String title = board.title;
       List<String> tasks = board.tasks;
-      tasks.replaceRange(i, i + 1, [newTask]);
-      return box.putAt(index, TasksBoardModel()
+      tasks.replaceRange(innerIndex, innerIndex + 1, [newTask]);
+      return box.putAt(outerIndex, TasksBoardModel()
         ..title = title
         ..tasks = tasks);
     }

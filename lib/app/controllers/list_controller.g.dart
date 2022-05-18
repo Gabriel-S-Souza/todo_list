@@ -16,13 +16,6 @@ mixin _$ListController on ListControllerBase, Store {
       (_$isNewTaskValidComputed ??= Computed<bool>(() => super.isNewTaskValid,
               name: 'ListControllerBase.isNewTaskValid'))
           .value;
-  Computed<VoidCallback?>? _$addTaskTapedComputed;
-
-  @override
-  VoidCallback? get addTaskTaped => (_$addTaskTapedComputed ??=
-          Computed<VoidCallback?>(() => super.addTaskTaped,
-              name: 'ListControllerBase.addTaskTaped'))
-      .value;
 
   late final _$newTaskAtom =
       Atom(name: 'ListControllerBase.newTask', context: context);
@@ -76,24 +69,26 @@ mixin _$ListController on ListControllerBase, Store {
       AsyncAction('ListControllerBase.addTask', context: context);
 
   @override
-  Future<void> addTask() {
-    return _$addTaskAsyncAction.run(() => super.addTask());
+  Future<void> addTask(int outerIndex) {
+    return _$addTaskAsyncAction.run(() => super.addTask(outerIndex));
   }
 
   late final _$removeTaskAsyncAction =
       AsyncAction('ListControllerBase.removeTask', context: context);
 
   @override
-  Future<void> removeTask(int i) {
-    return _$removeTaskAsyncAction.run(() => super.removeTask(i));
+  Future<void> removeTask(int innerIndex, int outerIndex) {
+    return _$removeTaskAsyncAction
+        .run(() => super.removeTask(innerIndex, outerIndex));
   }
 
   late final _$updateTaskAsyncAction =
       AsyncAction('ListControllerBase.updateTask', context: context);
 
   @override
-  Future<void> updateTask(int i, String newTask) {
-    return _$updateTaskAsyncAction.run(() => super.updateTask(i, newTask));
+  Future<void> updateTask(String newTask, int innerIndex, int outerIndex) {
+    return _$updateTaskAsyncAction
+        .run(() => super.updateTask(newTask, innerIndex, outerIndex));
   }
 
   late final _$getTasksAsyncAction =
@@ -124,8 +119,7 @@ mixin _$ListController on ListControllerBase, Store {
 newTask: ${newTask},
 isLoading: ${isLoading},
 isTasksObtained: ${isTasksObtained},
-isNewTaskValid: ${isNewTaskValid},
-addTaskTaped: ${addTaskTaped}
+isNewTaskValid: ${isNewTaskValid}
     ''';
   }
 }

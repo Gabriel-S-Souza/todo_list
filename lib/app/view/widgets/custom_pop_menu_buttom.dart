@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'custom_task_board.dart';
-
 class CustomPopupMenuButtom extends StatelessWidget {
   final Function onDelete;
   final Function onEdit;
@@ -74,4 +72,10 @@ class CustomPopupMenuButtom extends StatelessWidget {
       ),
     );
   }
+}
+
+enum DropdownMenuActions {
+  delete,
+  edit,
+  cancel,
 }
