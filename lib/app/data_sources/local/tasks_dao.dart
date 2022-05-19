@@ -8,12 +8,19 @@ class TasksDAO implements ITasksDataManager {
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
   
   @override
-  Future<void> create(String data, int outerIndex) async {
+  Future<void> create(String data, int outerIndex, [int? insertIndex]) async {
     TasksBoardModel? board = box.getAt(outerIndex);
     if (board != null) {
       String title = board.title;
       List<String> tasks = board.tasks;
-      tasks.add(data);
+
+      if (insertIndex != null) {
+        tasks.insert(insertIndex, data);
+        
+      } else {
+        tasks.add(data);
+      }
+      
       return box.putAt(outerIndex, TasksBoardModel()
         ..title = title
         ..tasks = tasks);

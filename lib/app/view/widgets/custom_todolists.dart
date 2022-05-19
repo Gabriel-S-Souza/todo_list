@@ -66,7 +66,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 contentsWhenEmpty: const Text('Lista vazia'),
                 header: CustomHeaderBoard(
                   title: listBoardController.boardsName[outerIndex].title,
-                  
+
                   controller: listController.selectedImputBoard == outerIndex
                       ? listController.textEditingController
                       : TextEditingController(),
@@ -148,6 +148,10 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
     setState(() {
       // final String movedItem = _lists[oldListIndex].children!.removeAt(oldItemIndex);
       // _lists[newListIndex].children!.insert(newItemIndex, movedItem);
+      String movedTask = listController.tasksMap[oldListIndex]?[oldItemIndex] ?? 'Erro ao encontrar tarefa';
+      listController.setNewTask(movedTask);
+      listController.removeTask(oldItemIndex, oldListIndex);
+      listController.addTask(newListIndex, newItemIndex);
     });
   }
 

@@ -38,12 +38,19 @@ abstract class ListControllerBase with Store {
   bool isTasksObtained = false;
 
   @action
-  Future<void> addTask(int outerIndex) async {
+  Future<void> addTask(int outerIndex, [int? insertIndex]) async {
     if (tasksMap.containsKey(outerIndex)) {
 
-      await tasksDataManager.create(newTask, outerIndex);
+      if (insertIndex != null) {
+        await tasksDataManager.create(newTask, outerIndex, insertIndex);
 
-      tasksMap[outerIndex]!.add(newTask);
+        tasksMap[outerIndex]?.insert(insertIndex, newTask);
+
+      } else {
+        await tasksDataManager.create(newTask, outerIndex);
+
+        tasksMap[outerIndex]?.add(newTask);
+      }
 
       newTask = '';
       textEditingController.clear();
