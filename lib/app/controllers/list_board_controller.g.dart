@@ -103,7 +103,7 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
       AsyncAction('ListBoardControllerBase._getTasks', context: context);
 
   @override
-  Future _getTasks() {
+  Future<dynamic> _getTasks() {
     return _$_getTasksAsyncAction.run(() => super._getTasks());
   }
 

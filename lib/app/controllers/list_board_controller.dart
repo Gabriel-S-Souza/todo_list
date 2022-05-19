@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/data_sources/contracts/boards_data_manager.dart';
@@ -40,7 +42,10 @@ abstract class ListBoardControllerBase with Store {
   Future<void> addBoard(String value) async {
     await boardsDataManager.create(value);
     boards.add(TasksBoardModel()
-      ..title = value);
+      ..title = value
+      ..tasks = []);
+    
+    _getTasks();
   }
 
   @action
@@ -72,11 +77,12 @@ abstract class ListBoardControllerBase with Store {
   }
 
   @action
-  _getTasks() async {
+  Future<dynamic> _getTasks() async {
     List<TasksBoardModel> boardsList = [];
-     boardsList = await boardsDataManager.read();
+    boardsList = await boardsDataManager.read();
     boards.clear();
-    boardsList.map((e) {
+    print(boards);
+    return boardsList.map((e) {
       boards.add(e);
     }).toList();
   }
