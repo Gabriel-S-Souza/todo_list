@@ -10,6 +10,13 @@ abstract class ListBoardControllerBase with Store {
   final IBoardsDataManager boardsDataManager;
   ListBoardControllerBase({required this.boardsDataManager}) {
       _initializeBoards();
+      // autorun((_) {
+      //   print('ListBoardControllerBase:');
+      //   for (var i = 0; i < boardsName.length; i++) {
+      //     print(boardsName[i].title);
+      //     print(boardsName[i].tasks);
+      //   }
+      // });
   }
 
   ObservableList<TasksBoardModel> boardsName = ObservableList<TasksBoardModel>();
@@ -25,6 +32,21 @@ abstract class ListBoardControllerBase with Store {
       ..title = value);
     isLoading = false;
   }
+
+  @action
+  Future<void> moveBoard(int insertIndex, int oldIndex) async {
+    await boardsDataManager.move(insertIndex, oldIndex);
+    List<TasksBoardModel> newBoardsName = await boardsDataManager.read() as List<TasksBoardModel>;
+    boardsName.clear();
+
+    // newBoardsName.map((e) {
+    //   boardsName.add(e);
+    // }).toList();
+
+    boardsName = ObservableList<TasksBoardModel>.of(newBoardsName);
+  }
+
+  
 
   @action
   Future<void> removeBoard(int index) async {

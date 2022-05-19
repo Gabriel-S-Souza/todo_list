@@ -164,6 +164,17 @@ mixin _$ListController on ListControllerBase, Store {
   }
 
   @override
+  void moveBoard(int insertIndex, int oldIndex) {
+    final _$actionInfo = _$ListControllerBaseActionController.startAction(
+        name: 'ListControllerBase.moveBoard');
+    try {
+      return super.moveBoard(insertIndex, oldIndex);
+    } finally {
+      _$ListControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removeKey(int outerIndex) {
     final _$actionInfo = _$ListControllerBaseActionController.startAction(
         name: 'ListControllerBase.removeKey');

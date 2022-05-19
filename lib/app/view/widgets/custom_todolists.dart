@@ -94,7 +94,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 ),
                 children: !listController.isTasksObtained
                 ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
-                : List.generate(listController.tasksMap[outerIndex]!.length, (innerIndex) {
+                : List.generate(listController.tasksMap[outerIndex]?.length ?? 1, (innerIndex) {
                   final String task = listController.tasksMap[outerIndex]?[innerIndex] ?? 'Erro ao encontrar tarefa';
                   return DragAndDropItem(
                     feedbackWidget: Container(
@@ -146,8 +146,6 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
 
    _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
     setState(() {
-      // final String movedItem = _lists[oldListIndex].children!.removeAt(oldItemIndex);
-      // _lists[newListIndex].children!.insert(newItemIndex, movedItem);
       String movedTask = listController.tasksMap[oldListIndex]?[oldItemIndex] ?? 'Erro ao encontrar tarefa';
       listController.setNewTask(movedTask);
       listController.removeTask(oldItemIndex, oldListIndex);
@@ -159,6 +157,12 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
     setState(() {
       // final InnerList movedList = _lists.removeAt(oldListIndex);
       // _lists.insert(newListIndex, movedList);
+      if (oldListIndex != newListIndex) {
+        listController.moveBoard(newListIndex, oldListIndex);
+      }
+    });
+    Future.delayed(Duration(seconds: 3), () {
+      listBoardController.moveBoard(newListIndex, oldListIndex);
     });
   }
 

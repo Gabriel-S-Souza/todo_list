@@ -33,6 +33,15 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
     return _$addBoardAsyncAction.run(() => super.addBoard(value));
   }
 
+  late final _$moveBoardAsyncAction =
+      AsyncAction('ListBoardControllerBase.moveBoard', context: context);
+
+  @override
+  Future<void> moveBoard(int insertIndex, int oldIndex) {
+    return _$moveBoardAsyncAction
+        .run(() => super.moveBoard(insertIndex, oldIndex));
+  }
+
   late final _$removeBoardAsyncAction =
       AsyncAction('ListBoardControllerBase.removeBoard', context: context);
 

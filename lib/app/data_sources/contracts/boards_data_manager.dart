@@ -3,4 +3,5 @@ abstract class IBoardsDataManager {
   Future<dynamic> read();
   Future<void> update(int index, String data);
   Future<void> delete(int index);
+  Future<void> move(int insertIndex, int oldIndex);
 }

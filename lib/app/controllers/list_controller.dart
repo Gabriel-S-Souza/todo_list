@@ -8,7 +8,15 @@ class ListController = ListControllerBase with _$ListController;
 
 abstract class ListControllerBase with Store {
   final ITasksDataManager tasksDataManager;
-  ListControllerBase({required this.tasksDataManager});
+  ListControllerBase({required this.tasksDataManager}) {
+     autorun((_) {
+       print('ListController:');
+        for (var i = 0; i < tasksMap.length; i++) {
+          print(tasksMap.keys.toList()[i]);
+          print(tasksMap[i]);
+        }
+      });
+  }
   
   final TextEditingController textEditingController = TextEditingController();
 
@@ -97,6 +105,16 @@ abstract class ListControllerBase with Store {
   void addNewKey() {
     int outerIndex = tasksMap.keys.length;
     tasksMap.putIfAbsent(outerIndex, () => []);
+  }
+
+  @action
+  void moveBoard(int insertIndex, int oldIndex) {
+    List<List<String>> newTasksList = tasksMap.values.toList();
+    List<String> boardMoved = newTasksList[oldIndex];
+    newTasksList.removeAt(oldIndex);
+    newTasksList.insert(insertIndex, boardMoved);
+    tasksMap.clear();
+    tasksMap = ObservableMap<int, List<String>>.of(newTasksList.asMap());
   }
 
   @action

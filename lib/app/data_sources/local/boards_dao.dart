@@ -32,4 +32,16 @@ class BoardDAO implements IBoardsDataManager {
   Future<void> deleteAll() async {
     return await box.deleteAll(box.keys.map((e) => e).toList());
   }
+
+  @override
+  Future<void> move(int insertIndex, int oldIndex) async {
+    List<TasksBoardModel> boards = box.values.toList();
+    TasksBoardModel boardMoved = boards[oldIndex];
+    boards.removeAt(oldIndex);
+    boards.insert(insertIndex, boardMoved);
+    box.clear();
+    boards.map((e) {
+      box.add(e);
+    }).toList();
+  }
 }
