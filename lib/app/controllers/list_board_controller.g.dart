@@ -9,6 +9,46 @@ part of 'list_board_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ListBoardController on ListBoardControllerBase, Store {
+  Computed<bool>? _$isNewTaskValidComputed;
+
+  @override
+  bool get isNewTaskValid =>
+      (_$isNewTaskValidComputed ??= Computed<bool>(() => super.isNewTaskValid,
+              name: 'ListBoardControllerBase.isNewTaskValid'))
+          .value;
+
+  late final _$newTaskAtom =
+      Atom(name: 'ListBoardControllerBase.newTask', context: context);
+
+  @override
+  String get newTask {
+    _$newTaskAtom.reportRead();
+    return super.newTask;
+  }
+
+  @override
+  set newTask(String value) {
+    _$newTaskAtom.reportWrite(value, super.newTask, () {
+      super.newTask = value;
+    });
+  }
+
+  late final _$selectedImputBoardAtom = Atom(
+      name: 'ListBoardControllerBase.selectedImputBoard', context: context);
+
+  @override
+  int? get selectedImputBoard {
+    _$selectedImputBoardAtom.reportRead();
+    return super.selectedImputBoard;
+  }
+
+  @override
+  set selectedImputBoard(int? value) {
+    _$selectedImputBoardAtom.reportWrite(value, super.selectedImputBoard, () {
+      super.selectedImputBoard = value;
+    });
+  }
+
   late final _$isLoadingAtom =
       Atom(name: 'ListBoardControllerBase.isLoading', context: context);
 
@@ -59,10 +99,55 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
     return _$_initializeBoardsAsyncAction.run(() => super._initializeBoards());
   }
 
+  late final _$addTaskAsyncAction =
+      AsyncAction('ListBoardControllerBase.addTask', context: context);
+
+  @override
+  Future<void> addTask(int outerIndex, [int? insertIndex]) {
+    return _$addTaskAsyncAction
+        .run(() => super.addTask(outerIndex, insertIndex));
+  }
+
+  late final _$removeTaskAsyncAction =
+      AsyncAction('ListBoardControllerBase.removeTask', context: context);
+
+  @override
+  Future<void> removeTask(int innerIndex, int outerIndex) {
+    return _$removeTaskAsyncAction
+        .run(() => super.removeTask(innerIndex, outerIndex));
+  }
+
+  late final _$moveTaskAsyncAction =
+      AsyncAction('ListBoardControllerBase.moveTask', context: context);
+
+  @override
+  Future<void> moveTask(int oldOuterIndex, int oldInnerIndex, int newOuterIndex,
+      int newInnerIndex) {
+    return _$moveTaskAsyncAction.run(() => super
+        .moveTask(oldOuterIndex, oldInnerIndex, newOuterIndex, newInnerIndex));
+  }
+
+  late final _$ListBoardControllerBaseActionController =
+      ActionController(name: 'ListBoardControllerBase', context: context);
+
+  @override
+  void setNewTask(String value) {
+    final _$actionInfo = _$ListBoardControllerBaseActionController.startAction(
+        name: 'ListBoardControllerBase.setNewTask');
+    try {
+      return super.setNewTask(value);
+    } finally {
+      _$ListBoardControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-isLoading: ${isLoading}
+newTask: ${newTask},
+selectedImputBoard: ${selectedImputBoard},
+isLoading: ${isLoading},
+isNewTaskValid: ${isNewTaskValid}
     ''';
   }
 }

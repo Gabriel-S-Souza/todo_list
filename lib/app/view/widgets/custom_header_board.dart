@@ -9,6 +9,7 @@ class CustomHeaderBoard extends StatelessWidget {
   final TextEditingController controller;
   final void Function()? onTap;
   final void Function()? onDelete;
+  final void Function(bool)? onFocusChange;
   final void Function(String value) onChanged;
   const CustomHeaderBoard({
     Key? key, 
@@ -17,7 +18,9 @@ class CustomHeaderBoard extends StatelessWidget {
     required this.hint, 
     required this.controller, 
     required this.onTap, 
-    required this.onDelete }) : super(key: key);
+    required this.onDelete, 
+    this.onFocusChange,
+    }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,7 @@ class CustomHeaderBoard extends StatelessWidget {
             ),
           ),
           CustomTextField(
+            onFocusChange: onFocusChange,
             controller: controller,
             hint: hint,
             onChanged: onChanged,

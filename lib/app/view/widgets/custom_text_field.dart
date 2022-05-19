@@ -10,9 +10,9 @@ class CustomTextField extends StatelessWidget {
     this.obscure = false,
     this.textInputType,
     this.enabled,
-    this.controller,
+    this.controller, 
+    this.onFocusChange,
   }) : super(key: key);
-
   final TextEditingController? controller;
   final String? hint;
   final Widget? prefix;
@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscure;
   final TextInputType? textInputType;
   final Function(String) onChanged;
+  final void Function(bool)? onFocusChange;
   final bool? enabled;
 
   @override
@@ -31,19 +32,23 @@ class CustomTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
       ),
       padding: prefix != null ? null : const EdgeInsets.only(left: 16),
-      child: TextField(
-        controller: controller,
-        obscureText: obscure,
-        keyboardType: textInputType,
-        onChanged: onChanged,
-        enabled: enabled,
-        decoration: InputDecoration(
-          hintText: hint,
-          border: InputBorder.none,
-          prefixIcon: prefix,
-          suffixIcon: suffix,
+      child: Focus(
+        onFocusChange: onFocusChange,
+        child: TextField(
+          controller: controller,
+          obscureText: obscure,
+          keyboardType: textInputType,
+          onChanged: onChanged,
+          enabled: enabled,
+          autofocus: false,
+          decoration: InputDecoration(
+            hintText: hint,
+            border: InputBorder.none,
+            prefixIcon: prefix,
+            suffixIcon: suffix,
+          ),
+          textAlignVertical: TextAlignVertical.center,
         ),
-        textAlignVertical: TextAlignVertical.center,
       ),
     );
   }

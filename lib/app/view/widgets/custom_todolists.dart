@@ -2,7 +2,6 @@ import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:todo_list/app/controllers/list_controller.dart';
 
 import '../../controllers/list_board_controller.dart';
 import 'custom_action_dialog.dart';
@@ -19,14 +18,6 @@ class CustomTodoLists extends StatefulWidget {
 
 class _CustomTodoListsState extends State<CustomTodoLists> {
   final ListBoardController listBoardController = GetIt.I.get<ListBoardController>();
-  final ListController listController = GetIt.I.get<ListController>();
-
-  @override
-  void initState() {
-    super.initState();
-    listController.getTasks();
-    
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +33,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
             onItemReorder: _onItemReorder,
             onListReorder: _onListReorder,
             axis: Axis.horizontal,
-            overDragCoefficient: 1.7,
+            overDragCoefficient: 1.2,
             listWidth: width * 0.8,
             listSizeAnimationDurationMilliseconds: 20,
             listDraggingWidth: width * 0.8,
@@ -61,14 +52,15 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 ),
               ],
             ),
-            children: List.generate(listBoardController.boardsName.length, (outerIndex) {
+            children: List.generate(listBoardController.boards.length, (outerIndex) {
+              final TextEditingController textEditingController = listBoardController.textEditingController;
               return DragAndDropList(
                 contentsWhenEmpty: const Text('Lista vazia'),
                 header: CustomHeaderBoard(
-                  title: listBoardController.boardsName[outerIndex].title,
+                  title: listBoardController.boards[outerIndex].title,
 
-                  controller: listController.selectedImputBoard == outerIndex
-                      ? listController.textEditingController
+                  controller: listBoardController.selectedImputBoard == outerIndex
+                      ? textEditingController
                       : TextEditingController(),
 
                   hint: 'Tarefa',
@@ -77,25 +69,31 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                     title: 'Excluir quadro?',
                     onAccept: () async {
                         await listBoardController.removeBoard(outerIndex);
-                        listController.removeKey(outerIndex);
                         setState(() {});
                         Navigator.of(context).pop();
                     });
                   },
-                  onChanged: (value) {
-                    listController.setNewTask(value);
-                    listController.setSelectedImputBoard(outerIndex);
+                  onFocusChange: (value) {
+                    if (value) {
+                      textEditingController.clear();
+                      listBoardController.setSelectedImputBoard(null);
+                      listBoardController.setSelectedImputBoard(outerIndex);
+                    }
                   },
-                  onTap: listController.isNewTaskValid && listController.selectedImputBoard == outerIndex
+                  onChanged: (value) {
+                    listBoardController.setNewTask(value);
+                  },
+                  onTap: listBoardController.isNewTaskValid && listBoardController.selectedImputBoard == outerIndex
                       ? () {
-                          listController.addTask(outerIndex);
+                          listBoardController.addTask(outerIndex);
+                          textEditingController.clear();
                         }
                       : null,
                 ),
-                children: !listController.isTasksObtained
+                children: listBoardController.isLoading
                 ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
-                : List.generate(listController.tasksMap[outerIndex]?.length ?? 1, (innerIndex) {
-                  final String task = listController.tasksMap[outerIndex]?[innerIndex] ?? 'Erro ao encontrar tarefa';
+                : List.generate(listBoardController.boards[outerIndex].tasks.length, (innerIndex) {
+                  final String task = listBoardController.boards[outerIndex].tasks[innerIndex];
                   return DragAndDropItem(
                     feedbackWidget: Container(
                       child: ListTile(
@@ -123,7 +121,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                             title: 'Excluir tarefa?', 
                             onAccept: () async {
                               Navigator.of(context).pop();
-                              await listController.removeTask(innerIndex, outerIndex);
+                              await listBoardController.removeTask(innerIndex, outerIndex);
                               setState(() {});
                             } 
                           );
@@ -145,25 +143,26 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
   }
 
    _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
-    setState(() {
-      String movedTask = listController.tasksMap[oldListIndex]?[oldItemIndex] ?? 'Erro ao encontrar tarefa';
-      listController.setNewTask(movedTask);
-      listController.removeTask(oldItemIndex, oldListIndex);
-      listController.addTask(newListIndex, newItemIndex);
-    });
+    // setState(() {
+
+    //   String movedTask = listBoardController.boards[oldListIndex].tasks[oldItemIndex];
+    //   listBoardController.setNewTask(movedTask);
+    //   listBoardController.removeTask(oldItemIndex, oldListIndex);
+    //   listBoardController.addTask(newListIndex, newItemIndex);
+    // });
   }
 
   _onListReorder(int oldListIndex, int newListIndex) {
-    setState(() {
-      // final InnerList movedList = _lists.removeAt(oldListIndex);
-      // _lists.insert(newListIndex, movedList);
-      if (oldListIndex != newListIndex) {
-        listController.moveBoard(newListIndex, oldListIndex);
-      }
-    });
-    Future.delayed(Duration(seconds: 3), () {
-      listBoardController.moveBoard(newListIndex, oldListIndex);
-    });
+    // setState(() {
+    //   // final InnerList movedList = _lists.removeAt(oldListIndex);
+    //   // _lists.insert(newListIndex, movedList);
+    //   if (oldListIndex != newListIndex) {
+    //     listController.moveBoard(newListIndex, oldListIndex);
+    //   }
+    // });
+    // Future.delayed(Duration(seconds: 3), () {
+    //   listBoardController.moveBoard(newListIndex, oldListIndex);
+    // });
   }
 
   void openActionDialog({
@@ -192,9 +191,8 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
         initialTextValue: initialTextValue,
         buttonText: 'OK',
         onSubmit: (text) {
-          listController.updateTask(text, innerIndex, outerIndex);
+          listBoardController.updateTask(text, innerIndex, outerIndex);
         },
-
       ),
     );
   }
