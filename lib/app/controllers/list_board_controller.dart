@@ -44,11 +44,11 @@ abstract class ListBoardControllerBase with Store {
   }
 
   @action
-  Future<void> moveBoard(int insertIndex, int oldIndex) async {
-    await boardsDataManager.move(insertIndex, oldIndex);
-    List<TasksBoardModel> newBoardsName = await boardsDataManager.read() as List<TasksBoardModel>;
-    boards.clear();
-    boards = ObservableList<TasksBoardModel>.of(newBoardsName);
+  Future<dynamic> moveBoard(int insertIndex, int oldIndex) async {
+    TasksBoardModel boardMoved = boards.removeAt(oldIndex);
+    boards.insert(insertIndex, boardMoved);
+    await boardsDataManager.deleteAll();
+    return await boardsDataManager.createFromList(boards);
   }
 
   @action
@@ -61,13 +61,24 @@ abstract class ListBoardControllerBase with Store {
   Future<void> _initializeBoards() async {
     isLoading = true;
     List<TasksBoardModel> boardsList = [];
-    await Future.delayed(const Duration(seconds: 3), () async {
+    // await Future.delayed(const Duration(seconds: 3), () async {
      boardsList = await boardsDataManager.read();
-    });
+    // });
+    boards.clear();
     boardsList.map((e) {
       boards.add(e);
     }).toList();
     isLoading = false;
+  }
+
+  @action
+  _getTasks() async {
+    List<TasksBoardModel> boardsList = [];
+     boardsList = await boardsDataManager.read();
+    boards.clear();
+    boardsList.map((e) {
+      boards.add(e);
+    }).toList();
   }
 
   @action
@@ -93,11 +104,11 @@ abstract class ListBoardControllerBase with Store {
   void moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
     print('controller: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
     boardsDataManager.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
+    boards = ObservableList<TasksBoardModel>.of(boards);
   }
 
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {
     await boardsDataManager.updateTask(taskEdited, innerIndex, outerIndex);
-    boards[outerIndex].tasks[innerIndex] = taskEdited;
   }
 }
 

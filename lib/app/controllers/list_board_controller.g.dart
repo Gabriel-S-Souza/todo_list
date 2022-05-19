@@ -77,7 +77,7 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
       AsyncAction('ListBoardControllerBase.moveBoard', context: context);
 
   @override
-  Future<void> moveBoard(int insertIndex, int oldIndex) {
+  Future<dynamic> moveBoard(int insertIndex, int oldIndex) {
     return _$moveBoardAsyncAction
         .run(() => super.moveBoard(insertIndex, oldIndex));
   }
@@ -97,6 +97,14 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
   @override
   Future<void> _initializeBoards() {
     return _$_initializeBoardsAsyncAction.run(() => super._initializeBoards());
+  }
+
+  late final _$_getTasksAsyncAction =
+      AsyncAction('ListBoardControllerBase._getTasks', context: context);
+
+  @override
+  Future _getTasks() {
+    return _$_getTasksAsyncAction.run(() => super._getTasks());
   }
 
   late final _$addTaskAsyncAction =
