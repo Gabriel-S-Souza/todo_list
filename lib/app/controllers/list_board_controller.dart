@@ -38,11 +38,9 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> addBoard(String value) async {
-    isLoading = true;
     await boardsDataManager.create(value);
     boards.add(TasksBoardModel()
       ..title = value);
-    isLoading = false;
   }
 
   @action
@@ -74,7 +72,6 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> addTask(int outerIndex, [int? insertIndex]) async {
-    print('antes ${boards[outerIndex].tasks}');
     if (insertIndex != null) {
       await boardsDataManager.createTask(newTask, outerIndex, insertIndex);
       // boards[outerIndex].tasks.insert(insertIndex, newTask);
@@ -84,8 +81,6 @@ abstract class ListBoardControllerBase with Store {
     }
     newTask = '';
     textEditingController.clear();
-
-    print('depois ${boards[outerIndex].tasks}');
   }
 
   @action
@@ -95,10 +90,9 @@ abstract class ListBoardControllerBase with Store {
   }
 
   @action
-  Future<void> moveTask(int oldOuterIndex, int oldInnerIndex, int newOuterIndex, int newInnerIndex) async {
-    boardsDataManager.moveTask(oldOuterIndex, oldInnerIndex, newOuterIndex, newInnerIndex);
-    
-    boards[newOuterIndex].tasks.insert(newInnerIndex, boards[oldOuterIndex].tasks.removeAt(oldInnerIndex));
+  void moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
+    print('controller: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
+    boardsDataManager.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
   }
 
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {

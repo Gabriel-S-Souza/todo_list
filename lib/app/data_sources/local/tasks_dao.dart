@@ -51,17 +51,27 @@ class TasksDAO {
   }
   
 
-  Future<void> moveTask(int oldOuterIndex, int oldInnerIndex, int newOuterIndex, int newInnerIndex) async {
-    TasksBoardModel? board = box.getAt(oldOuterIndex);
-    if (board != null) {
-      String title = board.title;
-      List<String> tasks = board.tasks;
-      String taskMoved = tasks[oldInnerIndex];
-      tasks.removeAt(oldInnerIndex);
-      tasks.insert(newInnerIndex, taskMoved);
-      return box.putAt(oldOuterIndex, TasksBoardModel()
-        ..title = title
-        ..tasks = tasks);
+  Future<void> moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) async {
+
+    print('taskDao: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
+    TasksBoardModel? odlBoard = box.getAt(oldListIndex);
+    TasksBoardModel? newBoard = box.getAt(newListIndex);
+    
+    if (odlBoard != null && newBoard != null) {
+      String oldTitle = odlBoard.title;
+      String newTitle = newBoard.title;
+      List<String> oldBoardTasks = odlBoard.tasks;
+      List<String> newBoardTasks = newBoard.tasks;
+      String taskMoved = oldBoardTasks[oldItemIndex];
+      
+      oldBoardTasks.removeAt(oldItemIndex);
+      newBoardTasks.insert(newItemIndex, taskMoved);
+      box.putAt(oldListIndex, TasksBoardModel()
+        ..title = oldTitle
+        ..tasks = oldBoardTasks);
+      return box.putAt(newListIndex, TasksBoardModel()
+        ..title = newTitle
+        ..tasks = newBoardTasks);
     }
   }
 

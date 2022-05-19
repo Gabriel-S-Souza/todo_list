@@ -143,16 +143,23 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
   }
 
    _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
-    // setState(() {
+     if (oldListIndex != newListIndex || oldItemIndex != newItemIndex) {
+       print('todolists: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
+      setState(() {
+        listBoardController.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
+        
+      });
+     
 
     //   String movedTask = listBoardController.boards[oldListIndex].tasks[oldItemIndex];
     //   listBoardController.setNewTask(movedTask);
     //   listBoardController.removeTask(oldItemIndex, oldListIndex);
     //   listBoardController.addTask(newListIndex, newItemIndex);
-    // });
+     }
   }
 
   _onListReorder(int oldListIndex, int newListIndex) {
+    print('$oldListIndex $newListIndex');
     // setState(() {
     //   // final InnerList movedList = _lists.removeAt(oldListIndex);
     //   // _lists.insert(newListIndex, movedList);

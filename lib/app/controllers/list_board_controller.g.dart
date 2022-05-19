@@ -117,16 +117,6 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
         .run(() => super.removeTask(innerIndex, outerIndex));
   }
 
-  late final _$moveTaskAsyncAction =
-      AsyncAction('ListBoardControllerBase.moveTask', context: context);
-
-  @override
-  Future<void> moveTask(int oldOuterIndex, int oldInnerIndex, int newOuterIndex,
-      int newInnerIndex) {
-    return _$moveTaskAsyncAction.run(() => super
-        .moveTask(oldOuterIndex, oldInnerIndex, newOuterIndex, newInnerIndex));
-  }
-
   late final _$ListBoardControllerBaseActionController =
       ActionController(name: 'ListBoardControllerBase', context: context);
 
@@ -136,6 +126,19 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
         name: 'ListBoardControllerBase.setNewTask');
     try {
       return super.setNewTask(value);
+    } finally {
+      _$ListBoardControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void moveTask(
+      int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
+    final _$actionInfo = _$ListBoardControllerBaseActionController.startAction(
+        name: 'ListBoardControllerBase.moveTask');
+    try {
+      return super
+          .moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
     } finally {
       _$ListBoardControllerBaseActionController.endAction(_$actionInfo);
     }
