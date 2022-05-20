@@ -27,12 +27,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text(
-                    'Tarefas',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 32
-                    ),
+                  Row(
+                    children: const [
+                      Icon(Icons.list_alt, size: 32),
+                      Text(
+                        'list.me',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 32
+                        ),
+                      ),
+                    ],
                   ),
                   IconButton(
                     icon: const Icon(Icons.arrow_back),

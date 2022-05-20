@@ -36,81 +36,93 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Center(
-                  child: Text(
-                    'Entrar',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor,
+                Flexible(
+                  flex: 3,
+                  child: Center(
+                    child: Text(
+                      'Entrar',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Observer(builder: (_) {
-                      return CustomTextField(
-                        hint: 'E-mail',
-                        prefix: const Icon(Icons.account_circle),
-                        textInputType: TextInputType.emailAddress,
-                        onChanged: loginController.setEmail,
-                        enabled: !loginController.loading,
-                      );
-                    }),
-                    const SizedBox(height: 16),
+                Flexible(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                       Observer(builder: (_) {
                         return CustomTextField(
-                          hint: 'Senha',
-                          prefix: const Icon(Icons.lock),
-                          obscure: !loginController.passwordVisible,
-                          onChanged: loginController.setPassword,
+                          hint: 'E-mail',
+                          prefix: const Icon(Icons.account_circle),
+                          textInputType: TextInputType.emailAddress,
+                          onChanged: loginController.setEmail,
                           enabled: !loginController.loading,
-                          suffix: CustomIconButton(
-                            radius: 32,
-                            iconData: loginController.passwordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            onTap: loginController.togglePasswordVisible,
-                          ),
                         );
-                      }
-                    ),
-                    const SizedBox(height: 16),
-                    Observer(builder: ((context) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
+                      }),
+                      const SizedBox(height: 16),
+                        Observer(builder: (_) {
+                          return CustomTextField(
+                            hint: 'Senha',
+                            prefix: const Icon(Icons.lock),
+                            obscure: !loginController.passwordVisible,
+                            onChanged: loginController.setPassword,
+                            enabled: !loginController.loading,
+                            suffix: CustomIconButton(
+                              radius: 32,
+                              iconData: loginController.passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              onTap: loginController.togglePasswordVisible,
+                            ),
+                          );
+                        }
+                      ),
+                      const SizedBox(height: 16),
+                      Observer(builder: ((context) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32),
+                            ),
+                            primary: Theme.of(context).primaryColor,
+                            onSurface: Theme.of(context).primaryColor,
+                            textStyle: const TextStyle(color: Colors.white),
+                            padding: const EdgeInsets.all(12),
                           ),
-                          primary: Theme.of(context).primaryColor,
-                          onSurface: Theme.of(context).primaryColor,
-                          textStyle: const TextStyle(color: Colors.white),
-                          padding: const EdgeInsets.all(12),
-                        ),
-                        child: loginController.loading
-                            ? SizedBox(
-                              height: 17,
-                              width: 17,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-                                strokeWidth: 3,
-                              ),
-                            )
-                            : const Text('Login'),
-                        onPressed: loginController.isFormValid
-                            ? () async {
-                              await loginController.login();
-                            }
-                            : null,
-                      );
-                    }))
-                  ],
+                          child: loginController.loading
+                              ? SizedBox(
+                                height: 17,
+                                width: 17,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                                  strokeWidth: 3,
+                                ),
+                              )
+                              : const Text('Login'),
+                          onPressed: loginController.isFormValid
+                              ? () async {
+                                await loginController.login();
+                              }
+                              : null,
+                        );
+                      }))
+                    ],
+                  ),
                 ),
+                Flexible(
+                  child: TextButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const TodoListScreen()),
+                      );
+                    },
+                    child: const Text('Entrar sem logar'),
+                  ),
+                )
               ],
             ),
           ),
