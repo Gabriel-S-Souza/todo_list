@@ -193,7 +193,6 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
 
    _onItemReorder(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
      if (oldListIndex != newListIndex || oldItemIndex != newItemIndex) {
-       print('todolists: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
       setState(() {
         listBoardController.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
         if (listBoardController.boards[newListIndex].title == 'Concluído' && oldListIndex != newListIndex) {
@@ -206,7 +205,6 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
   _onListReorder(int oldListIndex, int newListIndex) {
     if (oldListIndex != newListIndex) {
       setState(() {
-        print('todolists: oldListIndex: $oldListIndex, newListIndex: $newListIndex');
         listBoardController.moveBoard(newListIndex, oldListIndex);
       });
     }

@@ -58,7 +58,7 @@ flutter_icons:
   adaptative_icon_forenground: "assets/images/adaptative.png"
 
 flutter_native_splash:
-  color: "#FFFFFFFF"
+  color: "#FFFFFF"
   image: "assets/images/splash.png"
   android: true
   ios: true

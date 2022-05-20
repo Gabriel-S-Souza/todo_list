@@ -79,7 +79,6 @@ abstract class ListBoardControllerBase with Store {
     List<TasksBoardModel> boardsList = [];
     boardsList = await boardsDataManager.read();
     boards.clear();
-    print(boards);
     return boardsList.map((e) {
       boards.add(e);
     }).toList();
@@ -106,7 +105,6 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   void moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
-    print('controller: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
     boardsDataManager.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
     boards = ObservableList<TasksBoardModel>.of(boards);
   }

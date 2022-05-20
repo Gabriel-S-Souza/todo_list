@@ -53,7 +53,6 @@ class TasksDAO {
 
   Future<void> moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) async {
 
-    print('taskDao: oldItemIndex: $oldItemIndex, oldListIndex: $oldListIndex, newItemIndex: $newItemIndex, newListIndex: $newListIndex');
     TasksBoardModel? odlBoard = box.getAt(oldListIndex);
     TasksBoardModel? newBoard = box.getAt(newListIndex);
     
@@ -74,27 +73,4 @@ class TasksDAO {
         ..tasks = newBoardTasks);
     }
   }
-
-  // Future<List<List<String>>> read() {
-  //   List<TasksBoardModel> board = box.values.toList();
-    
-  //   Future.value();
-
-  //   List<List<String>> taskListList = [];
-
-  //   if (board != null) {
-  //     board.map((e) {
-  //       List<String> taskList = [];
-
-  //       e.tasks.map((e) {
-  //         taskList.add(e);
-  //       }).toList();
-
-  //       taskListList.add(taskList);
-
-  //     }).toList();
-  //   }
-
-  //   return Future.value(taskListList);
-  // }
 }
