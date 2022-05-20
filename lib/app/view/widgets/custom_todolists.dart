@@ -52,6 +52,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 onListReorder: _onListReorder,
                 axis: Axis.horizontal,
                 scrollAreaSize: (width * 0.275).toInt(),
+                lastListTargetSize: width * 0.6,
                 removeTopPadding: true,
                 overDragCoefficient: 1.5,
                 listWidth: width * 0.8,
