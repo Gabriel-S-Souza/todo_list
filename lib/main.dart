@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list/app/controllers/list_controller.dart';
 import 'package:todo_list/app/data_sources/local/boards_dao.dart';
-import 'package:todo_list/app/data_sources/local/tasks_dao.dart';
 import 'app/controllers/list_board_controller.dart';
 import 'app/models/default_boards.dart';
 import 'app/models/task_board_hive_adapter.dart';

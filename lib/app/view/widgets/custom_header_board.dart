@@ -53,6 +53,7 @@ class CustomHeaderBoard extends StatelessWidget {
             controller: controller,
             hint: hint,
             onChanged: onChanged,
+            onSubmitted: onTap,
             suffix: CustomIconButton(
               radius: 32,
               iconData: Icons.add,

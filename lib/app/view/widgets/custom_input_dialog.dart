@@ -39,10 +39,17 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.title),
-      content: TextField(
+      content: TextFormField(
         autofocus: true,
         controller: textEditingController,
         decoration: InputDecoration(hintText: widget.hint),
+        textInputAction: TextInputAction.done,
+        onFieldSubmitted: (String value) {
+          if (value.isNotEmpty) {
+            widget.onSubmit(textEditingController.text);
+            Navigator.of(context).pop();
+          }
+        }
       ),
       actions: [
         TextButton(

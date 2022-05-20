@@ -11,7 +11,8 @@ class CustomTextField extends StatelessWidget {
     this.textInputType,
     this.enabled,
     this.controller, 
-    this.onFocusChange,
+    this.onFocusChange, 
+    this.onSubmitted,
   }) : super(key: key);
   final TextEditingController? controller;
   final String? hint;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscure;
   final TextInputType? textInputType;
   final Function(String) onChanged;
+  final Function()? onSubmitted;
   final void Function(bool)? onFocusChange;
   final bool? enabled;
 
@@ -34,13 +36,18 @@ class CustomTextField extends StatelessWidget {
       padding: prefix != null ? null : const EdgeInsets.only(left: 16),
       child: Focus(
         onFocusChange: onFocusChange,
-        child: TextField(
+        child: TextFormField(
           controller: controller,
           obscureText: obscure,
           keyboardType: textInputType,
           onChanged: onChanged,
           enabled: enabled,
           autofocus: false,
+          onFieldSubmitted: (value) {
+            if (value.isNotEmpty) {
+              onSubmitted?.call();
+            }
+          },
           decoration: InputDecoration(
             hintText: hint,
             border: InputBorder.none,
