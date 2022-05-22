@@ -22,7 +22,7 @@ void main() async {
     DefaultBoards.defaultBoards.map((e) {
       box.add(TasksBoardModel() 
           ..title = e
-          ..tasks = e == DefaultBoards.defaultBoards[0] ? ['Mude o status das tarefas arrastando-a para os outros cards'] : []);
+          ..tasks = e == DefaultBoards.defaultBoards[0] ? ['Mude o status das tarefas arrastando-as para os outros quadros'] : []);
               
     }).toList();
   }
