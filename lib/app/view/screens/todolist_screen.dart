@@ -39,14 +39,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       ),
                     ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (_) => const LoginScreen())
-                      );
-                    },
-                  ),
                 ],
               ),
             ),

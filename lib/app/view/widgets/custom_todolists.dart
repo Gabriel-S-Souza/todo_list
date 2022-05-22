@@ -57,6 +57,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                 overDragCoefficient: 1.5,
                 listWidth: width * 0.8,
                 listSizeAnimationDurationMilliseconds: 20,
+                
                 listDraggingWidth: width * 0.8,
                 listPadding: const EdgeInsets.only(left: 16, right: 4, top: 16),
                 contentsWhenEmpty: const Center(child: Text('Não há quadros')),

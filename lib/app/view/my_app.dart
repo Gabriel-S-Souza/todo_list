@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/app/view/screens/login_screen.dart';
+import 'package:todo_list/app/view/screens/todolist_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.blue),
       ),
-      home: const LoginScreen(),
+      home: const TodoListScreen(),
     );
   }
 }
