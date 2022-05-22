@@ -20,7 +20,10 @@ void main() async {
   Box<TasksBoardModel> box = await Hive.openBox<TasksBoardModel>('boards_teste');
   if (box.isEmpty) {
     DefaultBoards.defaultBoards.map((e) {
-      box.add(TasksBoardModel() ..title = e);
+      box.add(TasksBoardModel() 
+          ..title = e
+          ..tasks = e == DefaultBoards.defaultBoards[0] ? ['Mude o status das tarefas arrastando-a para os outros cards'] : []);
+              
     }).toList();
   }
 
