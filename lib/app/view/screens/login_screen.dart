@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   flex: 3,
                   child: Center(
                     child: Text(
-                      'Entrar',
+                      'Login',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
@@ -116,9 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Flexible(
                   child: TextButton(
                     onPressed: () async {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const TodoListScreen()),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
                     },
                     child: const Text('Entrar sem logar'),
                   ),

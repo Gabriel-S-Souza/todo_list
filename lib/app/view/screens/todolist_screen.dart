@@ -17,32 +17,41 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: const [
-                      Icon(Icons.list_alt, size: 32),
-                      Text(
-                        'list.me',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 32
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+        appBar: AppBar(
+          leading: Padding(
+            padding: EdgeInsets.only(top: width * 0.03),
+            child: Icon(
+              Icons.list_alt,
+              size: 32, 
+              color: Theme.of(context).textTheme.headline6?.color ?? Colors.black,
+            ),
+          ),
+          leadingWidth: 24,
+          toolbarHeight: width * 0.2,
+          title: Padding(
+            padding: EdgeInsets.only(top: width * 0.03),
+            child: Text(
+              'list.me',
+              style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 32,
+                  color: Theme.of(context).textTheme.headline6?.color ?? Colors.black,
+                  
               ),
             ),
-            const Flexible(
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+
+        body: Column(
+          children: const <Widget>[
+            Flexible(
               child: CustomTodoLists(),
             ),
           ],
