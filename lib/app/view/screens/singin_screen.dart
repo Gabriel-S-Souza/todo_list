@@ -24,14 +24,12 @@ class _SinginScreenState extends State<SinginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Center(
-                  child: Text(
-                    'Cadastre-se',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColorDark,
-                    ),
+                Text(
+                  'Crie uma conta',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColorDark,
                   ),
                 ),
                 const Flexible(
@@ -49,9 +47,8 @@ class _SinginScreenState extends State<SinginScreen> {
                       const SizedBox(height: 16),
                       CustomTextField(
                         hint: 'Nome',
-                        prefix: Icon(
+                        prefix: const Icon(
                           Icons.person,
-                          color: Theme.of(context).primaryColorDark,
                         ),
                         onChanged: (value) {},
                         enabled: true, // add flag here
