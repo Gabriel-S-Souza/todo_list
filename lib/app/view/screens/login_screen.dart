@@ -4,6 +4,7 @@ import 'package:mobx/mobx.dart';
 import '../../controllers/login_controller.dart';
 import '../widgets/custom_icon_button.dart';
 import '../widgets/custom_text_field.dart';
+import 'registration_screen.dart';
 import 'todolist_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,9 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ),
                   ),
@@ -114,11 +115,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Flexible(
-                  child: TextButton(
-                    onPressed: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
-                    },
-                    child: const Text('Entrar sem logar'),
+                  child: Column(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const RegistrationScreen()));
+                        },
+                        child: const Text('Cadastre-se'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
+                        },
+                        child: const Text('Entrar sem logar'),
+                      ),
+                    ],
                   ),
                 )
               ],
