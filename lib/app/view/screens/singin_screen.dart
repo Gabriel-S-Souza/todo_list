@@ -140,5 +140,5 @@ class _SinginScreenState extends State<SinginScreen> {
         ),
       ),
     );
-  }
+  } 
 }

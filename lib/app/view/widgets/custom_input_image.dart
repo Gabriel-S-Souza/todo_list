@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CustomInputImage extends StatefulWidget {
   const CustomInputImage({ Key? key }) : super(key: key);
@@ -8,7 +11,9 @@ class CustomInputImage extends StatefulWidget {
 }
 
 class _CustomInputImageState extends State<CustomInputImage> {
-  String? pathImage;
+  String? _pathImage;
+  XFile? _imageFile;
+  ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +22,92 @@ class _CustomInputImageState extends State<CustomInputImage> {
       children: [
         CircleAvatar(
           radius: 40,
-          backgroundImage: pathImage != null ? AssetImage(pathImage!) : null,
-          child: pathImage != null 
+          backgroundImage: _imageFile == null 
+              ? null
+              : AssetImage(File(_imageFile!.path).path),
+          child: _pathImage != null 
           ? null 
           : InkWell(
             child: const Icon(Icons.add_a_photo),
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(context: context, builder: (context) => _buildBottomSheet());
+            },
           ),
         )
       ],
     );
+  }
+
+  _buildBottomSheet() {
+    
+    return Container(
+      padding: const EdgeInsets.all(16),
+      height: 180,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            const Text(
+            'Carregar imagem',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+            ),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+              Expanded(
+                child: TextButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.photo),
+                      SizedBox(width: 8),
+                      Text('Galeria'),
+                    ],
+                  ),
+                  onPressed: () {
+                    _pickImage(ImageSource.gallery);
+                  },
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: TextButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.camera_alt),
+                      SizedBox(width: 8),
+                      Text('Câmera'),
+                    ],
+                  ),
+                  onPressed: () {
+                    _pickImage(ImageSource.camera);
+                  },
+                ),
+              ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = pickedFile;
+      });
+    }
   }
 }
