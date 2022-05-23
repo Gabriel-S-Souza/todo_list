@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_icon_button.dart';
+import '../widgets/custom_input_image.dart';
 import '../widgets/custom_text_field.dart';
 import 'login_screen.dart';
 import 'todolist_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({ Key? key }) : super(key: key);
+class SinginScreen extends StatefulWidget {
+  const SinginScreen({ Key? key }) : super(key: key);
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<SinginScreen> createState() => _SinginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _SinginScreenState extends State<SinginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,24 +24,39 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Flexible(
-                  flex: 3,
-                  child: Center(
-                    child: Text(
-                      'Cadastre-se',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
+                Center(
+                  child: Text(
+                    'Cadastre-se',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColorDark,
                     ),
+                  ),
+                ),
+                const Flexible(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: CustomInputImage()
                   ),
                 ),
                 Flexible(
                   flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        hint: 'Nome',
+                        prefix: Icon(
+                          Icons.person,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onChanged: (value) {},
+                        enabled: true, // add flag here
+                      ),
+                      const SizedBox(height: 16),
                       CustomTextField(
                         hint: 'E-mail',
                         prefix: const Icon(Icons.account_circle),
@@ -89,23 +105,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ],
                   ),
                 ),
-                Flexible(
-                  child: Column(
-                    children: [
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const   LoginScreen()));
-                        },
-                        child: const Text('Já possui uma conta? Clique aqui para fazer login.'),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const   LoginScreen()));
+                      },
+                      child: Text(
+                        'Já possui uma conta? Clique aqui para fazer login.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
-                        },
-                        child: const Text('Entrar sem logar'),
+                    ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
+                      },
+                      child: Text(
+                        'Entrar sem logar',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               ],
             ),

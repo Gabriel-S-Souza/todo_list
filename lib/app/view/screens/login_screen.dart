@@ -4,7 +4,7 @@ import 'package:mobx/mobx.dart';
 import '../../controllers/login_controller.dart';
 import '../widgets/custom_icon_button.dart';
 import '../widgets/custom_text_field.dart';
-import 'registration_screen.dart';
+import 'singin_screen.dart';
 import 'todolist_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const RegistrationScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const SinginScreen()));
                         },
                         child: const Text('Cadastre-se'),
                       ),

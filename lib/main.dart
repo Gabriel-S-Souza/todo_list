@@ -8,16 +8,10 @@ import 'app/models/default_boards.dart';
 import 'app/models/task_board_hive_adapter.dart';
 import 'app/models/task_board_model.dart';
 import 'app/view/my_app.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-  Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   //TODO: alocar a inicialização do Hive
   
