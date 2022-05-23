@@ -24,7 +24,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: Padding(
-            padding: EdgeInsets.only(top: width * 0.03),
+            padding: EdgeInsets.only(top: width * 0.03, left: 16),
             child: Icon(
               Icons.list_alt,
               size: 32, 
@@ -34,15 +34,41 @@ class _TodoListScreenState extends State<TodoListScreen> {
           leadingWidth: 24,
           toolbarHeight: width * 0.2,
           title: Padding(
-            padding: EdgeInsets.only(top: width * 0.03),
-            child: Text(
-              'list.me',
-              style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 32,
-                  color: Theme.of(context).textTheme.headline6?.color ?? Colors.black,
-                  
-              ),
+            padding: EdgeInsets.only(top: width * 0.03, left: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'list.me',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 32,
+                      color: Theme.of(context).textTheme.headline6?.color ?? Colors.black,
+                      
+                  ),
+                ),
+                Row(
+                  children: [
+                    
+                    Text(
+                      '@user',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        color: Theme.of(context).textTheme.headline6?.color ?? Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    const CircleAvatar(
+                      radius: 14,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
           backgroundColor: Colors.transparent,
