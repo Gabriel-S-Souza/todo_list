@@ -107,7 +107,7 @@ class _SinginScreenState extends State<SinginScreen> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const   LoginScreen()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const   LoginScreen()));
                       },
                       child: Text(
                         'Já possui uma conta? Clique aqui para fazer login.',
@@ -119,19 +119,6 @@ class _SinginScreenState extends State<SinginScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    GestureDetector(
-                      onTap: () async {
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
-                      },
-                      child: Text(
-                        'Entrar sem logar',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                    ),
                   ],
                 )
               ],

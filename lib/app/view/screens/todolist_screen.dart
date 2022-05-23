@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
 import '../../controllers/list_board_controller.dart';
 import '../widgets/custom_todolists.dart';
-import 'login_screen.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({Key? key}) : super(key: key);

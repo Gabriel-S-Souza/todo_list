@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const   SinginScreen()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const   SinginScreen()));
                         },
                         child: Text(
                           'Caso não possua uma conta, clique aqui',
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 16),
                       GestureDetector(
                         onTap: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
                         },
                         child: Text(
                           'Entrar sem logar',

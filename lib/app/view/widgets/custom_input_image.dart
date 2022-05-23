@@ -18,17 +18,38 @@ class _CustomInputImageState extends State<CustomInputImage> {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
       children: [
         CircleAvatar(
           radius: 40,
           backgroundImage: _imageFile == null 
               ? null
-              : AssetImage(File(_imageFile!.path).path),
-          child: _pathImage != null 
-          ? null 
-          : InkWell(
-            child: const Icon(Icons.add_a_photo),
+              : Image.file(File(_imageFile!.path)).image,
+          child: _imageFile == null
+              ? const Icon(
+                  Icons.person,
+                  size: 60,
+                )
+              : null,
+        ),
+        Positioned(
+          top: 50,
+          left: 50,
+          child: InkWell(
+            child: Icon(
+              Icons.add_a_photo, 
+              size: 32, 
+              color: Theme.of(context).backgroundColor, 
+              shadows: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 10,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0),
+                ),
+              ],
+              ),
             onTap: () {
               showModalBottomSheet(context: context, builder: (context) => _buildBottomSheet());
             },
