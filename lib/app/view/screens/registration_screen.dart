@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../widgets/custom_icon_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -50,22 +49,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         enabled: true, // add flag here
                       ),
                       const SizedBox(height: 16),
-                        Observer(builder: (_) {
-                          return CustomTextField(
-                            hint: 'Senha',
-                            prefix: const Icon(Icons.lock),
-                            obscure: false, // add flag here
-                            onChanged: (value) {},
-                            enabled: true, // add flag here
-                            suffix: CustomIconButton(
-                              radius: 32,
-                              iconData: true
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              onTap: () {},
-                            ),
-                          );
-                        }
+                      CustomTextField(
+                        hint: 'Senha',
+                        prefix: const Icon(Icons.lock),
+                        obscure: false, // add flag here
+                        onChanged: (value) {},
+                        enabled: true, // add flag here
+                        suffix: CustomIconButton(
+                          radius: 32,
+                          iconData: true
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          onTap: () {},
+                        ),
                       ),
                       const SizedBox(height: 16),
                       ElevatedButton(
