@@ -1,1 +1,0 @@
-dsdsadsdasdç,saçd,asçd
