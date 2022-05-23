@@ -116,21 +116,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Flexible(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      TextButton(
-                        onPressed: () async {
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => const SinginScreen()));
+                      GestureDetector(
+                        onTap: () async {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => const   SinginScreen()));
                         },
-                        child: const Text('Cadastre-se'),
+                        child: Text(
+                          'Caso não possua uma conta, clique aqui',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
                       ),
-                      TextButton(
-                        onPressed: () async {
+                      const SizedBox(height: 16),
+                      GestureDetector(
+                        onTap: () async {
                           Navigator.push(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
                         },
-                        child: const Text('Entrar sem logar'),
+                        child: Text(
+                          'Entrar sem logar',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
                       ),
                     ],
-                  ),
+                  )
                 )
               ],
             ),
