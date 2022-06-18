@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const   SinginScreen()));
                         },
                         child: Text(
-                          'Caso não possua uma conta, clique aqui',
+                          'Criar uma conta',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

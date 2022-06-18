@@ -13,8 +13,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  //TODO: alocar a inicialização do Hive
-  
   await Hive.initFlutter();
   Hive.registerAdapter(TaskBoardAdapter());
   Box<TasksBoardModel> box = await Hive.openBox<TasksBoardModel>('boards_teste');

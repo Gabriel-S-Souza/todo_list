@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list/app/data_sources/local/tasks_dao.dart';
@@ -6,6 +8,7 @@ import '../contracts/boards_data_manager.dart';
 
 class BoardDAO with TasksDAO implements IBoardsDataManager {
 
+  // ignore: overridden_fields
   final Box<TasksBoardModel> box = GetIt.I.get<Box<TasksBoardModel>>();
 
   @override

@@ -11,9 +11,8 @@ class CustomInputImage extends StatefulWidget {
 }
 
 class _CustomInputImageState extends State<CustomInputImage> {
-  String? _pathImage;
   XFile? _imageFile;
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -36,23 +35,43 @@ class _CustomInputImageState extends State<CustomInputImage> {
         Positioned(
           top: 50,
           left: 50,
-          child: InkWell(
-            child: Icon(
-              Icons.add_a_photo, 
-              size: 32, 
-              color: Theme.of(context).backgroundColor, 
-              shadows: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  blurRadius: 10,
-                  spreadRadius: 0,
-                  offset: Offset(0, 0),
-                ),
-              ],
+          child: Material(
+            color: Theme.of(context).backgroundColor,
+            borderRadius: BorderRadius.circular(50),
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Theme.of(context).backgroundColor,
+                boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).shadowColor.withOpacity(0.5),
+                      blurRadius: 8,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
               ),
-            onTap: () {
-              showModalBottomSheet(context: context, builder: (context) => _buildBottomSheet());
-            },
+              child: InkWell(
+                child: Icon(
+                  Icons.add_a_photo, 
+                  size: 24, 
+                  color: Theme.of(context).canvasColor, 
+                  shadows: [
+                    BoxShadow(
+                      color: Theme.of(context).shadowColor.withOpacity(0.5),
+                      blurRadius: 10,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                  ),
+                onTap: () {
+                  showModalBottomSheet(context: context, builder: (context) => _buildBottomSheet());
+                },
+              ),
+            ),
           ),
         )
       ],
@@ -96,6 +115,7 @@ class _CustomInputImageState extends State<CustomInputImage> {
                   ),
                   onPressed: () {
                     _pickImage(ImageSource.gallery);
+                    Navigator.pop(context);
                   },
                 ),
               ),
@@ -112,6 +132,7 @@ class _CustomInputImageState extends State<CustomInputImage> {
                   ),
                   onPressed: () {
                     _pickImage(ImageSource.camera);
+                    Navigator.pop(context);
                   },
                 ),
               ),

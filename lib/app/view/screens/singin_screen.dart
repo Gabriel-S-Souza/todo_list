@@ -4,7 +4,6 @@ import '../widgets/custom_icon_button.dart';
 import '../widgets/custom_input_image.dart';
 import '../widgets/custom_text_field.dart';
 import 'login_screen.dart';
-import 'todolist_screen.dart';
 
 class SinginScreen extends StatefulWidget {
   const SinginScreen({ Key? key }) : super(key: key);
@@ -70,9 +69,7 @@ class _SinginScreenState extends State<SinginScreen> {
                         enabled: true, // add flag here
                         suffix: CustomIconButton(
                           radius: 32,
-                          iconData: true
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                          iconData: Icons.visibility,
                           onTap: () {},
                         ),
                       ),
@@ -87,16 +84,23 @@ class _SinginScreenState extends State<SinginScreen> {
                           textStyle: const TextStyle(color: Colors.white),
                           padding: const EdgeInsets.all(12),
                         ),
-                        child: false
-                            ? SizedBox(
+                        child: SizedBox(
                               height: 17,
                               width: 17,
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
                                 strokeWidth: 3,
                               ),
-                            )
-                            : const Text('Cadastrar'),
+                            ),
+                            // ? SizedBox(
+                            //   height: 17,
+                            //   width: 17,
+                            //   child: CircularProgressIndicator(
+                            //     valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                            //     strokeWidth: 3,
+                            //   ),
+                            // )
+                            // : const Text('Cadastrar'),
                         onPressed: null, // add flag here for disable button
                       ),
                     ],
