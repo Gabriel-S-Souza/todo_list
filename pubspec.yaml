@@ -43,7 +43,7 @@ dependencies:
   cloud_firestore: ^3.1.15
   firebase_auth: ^3.3.18
   firebase_core: ^1.17.0
-  # firebase_database: ^9.0.14
+  dio: ^4.0.6
   drag_and_drop_lists:
     git:
       url: https://github.com/Gabriel-S-Souza/DragAndDropLists

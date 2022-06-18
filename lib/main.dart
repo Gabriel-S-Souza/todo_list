@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:todo_list/app/data_sources/http/http_client.dart';
 import 'package:todo_list/app/data_sources/local/boards_dao.dart';
 import 'package:todo_list/app/repositories/hive_app.dart';
 import 'app/controllers/list_board_controller.dart';
@@ -13,6 +14,23 @@ void main() async {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   Box<TasksBoardModel> box = await HiveApp.init();
+
+  DioClient dioClient = DioClient();
+  // final responsePost = await dioClient.post(
+  //   body: [{
+  //       "title": "A fazer",
+  //       "tasks": [
+  //           "Estudar Flutter",
+  //           "Estudar Dart",
+  //           "Estudar consumo de APIS REST"
+  //       ]
+  //   }]
+  // );
+  
+  final response = await dioClient.get();
+
+  print(response);
+  
 
   GetIt getIt = GetIt.I;
   getIt.registerSingleton<Box<TasksBoardModel>>(box);
