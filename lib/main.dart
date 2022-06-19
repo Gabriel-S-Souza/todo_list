@@ -13,9 +13,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  Box<TasksBoardModel> box = await HiveApp.init();
+  // Box<TasksBoardModel> box = await HiveApp.init();
 
-  DioClient dioClient = DioClient();
   // final responsePost = await dioClient.post(
   //   body: [{
   //       "title": "A fazer",
@@ -27,14 +26,9 @@ void main() async {
   //   }]
   // );
   
-  final response = await dioClient.get();
-
-  print(response);
-  
 
   GetIt getIt = GetIt.I;
-  getIt.registerSingleton<Box<TasksBoardModel>>(box);
-  getIt.registerSingleton<ListBoardController>(ListBoardController(boardsDataManager: BoardDAO()));
+  getIt.registerSingleton<ListBoardController>(ListBoardController(boardsDataManager: HttpTaskBoardManager()));
   
   runApp(const MyApp());
 }

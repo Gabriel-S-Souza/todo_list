@@ -36,16 +36,17 @@ abstract class ListBoardControllerBase with Store {
   @observable
   bool isLoading = false;
 
+  //TODO: adaptar
   @action
   Future<void> addBoard(String value) async {
     await boardsDataManager.create(value);
     boards.add(TasksBoardModel()
-      ..title = value
-      ..tasks = []);
+      ..title = value);
     
     _getTasks();
   }
 
+  //TODO: adaptar
   @action
   Future<dynamic> moveBoard(int insertIndex, int oldIndex) async {
     TasksBoardModel boardMoved = boards.removeAt(oldIndex);
@@ -54,6 +55,7 @@ abstract class ListBoardControllerBase with Store {
     return await boardsDataManager.createFromList(boards);
   }
 
+  //TODO: adaptar
   @action
   Future<void> removeBoard(int index) async {
     await boardsDataManager.delete(index);
@@ -63,14 +65,15 @@ abstract class ListBoardControllerBase with Store {
   @action
   Future<void> _initializeBoards() async {
     isLoading = true;
-    List<TasksBoardModel> boardsList = [];
-    // await Future.delayed(const Duration(seconds: 3), () async {
-     boardsList = await boardsDataManager.read();
-    // });
+    List<TasksBoardModel>? boardsList = [];
+     boardsList = await boardsDataManager.read() as List<TasksBoardModel>?;
     boards.clear();
-    boardsList.map((e) {
-      boards.add(e);
-    }).toList();
+    if (boardsList != null) {
+      for (var i = 0; i < boardsList.length; i++) {
+        TasksBoardModel _board = boardsList.where((element) => element.position == i).first;
+        boards.add(_board);
+      }
+    }
     isLoading = false;
   }
 
@@ -84,6 +87,7 @@ abstract class ListBoardControllerBase with Store {
     }).toList();
   }
 
+  //TODO: adaptar
   @action
   Future<void> addTask(int outerIndex, [int? insertIndex]) async {
     if (insertIndex != null) {
@@ -97,18 +101,21 @@ abstract class ListBoardControllerBase with Store {
     textEditingController.clear();
   }
 
+  //TODO: adaptar
   @action
   Future<void> removeTask(int innerIndex, int outerIndex) async {
     await boardsDataManager.deleteTask(innerIndex, outerIndex);
     // boards[outerIndex].tasks.removeAt(innerIndex);
   }
 
+  //TODO: adaptar
   @action
   void moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
     boardsDataManager.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
     boards = ObservableList<TasksBoardModel>.of(boards);
   }
 
+  //TODO: adaptar
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {
     await boardsDataManager.updateTask(taskEdited, innerIndex, outerIndex);
   }

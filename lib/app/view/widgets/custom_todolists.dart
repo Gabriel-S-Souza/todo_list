@@ -120,7 +120,7 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                     children: listBoardController.isLoading
                     ? List.generate(1, (index) => DragAndDropItem(child: const Center(child: CircularProgressIndicator())))
                     : List.generate(listBoardController.boards[outerIndex].tasks.length, (innerIndex) {
-                      final String task = listBoardController.boards[outerIndex].tasks[innerIndex];
+                      final String task = listBoardController.boards[outerIndex].tasks[innerIndex]!;
                       return DragAndDropItem(
                         feedbackWidget: Container(
                           child: ListTile(
@@ -162,7 +162,8 @@ class _CustomTodoListsState extends State<CustomTodoLists> {
                     }
                   ),
                 );
-                })
+                }
+                )
               ),
               Align(
                 alignment: Alignment.center,
