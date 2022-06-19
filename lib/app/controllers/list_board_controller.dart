@@ -87,19 +87,22 @@ abstract class ListBoardControllerBase with Store {
     }).toList();
   }
 
-  //TODO: adaptar
   @action
-  Future<void> addTask(int outerIndex, [int? insertIndex]) async {
-    if (insertIndex != null) {
-      await boardsDataManager.createTask(newTask, outerIndex, insertIndex);
-      // boards[outerIndex].tasks.insert(insertIndex, newTask);
-    } else {
-      await boardsDataManager.createTask(newTask, outerIndex);
-      // boards[outerIndex].tasks.add(newTask);
-    }
+  Future<void> addTask(int outerIndex) async{
+    // _addPlaceholderTask(outerIndex);
+
+    await boardsDataManager.createTask(newTask, boards[outerIndex].tasks, boards[outerIndex].id);
+
     newTask = '';
     textEditingController.clear();
   }
+
+  // _addPlaceholderTask(int outerIndex) {
+  //   TasksBoardModel _board = boards[outerIndex];
+  //   _board.tasks[boards[outerIndex].tasks.length] = newTask;
+    
+  //   boards[outerIndex] = _board;
+  // }
 
   //TODO: adaptar
   @action

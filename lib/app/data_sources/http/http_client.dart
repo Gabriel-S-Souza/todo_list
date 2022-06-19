@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -47,11 +46,11 @@ class DioClient {
     }
   }
 
-  Future<dynamic> put({dynamic body}) async {
+  Future<dynamic> put({required Map<String, dynamic> body}) async {
     try {
       final response = await dio.put(
         baseUrl, 
-        data: body,
+        data: [body],
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -131,9 +130,22 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
 
   @override
-  Future<void> createTask(String data, int outerIndex, [int? insertIndex]) {
-    // TODO: implement createTask
-    throw UnimplementedError();
+  Future<void> createTask(String data, Map<int, String> tasks, String id) async {
+    Map<String, String> tasksStringKeys = {};
+    final int index = tasks.length;
+    tasks[index] = data;
+
+    for (var i = 0; i < tasks.length; i++) {
+      tasksStringKeys[i.toString()] = tasks[i]!;
+    }
+
+    
+    await dioClient.put(
+      body: {
+        "_uuid": id,
+        "tasks": tasksStringKeys,
+      }
+    );
   }
 
   @override
@@ -150,6 +162,11 @@ class HttpTaskBoardManager implements IBoardsDataManager {
 
   @override
   Future<void> moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
+    // for (var i = 0; i < tasks.length; i++) {
+    //   if (index >= tasks.keys.toList()[i]) {
+    //     tasks[tasks.keys.toList()[i] + 1] = tasks[i]!;
+    //   }
+    // }
     // TODO: implement moveTask
     throw UnimplementedError();
   }

@@ -111,9 +111,8 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
       AsyncAction('ListBoardControllerBase.addTask', context: context);
 
   @override
-  Future<void> addTask(int outerIndex, [int? insertIndex]) {
-    return _$addTaskAsyncAction
-        .run(() => super.addTask(outerIndex, insertIndex));
+  Future<void> addTask(int outerIndex) {
+    return _$addTaskAsyncAction.run(() => super.addTask(outerIndex));
   }
 
   late final _$removeTaskAsyncAction =

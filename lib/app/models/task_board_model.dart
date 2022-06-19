@@ -2,6 +2,7 @@
 class TasksBoardModel {
   late String title;
   late int position;
+  late String id;
 
   Map<int, String> tasks = {};
 
@@ -17,6 +18,7 @@ class TasksBoardModel {
 
     title = json['title'];
     position = json['position'];
+    id = json['_uuid'];
     tasks = _tasks;
   }
 
