@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_icon_button.dart';
@@ -33,11 +34,13 @@ class CustomHeaderBoard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                AutoSizeText(
                   title,
+                  maxLines: 1,
+                  minFontSize: 16,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontWeight: FontWeight.w900,
-                      fontSize: 22
                   ),
                 ),
                 CustomIconButton(
