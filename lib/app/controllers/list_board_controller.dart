@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/data_sources/contracts/boards_data_manager.dart';
@@ -149,8 +151,8 @@ abstract class ListBoardControllerBase with Store {
 
   _checkRequisitionSuccess(dynamic response, Map<int, String> tasksBackup, int outerIndex) {
     final List<dynamic> responseMap = response["items"];
-    print(responseMap);
-    print(responseMap[0].containsKey('_uuid'));
+    log('${responseMap[0].containsKey('_uuid')}');
+    log('$responseMap');
     responseMap[0].containsKey('_uuid') 
         ? null
         : boards[outerIndex].tasks = Map.from(tasksBackup);
