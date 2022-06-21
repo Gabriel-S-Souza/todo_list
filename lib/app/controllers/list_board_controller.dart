@@ -89,26 +89,39 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> addTask(int outerIndex) async{
-    // _addPlaceholderTask(outerIndex);
 
     await boardsDataManager.createTask(newTask, boards[outerIndex].tasks, boards[outerIndex].id);
 
     newTask = '';
     textEditingController.clear();
   }
-
-  // _addPlaceholderTask(int outerIndex) {
-  //   TasksBoardModel _board = boards[outerIndex];
-  //   _board.tasks[boards[outerIndex].tasks.length] = newTask;
-    
-  //   boards[outerIndex] = _board;
-  // }
-
+  
   //TODO: adaptar
   @action
-  Future<void> removeTask(int innerIndex, int outerIndex) async {
-    await boardsDataManager.deleteTask(innerIndex, outerIndex);
-    // boards[outerIndex].tasks.removeAt(innerIndex);
+  Future<void> removeTask(int innerIndex, int outerIndex) async {    
+    final Map<int, String> tasksCopy = Map.from(boards[outerIndex].tasks);
+    final Map<int, String> tasksBackup = Map.from(boards[outerIndex].tasks);
+
+    for (var i = 0; i < tasksCopy.length; i++) {
+      if (innerIndex == tasksCopy.keys.toList()[i]) {
+        tasksCopy.remove(tasksCopy.keys.toList()[i]);
+        continue;
+      }
+    }
+
+    final tasksAdjusted = _adjustKeys(tasksCopy);
+
+    boards[outerIndex].tasks = Map.from(tasksAdjusted);
+    
+    boardsDataManager.updateTask(tasksAdjusted, boards[outerIndex].id)
+        .then((value) {
+          final List<dynamic> responseMap = value["items"];
+          print(responseMap[0].containsKey("_uuid"));
+          print(responseMap[0]);
+          responseMap[0].containsKey('_uuid') 
+              ? null
+              : boards[outerIndex].tasks = Map.from(tasksBackup);
+      });
   }
 
   //TODO: adaptar
@@ -120,6 +133,14 @@ abstract class ListBoardControllerBase with Store {
 
   //TODO: adaptar
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {
-    await boardsDataManager.updateTask(taskEdited, innerIndex, outerIndex);
+    // await boardsDataManager.updateTask(taskEdited, innerIndex, outerIndex);
+  }
+
+  _adjustKeys(Map<int, String> tasks) {
+    final Map<int, String> tasksAdjusted = {};
+    for (var i = 0; i < tasks.length; i++) {
+      tasksAdjusted[i] = tasks.values.toList()[i];
+    }
+    return tasksAdjusted;
   }
 }

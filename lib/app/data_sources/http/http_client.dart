@@ -140,7 +140,7 @@ class HttpTaskBoardManager implements IBoardsDataManager {
     }
 
     
-    await dioClient.put(
+    return await dioClient.put(
       body: {
         "_uuid": id,
         "tasks": tasksStringKeys,
@@ -149,15 +149,19 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
 
   @override
-  Future<void> deleteTask(int innerIndex, int outerIndex) {
-    // TODO: implement deleteTask
-    throw UnimplementedError();
-  }
+  Future<dynamic> updateTask(Map<int, String> tasks, String id) async {
+    Map<String, String> tasksStringKeys = {};
+    
+    for (var i = 0; i < tasks.length; i++) {
+      tasksStringKeys[i.toString()] = tasks[i]!;
+    }
 
-  @override
-  Future<void> updateTask(String data, int innerIndex, int outerIndex) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
+    return await dioClient.put(
+      body: {
+        "_uuid": id,
+        "tasks": tasksStringKeys,
+      }
+    );
   }
 
   @override
@@ -169,5 +173,29 @@ class HttpTaskBoardManager implements IBoardsDataManager {
     // }
     // TODO: implement moveTask
     throw UnimplementedError();
+  }
+  
+  @override
+  Future<void> deleteTask(int innerIndex, Map<int, String> tasks, String id) async {
+    //TODO: ajustar
+
+    // Map<String, String> tasksStringKeys = {};
+    // for (var i = 0; i < tasks.length; i++) {
+    //   if (innerIndex == tasks.keys.toList()[i]) {
+    //     tasks.remove(tasks.keys.toList()[i]);
+    //     continue;
+    //   }
+    //   if (tasks.keys.toList()[i] > innerIndex) {
+    //     tasks[i - 1] = tasks[tasks.keys.toList()[i]]!;
+    //   }
+    //   tasksStringKeys[i.toString()] = tasks[i]!;
+    // }
+
+    // return await dioClient.put(
+    //   body: {
+    //     "_uuid": id,
+    //     "tasks": tasksStringKeys,
+    //   }
+    // );
   }
 }
