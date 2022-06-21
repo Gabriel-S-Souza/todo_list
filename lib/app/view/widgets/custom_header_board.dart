@@ -34,13 +34,15 @@ class CustomHeaderBoard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AutoSizeText(
-                  title,
-                  maxLines: 1,
-                  minFontSize: 16,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w900,
+                Expanded(
+                  child: AutoSizeText(
+                    title,
+                    maxLines: 1,
+                    minFontSize: 16,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                    ),
                   ),
                 ),
                 CustomIconButton(
