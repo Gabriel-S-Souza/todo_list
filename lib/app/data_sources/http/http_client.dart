@@ -164,14 +164,34 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
 
   @override
-  Future<void> moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
-    // for (var i = 0; i < tasks.length; i++) {
-    //   if (index >= tasks.keys.toList()[i]) {
-    //     tasks[tasks.keys.toList()[i] + 1] = tasks[i]!;
-    //   }
-    // }
-    // TODO: implement moveTask
-    throw UnimplementedError();
+  Future moveTask(Map<int, String> oldTasks, String oldId, Map<int, String> newTasks, String newId) async {
+    Map<String, String> oldTasksStringKeys = {};
+    Map<String, String> newTasksStringKeys = {};
+    dynamic responseNew;
+    dynamic responseOld;
+
+    for (var i = 0; i < newTasks.length; i++) {
+      newTasksStringKeys[i.toString()] = newTasks[i]!;
+    }
+    for (var i = 0; i < oldTasks.length; i++) {
+      oldTasksStringKeys[i.toString()] = oldTasks[i]!;
+    }
+
+    responseNew = await dioClient.put(
+      body: {
+        "_uuid": newId,
+        "tasks": newTasksStringKeys,
+      }
+    );
+
+    responseOld = await dioClient.put(
+      body: {
+        "_uuid": oldId,
+        "tasks": oldTasksStringKeys,
+      }
+    );
+
+    return [responseNew, responseOld];
   }
   
   @override

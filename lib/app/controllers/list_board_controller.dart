@@ -122,14 +122,42 @@ abstract class ListBoardControllerBase with Store {
         .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
   }
 
-  //TODO: adaptar
   @action
   void moveTask(int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
-    boardsDataManager.moveTask(oldItemIndex, oldListIndex, newItemIndex, newListIndex);
-    boards = ObservableList<TasksBoardModel>.of(boards);
+    final String taskMoved = boards[oldListIndex].tasks[oldItemIndex]!;
+    final Map<int, String> tasksBackupNew = Map.from(boards[oldListIndex].tasks);
+    final Map<int, String> tasksBackupOld = Map.from(boards[oldListIndex].tasks);
+    final Map<int, String> tasksCopyNew = {};
+    final Map<int, String> tasksCopyOld = Map.from(boards[oldListIndex].tasks);
+
+    tasksCopyOld.remove(oldItemIndex);
+    final tasksOldAdjusted = _adjustKeys(tasksCopyOld);
+    
+    boards[newListIndex].tasks.forEach((key, value) { 
+      if (key < newItemIndex) {
+        tasksCopyNew[key] = value;
+      } else {
+        tasksCopyNew[key + 1] = value;
+      }
+    });
+
+    tasksCopyNew[newItemIndex] = taskMoved;
+
+    boards[newListIndex].tasks = Map.from(tasksCopyNew);
+    boards[oldListIndex].tasks = Map.from(tasksOldAdjusted);
+
+    boardsDataManager.moveTask(tasksOldAdjusted, boards[oldListIndex].id, tasksCopyNew, boards[newListIndex].id)
+        .then((value) => _checkRequisitionSuccess(
+            value[0], 
+            null, 
+            null,
+            newListIndex: newListIndex,
+            oldListIndex: oldListIndex,
+            tasksBackupNew: tasksBackupNew,
+            tasksBackupOld: tasksBackupOld
+            ));
   }
 
-  //TODO: adaptar
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {
     final Map<int, String> tasksBackup = Map.from(boards[outerIndex].tasks);
 
@@ -141,7 +169,7 @@ abstract class ListBoardControllerBase with Store {
         .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
   }
 
-  _adjustKeys(Map<int, String> tasks) {
+  Map<int, String> _adjustKeys(Map<int, String> tasks) {
     final Map<int, String> tasksAdjusted = {};
     for (var i = 0; i < tasks.length; i++) {
       tasksAdjusted[i] = tasks.values.toList()[i];
@@ -149,12 +177,19 @@ abstract class ListBoardControllerBase with Store {
     return tasksAdjusted;
   }
 
-  _checkRequisitionSuccess(dynamic response, Map<int, String> tasksBackup, int outerIndex) {
+  _checkRequisitionSuccess(dynamic response, Map<int, String>? tasksBackup, 
+      int? outerIndex, {int? newListIndex, int? oldListIndex, Map<int, String>? tasksBackupNew, 
+      Map<int, String>? tasksBackupOld}) {
     final List<dynamic> responseMap = response["items"];
     log('${responseMap[0].containsKey('_uuid')}');
     log('$responseMap');
     responseMap[0].containsKey('_uuid') 
         ? null
-        : boards[outerIndex].tasks = Map.from(tasksBackup);
+        : newListIndex == null 
+            ? boards[outerIndex!].tasks = Map.from(tasksBackup!) 
+            : {
+                boards[newListIndex].tasks = Map.from(tasksBackupNew!),
+                boards[oldListIndex!].tasks = Map.from(tasksBackupOld!),
+              };
   }
 }
