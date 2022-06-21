@@ -94,12 +94,7 @@ abstract class ListBoardControllerBase with Store {
     boards[outerIndex].tasks[tasksCopy.length] = newTask;
 
     boardsDataManager.createTask(newTask, tasksCopy, boards[outerIndex].id)
-        .then((value) {
-          final List<dynamic> responseMap = value["items"];
-          responseMap[0].containsKey('_uuid')
-              ? null
-              : boards[outerIndex].tasks = Map.from(tasksBackup);
-          });
+        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
 
     newTask = '';
     textEditingController.clear();
@@ -122,12 +117,7 @@ abstract class ListBoardControllerBase with Store {
     boards[outerIndex].tasks = Map.from(tasksAdjusted);
     
     boardsDataManager.updateTask(tasksAdjusted, boards[outerIndex].id)
-        .then((value) {
-          final List<dynamic> responseMap = value["items"];
-          responseMap[0].containsKey('_uuid') 
-              ? null
-              : boards[outerIndex].tasks = Map.from(tasksBackup);
-      });
+        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
   }
 
   //TODO: adaptar
@@ -139,7 +129,14 @@ abstract class ListBoardControllerBase with Store {
 
   //TODO: adaptar
   Future<void> updateTask(String taskEdited, int innerIndex, int outerIndex) async {
-    // await boardsDataManager.updateTask(taskEdited, innerIndex, outerIndex);
+    final Map<int, String> tasksBackup = Map.from(boards[outerIndex].tasks);
+
+    boards[outerIndex].tasks[innerIndex] = taskEdited;
+
+    final Map<int, String> tasksCopy = Map.from(boards[outerIndex].tasks);
+
+    boardsDataManager.updateTask(tasksCopy, boards[outerIndex].id)
+        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
   }
 
   _adjustKeys(Map<int, String> tasks) {
@@ -148,5 +145,14 @@ abstract class ListBoardControllerBase with Store {
       tasksAdjusted[i] = tasks.values.toList()[i];
     }
     return tasksAdjusted;
+  }
+
+  _checkRequisitionSuccess(dynamic response, Map<int, String> tasksBackup, int outerIndex) {
+    final List<dynamic> responseMap = response["items"];
+    print(responseMap);
+    print(responseMap[0].containsKey('_uuid'));
+    responseMap[0].containsKey('_uuid') 
+        ? null
+        : boards[outerIndex].tasks = Map.from(tasksBackup);
   }
 }

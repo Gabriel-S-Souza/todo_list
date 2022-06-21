@@ -133,8 +133,7 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   Future<void> createTask(String data, Map<int, String> tasks, String id) async {
     final Map<String, String> tasksStringKeys = {};
     final int index = tasks.length;
-    final Map<int, String> tasksCopy = Map.from(tasks);
-    tasksCopy[index] = data;
+    tasks[index] = data;
 
     for (var i = 0; i < tasks.length; i++) {
       tasksStringKeys[i.toString()] = tasks[i]!;
