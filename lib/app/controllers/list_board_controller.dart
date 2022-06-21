@@ -89,14 +89,22 @@ abstract class ListBoardControllerBase with Store {
 
   @action
   Future<void> addTask(int outerIndex) async{
+    final Map<int, String> tasksCopy = Map.from(boards[outerIndex].tasks);
+    final Map<int, String> tasksBackup = Map.from(boards[outerIndex].tasks);
+    boards[outerIndex].tasks[tasksCopy.length] = newTask;
 
-    await boardsDataManager.createTask(newTask, boards[outerIndex].tasks, boards[outerIndex].id);
+    boardsDataManager.createTask(newTask, tasksCopy, boards[outerIndex].id)
+        .then((value) {
+          final List<dynamic> responseMap = value["items"];
+          responseMap[0].containsKey('_uuid')
+              ? null
+              : boards[outerIndex].tasks = Map.from(tasksBackup);
+          });
 
     newTask = '';
     textEditingController.clear();
   }
   
-  //TODO: adaptar
   @action
   Future<void> removeTask(int innerIndex, int outerIndex) async {    
     final Map<int, String> tasksCopy = Map.from(boards[outerIndex].tasks);
@@ -116,8 +124,6 @@ abstract class ListBoardControllerBase with Store {
     boardsDataManager.updateTask(tasksAdjusted, boards[outerIndex].id)
         .then((value) {
           final List<dynamic> responseMap = value["items"];
-          print(responseMap[0].containsKey("_uuid"));
-          print(responseMap[0]);
           responseMap[0].containsKey('_uuid') 
               ? null
               : boards[outerIndex].tasks = Map.from(tasksBackup);

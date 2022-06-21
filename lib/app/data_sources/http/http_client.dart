@@ -131,15 +131,15 @@ class HttpTaskBoardManager implements IBoardsDataManager {
 
   @override
   Future<void> createTask(String data, Map<int, String> tasks, String id) async {
-    Map<String, String> tasksStringKeys = {};
+    final Map<String, String> tasksStringKeys = {};
     final int index = tasks.length;
-    tasks[index] = data;
+    final Map<int, String> tasksCopy = Map.from(tasks);
+    tasksCopy[index] = data;
 
     for (var i = 0; i < tasks.length; i++) {
       tasksStringKeys[i.toString()] = tasks[i]!;
     }
 
-    
     return await dioClient.put(
       body: {
         "_uuid": id,
