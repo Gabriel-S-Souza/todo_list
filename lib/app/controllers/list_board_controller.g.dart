@@ -69,8 +69,8 @@ mixin _$ListBoardController on ListBoardControllerBase, Store {
       AsyncAction('ListBoardControllerBase.addBoard', context: context);
 
   @override
-  Future<void> addBoard(String value) {
-    return _$addBoardAsyncAction.run(() => super.addBoard(value));
+  Future<void> addBoard(String title) {
+    return _$addBoardAsyncAction.run(() => super.addBoard(title));
   }
 
   late final _$moveBoardAsyncAction =

@@ -38,14 +38,24 @@ abstract class ListBoardControllerBase with Store {
   @observable
   bool isLoading = false;
 
-  //TODO: adaptar
   @action
-  Future<void> addBoard(String value) async {
-    await boardsDataManager.create(value);
-    boards.add(TasksBoardModel()
-      ..title = value);
+  Future<void> addBoard(String title) async {
+    final tempBoard = TasksBoardModel()
+      ..title = title
+      ..id = 'tempBoard'
+      ..tasks = {};
+
+
+    boards.add(tempBoard);
     
-    _getTasks();
+    boardsDataManager.create(title, boards.length - 1)
+      .then((valueResponse) {
+        if(valueResponse is TasksBoardModel) {
+          boards.where((element) => element.id == 'tempBoard').first.id = valueResponse.id;
+        } else {
+          boards.removeWhere((element) => element.id == 'tempBoard');
+        }
+      });
   }
 
   //TODO: adaptar
@@ -96,7 +106,7 @@ abstract class ListBoardControllerBase with Store {
     boards[outerIndex].tasks[tasksCopy.length] = newTask;
 
     boardsDataManager.createTask(newTask, tasksCopy, boards[outerIndex].id)
-        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
+        .then((value) => _checkRequisitionTaskSuccess(value, tasksBackup, outerIndex));
 
     newTask = '';
     textEditingController.clear();
@@ -119,7 +129,7 @@ abstract class ListBoardControllerBase with Store {
     boards[outerIndex].tasks = Map.from(tasksAdjusted);
     
     boardsDataManager.updateTask(tasksAdjusted, boards[outerIndex].id)
-        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
+        .then((value) => _checkRequisitionTaskSuccess(value, tasksBackup, outerIndex));
   }
 
   @action
@@ -147,7 +157,7 @@ abstract class ListBoardControllerBase with Store {
     boards[oldListIndex].tasks = Map.from(tasksOldAdjusted);
 
     boardsDataManager.moveTask(tasksOldAdjusted, boards[oldListIndex].id, tasksCopyNew, boards[newListIndex].id)
-        .then((value) => _checkRequisitionSuccess(
+        .then((value) => _checkRequisitionTaskSuccess(
             value[0], 
             null, 
             null,
@@ -166,7 +176,7 @@ abstract class ListBoardControllerBase with Store {
     final Map<int, String> tasksCopy = Map.from(boards[outerIndex].tasks);
 
     boardsDataManager.updateTask(tasksCopy, boards[outerIndex].id)
-        .then((value) => _checkRequisitionSuccess(value, tasksBackup, outerIndex));
+        .then((value) => _checkRequisitionTaskSuccess(value, tasksBackup, outerIndex));
   }
 
   Map<int, String> _adjustKeys(Map<int, String> tasks) {
@@ -177,7 +187,7 @@ abstract class ListBoardControllerBase with Store {
     return tasksAdjusted;
   }
 
-  _checkRequisitionSuccess(dynamic response, Map<int, String>? tasksBackup, 
+  bool _checkRequisitionTaskSuccess(dynamic response, Map<int, String>? tasksBackup, 
       int? outerIndex, {int? newListIndex, int? oldListIndex, Map<int, String>? tasksBackupNew, 
       Map<int, String>? tasksBackupOld}) {
     final List<dynamic> responseMap = response["items"];
@@ -191,5 +201,15 @@ abstract class ListBoardControllerBase with Store {
                 boards[newListIndex].tasks = Map.from(tasksBackupNew!),
                 boards[oldListIndex!].tasks = Map.from(tasksBackupOld!),
               };
+    
+    return responseMap[0].containsKey('_uuid');
   }
+
+  // bool _checkRequisitionBoardSuccess(dynamic response) {
+  //   response is TasksBoardModel
+  //       ? null
+  //       : boards.removeLast();
+    
+  //   return response is TasksBoardModel;
+  // }
 }

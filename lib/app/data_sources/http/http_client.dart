@@ -31,7 +31,7 @@ class DioClient {
     try {
       final response = await dio.post(
         baseUrl, 
-        data: body,
+        data: [body],
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -39,7 +39,8 @@ class DioClient {
           },
         )
       );
-      return response.data;
+      return (response.data["items"] as List).map((e) =>
+           TasksBoardModel.fromJson(e as Map<String, dynamic>)).toList()[0];
     } catch (e) {
       log('post error: ${e.toString()}');
       return null;
@@ -69,7 +70,6 @@ class DioClient {
     try {
       final response = await dio.delete(
         baseUrl, 
-        data: body,
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -94,9 +94,12 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
   
   @override
-  Future<void> create(String data) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future create(String title, int position) async {
+    return await dioClient.post(body: {
+      "title": title,
+      "tasks": {},
+      "position": position
+    });
   }
 
   @override
@@ -130,7 +133,7 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
 
   @override
-  Future<void> createTask(String data, Map<int, String> tasks, String id) async {
+  Future createTask(String data, Map<int, String> tasks, String id) async {
     final Map<String, String> tasksStringKeys = {};
     final int index = tasks.length;
     tasks[index] = data;
@@ -195,26 +198,5 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
   
   @override
-  Future<void> deleteTask(int innerIndex, Map<int, String> tasks, String id) async {
-    //TODO: ajustar
-
-    // Map<String, String> tasksStringKeys = {};
-    // for (var i = 0; i < tasks.length; i++) {
-    //   if (innerIndex == tasks.keys.toList()[i]) {
-    //     tasks.remove(tasks.keys.toList()[i]);
-    //     continue;
-    //   }
-    //   if (tasks.keys.toList()[i] > innerIndex) {
-    //     tasks[i - 1] = tasks[tasks.keys.toList()[i]]!;
-    //   }
-    //   tasksStringKeys[i.toString()] = tasks[i]!;
-    // }
-
-    // return await dioClient.put(
-    //   body: {
-    //     "_uuid": id,
-    //     "tasks": tasksStringKeys,
-    //   }
-    // );
-  }
+  Future<void> deleteTask(int innerIndex, Map<int, String> tasks, String id) async {}
 }
