@@ -59,17 +59,21 @@ class DioClient {
           },
         )
       );
-      return response.data;
+      return (response.data["items"] as List).map((e) =>
+           TasksBoardModel.fromJson(e as Map<String, dynamic>)).toList()[0];
     } catch (e) {
       log('put error: ${e.toString()}');
       return null;
     }
   }
 
-  Future<dynamic> delete({dynamic body}) async {
+  Future<dynamic> delete({required String id}) async {
     try {
       final response = await dio.delete(
-        baseUrl, 
+        baseUrl,
+        data: [{
+          "_uuid": id,
+        }], 
         options: Options(
           headers: {
             'Content-Type': 'application/json',
@@ -77,7 +81,8 @@ class DioClient {
           },
         )
       );
-      return response.data;
+      return (response.data["items"] as List).map((e) =>
+           TasksBoardModel.fromJson(e as Map<String, dynamic>)).toList()[0];
     } catch (e) {
       log('delete error: ${e.toString()}');
       return null;
@@ -103,9 +108,8 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   }
 
   @override
-  Future<void> delete(int index) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future delete(String id) async {
+    return await dioClient.delete(id: id);
   }
 
   @override
@@ -121,15 +125,38 @@ class HttpTaskBoardManager implements IBoardsDataManager {
   } 
 
   @override
-  Future<void> update(int index, String data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<void> update(TasksBoardModel board) async {
+    return await dioClient.put(body: {
+      "_uuid": board.id,
+      "title": board.title,
+      "tasks": board.tasks,
+      "position": board.position
+    });    
   }
 
   @override
-  Future createFromList(List<TasksBoardModel> list) {
-    // TODO: implement createFromList
-    throw UnimplementedError();
+  Future createFromList(List<TasksBoardModel> list) async {
+    // final List<TasksBoardModel> responseList = [];
+
+    // for (int i = 0; i < list.length; i++) {
+
+    //   final Map<String, String> tasksStringKeys = {};
+
+    //   for (var j = 0; j < list[i].tasks.length; j++) {
+    //     tasksStringKeys[j.toString()] = list[i].tasks[j]!;
+    //   }
+
+    //   final TasksBoardModel responseBoard = await dioClient.post(
+    //     body: {
+    //     "tasks": tasksStringKeys,
+    //     "title": list[i].title,
+    //     "position": list[i].position
+    //   }
+    //   );
+    //   responseList.add(responseBoard);
+    // }
+
+    // return responseList;
   }
 
   @override

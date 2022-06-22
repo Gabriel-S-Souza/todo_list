@@ -58,6 +58,29 @@ abstract class ListBoardControllerBase with Store {
       });
   }
 
+  Future<void> removeBoard(int index) async {
+    final TasksBoardModel boardRemoved = boards[index];
+    final List<TasksBoardModel> boardsBackup = List.from(boards);
+    
+
+    boards.removeAt(index);
+
+    _adjustPositionBoards();
+
+
+    boardsDataManager.delete(boardRemoved.id)
+      .then((valueResponse) {
+        if(valueResponse.runtimeType == TasksBoardModel) {
+          boards.where((element) => element.position >= boardRemoved.position).forEach((element) async {
+            boardsDataManager.update(element);
+          });
+        } else {
+          boards = ObservableList<TasksBoardModel>.of(boardsBackup);
+          return;
+        }
+      });
+  }
+
   //TODO: adaptar
   @action
   Future<dynamic> moveBoard(int insertIndex, int oldIndex) async {
@@ -65,13 +88,6 @@ abstract class ListBoardControllerBase with Store {
     boards.insert(insertIndex, boardMoved);
     await boardsDataManager.deleteAll();
     return await boardsDataManager.createFromList(boards);
-  }
-
-  //TODO: adaptar
-  @action
-  Future<void> removeBoard(int index) async {
-    await boardsDataManager.delete(index);
-    boards.removeAt(index);
   }
 
   @action
@@ -187,29 +203,24 @@ abstract class ListBoardControllerBase with Store {
     return tasksAdjusted;
   }
 
+  void _adjustPositionBoards() {
+    for (var i = 0; i < boards.length; i++) {
+      boards[i].position = i;
+    }
+  }
+
   bool _checkRequisitionTaskSuccess(dynamic response, Map<int, String>? tasksBackup, 
       int? outerIndex, {int? newListIndex, int? oldListIndex, Map<int, String>? tasksBackupNew, 
       Map<int, String>? tasksBackupOld}) {
-    final List<dynamic> responseMap = response["items"];
-    log('${responseMap[0].containsKey('_uuid')}');
-    log('$responseMap');
-    responseMap[0].containsKey('_uuid') 
-        ? null
-        : newListIndex == null 
-            ? boards[outerIndex!].tasks = Map.from(tasksBackup!) 
-            : {
-                boards[newListIndex].tasks = Map.from(tasksBackupNew!),
-                boards[oldListIndex!].tasks = Map.from(tasksBackupOld!),
-              };
+    response is TasksBoardModel
+      ? null
+      : newListIndex == null 
+          ? boards[outerIndex!].tasks = Map.from(tasksBackup!) 
+          : {
+              boards[newListIndex].tasks = Map.from(tasksBackupNew!),
+              boards[oldListIndex!].tasks = Map.from(tasksBackupOld!),
+            };
     
-    return responseMap[0].containsKey('_uuid');
+    return response is TasksBoardModel;
   }
-
-  // bool _checkRequisitionBoardSuccess(dynamic response) {
-  //   response is TasksBoardModel
-  //       ? null
-  //       : boards.removeLast();
-    
-  //   return response is TasksBoardModel;
-  // }
 }
