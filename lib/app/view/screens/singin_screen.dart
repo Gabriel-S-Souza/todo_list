@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
+import '../../controllers/signin_controller.dart';
 import '../widgets/custom_icon_button.dart';
 import '../widgets/custom_input_image.dart';
 import '../widgets/custom_text_field.dart';
@@ -13,6 +15,8 @@ class SinginScreen extends StatefulWidget {
 }
 
 class _SinginScreenState extends State<SinginScreen> {
+  final SigninController signinController = SigninController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +35,12 @@ class _SinginScreenState extends State<SinginScreen> {
                     color: Theme.of(context).primaryColorDark,
                   ),
                 ),
-                const Flexible(
+                Flexible(
                   child: Align(
                     alignment: Alignment.bottomCenter,
-                    child: CustomInputImage()
+                    child: CustomInputImage(
+                      onChanged: signinController.setImage,
+                    )
                   ),
                 ),
                 Flexible(
@@ -49,7 +55,7 @@ class _SinginScreenState extends State<SinginScreen> {
                         prefix: const Icon(
                           Icons.person,
                         ),
-                        onChanged: (value) {},
+                        onChanged: signinController.setName,
                         enabled: true, // add flag here
                       ),
                       const SizedBox(height: 16),
@@ -57,7 +63,7 @@ class _SinginScreenState extends State<SinginScreen> {
                         hint: 'E-mail',
                         prefix: const Icon(Icons.account_circle),
                         textInputType: TextInputType.emailAddress,
-                        onChanged: (value) {},
+                        onChanged: signinController.setEmail,
                         enabled: true, // add flag here
                       ),
                       const SizedBox(height: 16),
@@ -65,7 +71,7 @@ class _SinginScreenState extends State<SinginScreen> {
                         hint: 'Senha',
                         prefix: const Icon(Icons.lock),
                         obscure: false, // add flag here
-                        onChanged: (value) {},
+                        onChanged: signinController.setPassword,
                         enabled: true, // add flag here
                         suffix: CustomIconButton(
                           radius: 32,
@@ -74,34 +80,33 @@ class _SinginScreenState extends State<SinginScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32),
-                          ),
-                          primary: Theme.of(context).primaryColor,
-                          onSurface: Theme.of(context).primaryColor,
-                          textStyle: const TextStyle(color: Colors.white),
-                          padding: const EdgeInsets.all(12),
-                        ),
-                        child: SizedBox(
-                              height: 17,
-                              width: 17,
-                              child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-                                strokeWidth: 3,
+                      Observer(
+                        builder: (context) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32),
                               ),
+                              primary: Theme.of(context).primaryColor,
+                              onSurface: Theme.of(context).primaryColor,
+                              textStyle: const TextStyle(color: Colors.white),
+                              padding: const EdgeInsets.all(12),
                             ),
-                            // ? SizedBox(
-                            //   height: 17,
-                            //   width: 17,
-                            //   child: CircularProgressIndicator(
-                            //     valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-                            //     strokeWidth: 3,
-                            //   ),
-                            // )
-                            // : const Text('Cadastrar'),
-                        onPressed: null, // add flag here for disable button
+                            child: signinController.loading
+                                ? SizedBox(
+                                      height: 17,
+                                      width: 17,
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                                        strokeWidth: 3,
+                                      ),
+                                    )
+                                : const Text('Cadastrar'),
+                            onPressed: signinController.isFormValid && !signinController.loading
+                                ? () => signinController.signin(context)
+                                : null,
+                          );
+                        }
                       ),
                     ],
                   ),

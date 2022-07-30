@@ -1,11 +1,14 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:mobx/mobx.dart';
+import 'package:todo_list/app/models/user_login_model.dart';
 
 part 'login_controller.g.dart';
 
 class LoginController = LoginControllerBase with _$LoginController;
 
 abstract class LoginControllerBase with Store {
+
+  final UserLoginModel userLoginModel = UserLoginModel();
   
   @observable
   String email = '';
@@ -43,6 +46,8 @@ abstract class LoginControllerBase with Store {
   @action
   Future<void> login() async {
     loading = true;
+    userLoginModel.email = email;
+    userLoginModel.password = password;
     await Future.delayed(const Duration(seconds: 2));
     loading = false;
     logged = true;

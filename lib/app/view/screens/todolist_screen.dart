@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:todo_list/app/view/widgets/custom_input_dialog.dart';
@@ -48,9 +50,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ),
                 Row(
                   children: [
-                    
                     Text(
-                      '@user',
+                      listCardController.userName(),
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
@@ -58,12 +59,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const CircleAvatar(
+                    CircleAvatar(
                       radius: 14,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
+                      backgroundImage: listCardController.userLogin?.imagePath == null 
+                          ? null
+                          : Image.file(File(listCardController.userLogin!.imagePath!)).image,
+                      child: listCardController.userLogin?.imagePath == null
+                          ? const  Icon(
+                              Icons.person,
+                              color: Colors.white,
+                            )
+                          : null,
                     ),
                   ],
                 )

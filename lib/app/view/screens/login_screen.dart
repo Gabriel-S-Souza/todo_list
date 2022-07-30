@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 16),
                       GestureDetector(
                         onTap: () async {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const TodoListScreen()));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const TodoListScreen( )));
                         },
                         child: Text(
                           'Entrar sem logar',

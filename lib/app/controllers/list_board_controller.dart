@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:todo_list/app/data_sources/contracts/boards_data_manager.dart';
+import 'package:todo_list/app/data_sources/local/generic_dao.dart';
 import 'package:todo_list/app/models/task_board_model.dart';
+
+import '../models/user_login_model.dart';
 
 part 'list_board_controller.g.dart';
 
@@ -13,6 +16,8 @@ abstract class ListBoardControllerBase with Store {
       _initializeBoards();
   }
 
+  UserLoginModel? userLogin;
+
   ObservableList<TasksBoardModel> boards = ObservableList<TasksBoardModel>();
   
   final TextEditingController textEditingController = TextEditingController();
@@ -23,6 +28,10 @@ abstract class ListBoardControllerBase with Store {
   @observable
   int? selectedImputBoard;
 
+  void getUser() {
+    userLogin = UserDAO().getUser();
+  }
+
   void setSelectedImputBoard(int? index) => selectedImputBoard = index;
 
   @action
@@ -32,6 +41,15 @@ abstract class ListBoardControllerBase with Store {
 
   @computed
   bool get isNewTaskValid => newTask.isNotEmpty;
+  
+  String userName () {
+    if (userLogin != null) {
+      String firstName = userLogin!.name!.split(' ')[0];
+      return firstName;
+    } else {
+      return 'User';
+    }
+  }
 
   @observable
   bool isLoading = false;

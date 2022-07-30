@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'login_controller.dart';
+part of 'signin_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,31 +8,38 @@ part of 'login_controller.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$LoginController on LoginControllerBase, Store {
+mixin _$SigninController on SigninControllerBase, Store {
+  Computed<bool>? _$isNameValidComputed;
+
+  @override
+  bool get isNameValid =>
+      (_$isNameValidComputed ??= Computed<bool>(() => super.isNameValid,
+              name: 'SigninControllerBase.isNameValid'))
+          .value;
   Computed<bool>? _$isEmailValidComputed;
 
   @override
   bool get isEmailValid =>
       (_$isEmailValidComputed ??= Computed<bool>(() => super.isEmailValid,
-              name: 'LoginControllerBase.isEmailValid'))
+              name: 'SigninControllerBase.isEmailValid'))
           .value;
   Computed<bool>? _$isPasswordValidComputed;
 
   @override
   bool get isPasswordValid =>
       (_$isPasswordValidComputed ??= Computed<bool>(() => super.isPasswordValid,
-              name: 'LoginControllerBase.isPasswordValid'))
+              name: 'SigninControllerBase.isPasswordValid'))
           .value;
   Computed<bool>? _$isFormValidComputed;
 
   @override
   bool get isFormValid =>
       (_$isFormValidComputed ??= Computed<bool>(() => super.isFormValid,
-              name: 'LoginControllerBase.isFormValid'))
+              name: 'SigninControllerBase.isFormValid'))
           .value;
 
   late final _$emailAtom =
-      Atom(name: 'LoginControllerBase.email', context: context);
+      Atom(name: 'SigninControllerBase.email', context: context);
 
   @override
   String get email {
@@ -48,7 +55,7 @@ mixin _$LoginController on LoginControllerBase, Store {
   }
 
   late final _$passwordAtom =
-      Atom(name: 'LoginControllerBase.password', context: context);
+      Atom(name: 'SigninControllerBase.password', context: context);
 
   @override
   String get password {
@@ -63,8 +70,24 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
+  late final _$nameAtom =
+      Atom(name: 'SigninControllerBase.name', context: context);
+
+  @override
+  String get name {
+    _$nameAtom.reportRead();
+    return super.name;
+  }
+
+  @override
+  set name(String value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
+    });
+  }
+
   late final _$passwordVisibleAtom =
-      Atom(name: 'LoginControllerBase.passwordVisible', context: context);
+      Atom(name: 'SigninControllerBase.passwordVisible', context: context);
 
   @override
   bool get passwordVisible {
@@ -80,7 +103,7 @@ mixin _$LoginController on LoginControllerBase, Store {
   }
 
   late final _$loadingAtom =
-      Atom(name: 'LoginControllerBase.loading', context: context);
+      Atom(name: 'SigninControllerBase.loading', context: context);
 
   @override
   bool get loading {
@@ -95,63 +118,50 @@ mixin _$LoginController on LoginControllerBase, Store {
     });
   }
 
-  late final _$loggedAtom =
-      Atom(name: 'LoginControllerBase.logged', context: context);
-
-  @override
-  bool get logged {
-    _$loggedAtom.reportRead();
-    return super.logged;
-  }
-
-  @override
-  set logged(bool value) {
-    _$loggedAtom.reportWrite(value, super.logged, () {
-      super.logged = value;
-    });
-  }
-
-  late final _$loginAsyncAction =
-      AsyncAction('LoginControllerBase.login', context: context);
-
-  @override
-  Future<void> login() {
-    return _$loginAsyncAction.run(() => super.login());
-  }
-
-  late final _$LoginControllerBaseActionController =
-      ActionController(name: 'LoginControllerBase', context: context);
+  late final _$SigninControllerBaseActionController =
+      ActionController(name: 'SigninControllerBase', context: context);
 
   @override
   void setEmail(String value) {
-    final _$actionInfo = _$LoginControllerBaseActionController.startAction(
-        name: 'LoginControllerBase.setEmail');
+    final _$actionInfo = _$SigninControllerBaseActionController.startAction(
+        name: 'SigninControllerBase.setEmail');
     try {
       return super.setEmail(value);
     } finally {
-      _$LoginControllerBaseActionController.endAction(_$actionInfo);
+      _$SigninControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void setPassword(String value) {
-    final _$actionInfo = _$LoginControllerBaseActionController.startAction(
-        name: 'LoginControllerBase.setPassword');
+    final _$actionInfo = _$SigninControllerBaseActionController.startAction(
+        name: 'SigninControllerBase.setPassword');
     try {
       return super.setPassword(value);
     } finally {
-      _$LoginControllerBaseActionController.endAction(_$actionInfo);
+      _$SigninControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setName(String value) {
+    final _$actionInfo = _$SigninControllerBaseActionController.startAction(
+        name: 'SigninControllerBase.setName');
+    try {
+      return super.setName(value);
+    } finally {
+      _$SigninControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   void togglePasswordVisible() {
-    final _$actionInfo = _$LoginControllerBaseActionController.startAction(
-        name: 'LoginControllerBase.togglePasswordVisible');
+    final _$actionInfo = _$SigninControllerBaseActionController.startAction(
+        name: 'SigninControllerBase.togglePasswordVisible');
     try {
       return super.togglePasswordVisible();
     } finally {
-      _$LoginControllerBaseActionController.endAction(_$actionInfo);
+      _$SigninControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
@@ -160,9 +170,10 @@ mixin _$LoginController on LoginControllerBase, Store {
     return '''
 email: ${email},
 password: ${password},
+name: ${name},
 passwordVisible: ${passwordVisible},
 loading: ${loading},
-logged: ${logged},
+isNameValid: ${isNameValid},
 isEmailValid: ${isEmailValid},
 isPasswordValid: ${isPasswordValid},
 isFormValid: ${isFormValid}
